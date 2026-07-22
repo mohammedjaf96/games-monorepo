@@ -1,0 +1,23 @@
+import 'package:game_core/game_core.dart';
+import 'package:get/get.dart';
+
+import '../../../core/routing/appRoutes.dart';
+
+/// Drives the Home screen: best distance display and navigation
+/// (GAME_IDEAS.md §5.3).
+class HomeController extends GetxController {
+  final RxInt best = 0.obs;
+  final WalletService wallet = Get.find<WalletService>();
+
+  @override
+  void onInit() {
+    super.onInit();
+    best.value = KeyValueStore.get(HiveService.progressBox, 'bestScore_dashy', 0);
+  }
+
+  void playTapped() => Get.toNamed(AppRoutes.game);
+
+  void shopTapped() => Get.toNamed(AppRoutes.store);
+
+  void settingsTapped() => Get.toNamed(AppRoutes.settings);
+}
