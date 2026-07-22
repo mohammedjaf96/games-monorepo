@@ -4,7 +4,7 @@ import '../theme/pal.dart';
 import 'bouncyButton.dart';
 
 /// A rewarded-ad CTA: a video icon + label (GAME_IDEAS.md §3.9), e.g.
-/// "Continue 🎬" or "Double coins 🎬".
+/// "Continue" or "Double coins".
 class RewardedButton extends StatelessWidget {
   const RewardedButton({
     super.key,

@@ -19,4 +19,6 @@ class HomeController extends GetxController {
   void shopTapped() => Get.toNamed(AppRoutes.store);
 
   void settingsTapped() => Get.toNamed(AppRoutes.settings);
+
+  void dailyRewardTapped() => Get.dialog(const DailyRewardDialog());
 }

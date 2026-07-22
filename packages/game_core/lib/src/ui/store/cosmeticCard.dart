@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '../../store/cosmetic.dart';
@@ -49,8 +50,24 @@ class CosmeticCard extends StatelessWidget {
               final selected = inventory.selectedId(cosmetic.slot) == cosmetic.id;
               if (selected) return Text('goEquipped'.tr, style: AppText.caption(color: Pal.green));
               if (owned) return Text('goEquip'.tr, style: AppText.caption(color: Pal.blue));
-              if (cosmetic.unlockableByAd) return Text('🎬 ${'goFree'.tr}', style: AppText.caption());
-              return Text('💜 ${cosmetic.priceGems}', style: AppText.caption(color: OutlineColor.color));
+              if (cosmetic.unlockableByAd) {
+                return Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.smart_display_rounded, size: 12, color: OutlineColor.color),
+                    const SizedBox(width: 2),
+                    Text('goFree'.tr, style: AppText.caption()),
+                  ],
+                );
+              }
+              return Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SvgPicture.asset('assets/icons/gem.svg', package: 'game_core', width: 12, height: 12),
+                  const SizedBox(width: 2),
+                  Text('${cosmetic.priceGems}', style: AppText.caption(color: OutlineColor.color)),
+                ],
+              );
             }),
           ],
         ),

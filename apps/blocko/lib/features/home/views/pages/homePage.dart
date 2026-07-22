@@ -56,6 +56,12 @@ class HomePage extends GetView<HomeController> {
                   ),
                   const SizedBox(width: AppSizes.gapMedium),
                   StickerIconButton(
+                    iconAsset: 'assets/icons/chest.svg',
+                    fill: Colors.white,
+                    onPressed: controller.dailyRewardTapped,
+                  ),
+                  const SizedBox(width: AppSizes.gapMedium),
+                  StickerIconButton(
                     iconAsset: 'assets/icons/gear.svg',
                     fill: Colors.white,
                     onPressed: controller.settingsTapped,

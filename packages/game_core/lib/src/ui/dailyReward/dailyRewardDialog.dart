@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '../../economy/dailyReward/dailyRewardService.dart';
@@ -68,8 +69,9 @@ class DailyRewardDialog extends StatelessWidget {
             const SizedBox(height: AppSizes.gapLarge),
             Obx(
               () => BouncyButton(
-                label: '${'goClaim'.tr} 💜${service.pendingReward.gems}',
+                label: '${'goClaim'.tr} ${service.pendingReward.gems}',
                 fill: Pal.green,
+                icon: SvgPicture.asset('assets/icons/gem.svg', package: 'game_core', width: 16, height: 16),
                 onPressed: service.canClaimToday
                     ? () async {
                         await service.claim();

@@ -24,6 +24,8 @@ class HomeController extends GetxController {
 
   void settingsTapped() => Get.toNamed(AppRoutes.settings);
 
+  void dailyRewardTapped() => Get.dialog(const DailyRewardDialog());
+
   /// Watch a rewarded ad to start the next run with a collision-absorbing
   /// shield (GAME_IDEAS.md §5.7).
   Future<void> activateShield() async {
