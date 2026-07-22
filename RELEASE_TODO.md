@@ -16,7 +16,7 @@ store. Grouped by what unblocks it.
       (placement/clear, swipe/merge, jump/obstacles) before trusting the
       logic described in code review.
 
-## Blocked on a Google AdMob account
+## On hold (per explicit instruction) — Google AdMob account
 - [ ] Create an AdMob account + one app entry per game.
 - [ ] Replace the **test** ad unit IDs with real ones in each app's
       `GameConfig.adUnits` (currently `apps/<game>/lib/main.dart`).
@@ -27,17 +27,31 @@ store. Grouped by what unblocks it.
       Google's current published list (https://support.google.com/admob/answer/9995322)
       — it was filled in from a commonly published version, not fetched live.
 
-## Blocked on real art/audio assets
+## Done this session — art/audio/privacy policy
+- [x] App icons — custom-drawn per game (cartoon-sticker style), applied
+      directly to every Android mipmap and iOS AppIcon.appiconset slot.
+- [x] Background music — one synthesized looping BGM track per game,
+      registered in each app's assets and actually wired to play on launch
+      (a real bug in the original wiring — nothing called `playBgm()` — was
+      fixed at the same time).
+- [x] Privacy policy — `docs/index.html` added to this repo for GitHub
+      Pages, and the URL wired into each app's Settings screen as a real
+      tappable link. **One manual step still needed** (no API access to
+      flip repo settings from here): in the repo's GitHub Settings → Pages,
+      set Source = "Deploy from a branch", Branch = `version-1`, Folder =
+      `/docs`, then Save. The page will then be live at
+      `https://mohammedjaf96.github.io/games-monorepo/` (already hardcoded
+      in each `main.dart`) within a minute or two of saving. If you'd rather
+      it live on `main`, merge this branch there instead and pick `main`
+      as the Pages branch.
 - [ ] Cosmetic preview images referenced in `core/config/*Catalog.dart`
-      (e.g. `assets/cosmetics/character_robot.png`) don't exist yet —
+      (e.g. `assets/cosmetics/character_robot.png`) still don't exist —
       `CosmeticCard` falls back to a rarity-colored icon. Add real art and
       register the folder in each app's `pubspec.yaml` assets.
-- [ ] Background music (BGM) files — `AudioService.playBgm()` silently
-      no-ops without one. Add a track and pass its asset path in
-      `SettingsController.toggleMusic()`.
-- [ ] App icons (all three apps still ship Flutter's default icon). Add
-      real 1024x1024 source art and run `flutter_launcher_icons`.
 - [ ] Store feature graphics / screenshots for both store listings.
+- [ ] Fill in a real contact email in `docs/index.html` / `PRIVACY_POLICY.md`
+      §8 if you want one — currently points people to the store listing's
+      contact instead.
 
 ## Blocked on store/developer accounts
 - [ ] Android signing keystore per app (`android/key.properties`, never
@@ -45,9 +59,6 @@ store. Grouped by what unblocks it.
 - [ ] iOS signing team/certificates in Xcode, and a distinct bundle ID
       already set (`com.mgames.<game>`) — just needs a real Apple Developer
       account attached.
-- [ ] Host `PRIVACY_POLICY.md` at a public URL (GitHub Pages works) and
-      fill in the `[FILL IN]` placeholders first. Put that URL in both
-      store listings.
 - [ ] Google Play: data-safety form, content rating questionnaire, ads
       declaration. App Store: App Privacy "nutrition label", ATT usage
       description review.
