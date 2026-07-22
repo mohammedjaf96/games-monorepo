@@ -115,7 +115,13 @@ class SettingsPage extends GetView<SettingsController> {
                 ),
               ),
               const Spacer(),
-              Text('labelPrivacyPolicy'.tr, style: AppText.caption()),
+              GestureDetector(
+                onTap: controller.openPrivacyPolicy,
+                child: Text(
+                  'labelPrivacyPolicy'.tr,
+                  style: AppText.caption(color: Pal.blue),
+                ),
+              ),
               const SizedBox(height: AppSizes.gapExtraSmall),
               Text('${'labelVersion'.tr}: 1.0.0', style: AppText.caption()),
             ],

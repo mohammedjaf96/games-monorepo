@@ -24,7 +24,7 @@ Future<void> bootstrapGame({required GameConfig config}) async {
   Get.put(ConsentController());
   await Get.putAsync(() => AudioService().init());
   Get.put(HapticsService());
-  Get.put(SettingsController());
+  Get.put(SettingsController(privacyPolicyUrl: config.privacyPolicyUrl));
 
   await Get.putAsync(() => WalletService().init());
   await Get.putAsync(() => InventoryService(config.storeCatalog).init());

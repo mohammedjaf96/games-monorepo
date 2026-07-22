@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../audio/audioService.dart';
 import '../../audio/hapticPattern.dart';
@@ -10,6 +11,10 @@ import '../../storage/keyValueStore.dart';
 /// Shared Sound/Vibration/Music/Language settings (GAME_IDEAS.md §3.16).
 /// Every toggle applies immediately and persists to Hive right away.
 class SettingsController extends GetxController {
+  SettingsController({this.privacyPolicyUrl});
+
+  final String? privacyPolicyUrl;
+
   final RxBool sound = true.obs;
   final RxBool vibration = true.obs;
   final RxBool music = true.obs;
@@ -61,4 +66,14 @@ class SettingsController extends GetxController {
   }
 
   Future<void> save(String key, dynamic value) => KeyValueStore.set(HiveService.settingsBox, key, value);
+
+  Future<void> openPrivacyPolicy() async {
+    final url = privacyPolicyUrl;
+    if (url == null) return;
+    try {
+      await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
+    } catch (_) {
+      // No browser available / URL failed to launch — never crash the app over this.
+    }
+  }
 }
