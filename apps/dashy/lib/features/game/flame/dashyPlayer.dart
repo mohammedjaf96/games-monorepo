@@ -61,6 +61,10 @@ class DashyPlayer extends PositionComponent with CollisionCallbacks, HasGameRefe
     super.onCollisionStart(intersectionPoints, other);
     if (isDead) return;
     if (other is ObstacleComponent) {
+      if (game.consumeShieldIfActive()) {
+        other.removeFromParent();
+        return;
+      }
       isDead = true;
       game.registerDeath();
     } else if (other is CoinComponent) {
@@ -71,6 +75,15 @@ class DashyPlayer extends PositionComponent with CollisionCallbacks, HasGameRefe
 
   @override
   void render(Canvas canvas) {
+    if (game.shieldActive) {
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(size.toRect().inflate(6), const Radius.circular(18)),
+        Paint()
+          ..color = const Color(0xFF37B6FF)
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 4,
+      );
+    }
     final rrect = RRect.fromRectAndRadius(size.toRect(), const Radius.circular(14));
     canvas.drawRRect(rrect, Paint()..color = const Color(0xFFFF7A2E));
     canvas.drawRRect(

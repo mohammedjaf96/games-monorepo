@@ -27,6 +27,8 @@ class DashyTranslations extends Translations {
       'backgroundSpace': 'Space',
       'labelDistance': 'Distance',
       'labelTapToPlay': 'Tap to play',
+      'goShield': 'Shield',
+      'labelShieldReady': 'Shield ready!',
     },
     'ar': {
       'appName': 'داشي',
@@ -50,6 +52,8 @@ class DashyTranslations extends Translations {
       'backgroundSpace': 'الفضاء',
       'labelDistance': 'المسافة',
       'labelTapToPlay': 'اضغط للعب',
+      'goShield': 'درع',
+      'labelShieldReady': 'الدرع جاهز!',
     },
   };
 

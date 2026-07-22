@@ -66,6 +66,9 @@ class GamePage extends GetView<GameController> {
                   child: Center(child: Text(text, style: AppText.title(color: Pal.orange))),
                 );
               }),
+              Positioned.fill(
+                child: Obx(() => ParticleBurstOverlay(bursts: controller.bursts)),
+              ),
             ],
           ),
         ),

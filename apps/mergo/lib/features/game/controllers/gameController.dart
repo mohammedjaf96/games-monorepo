@@ -1,10 +1,12 @@
 import 'dart:math';
 
+import 'package:flutter/material.dart';
 import 'package:game_core/game_core.dart';
 import 'package:get/get.dart';
 
 import '../../../core/config/mergoEconomy.dart';
 import '../../../core/routing/appRoutes.dart';
+import '../data/model/mergoTileColors.dart';
 import '../data/model/swipeDirection.dart';
 
 const int gridDimension = 4;
@@ -20,6 +22,7 @@ class GameController extends GetxController {
   final RxInt bestTile = 0.obs;
   final RxBool hammerModeActive = false.obs;
   final Rx<String?> floatingText = Rx<String?>(null);
+  final RxList<ParticleBurst> bursts = <ParticleBurst>[].obs;
 
   List<int>? lastGridForUndo;
   final Set<int> milestonesReachedThisRun = {};
@@ -117,6 +120,7 @@ class GameController extends GetxController {
       await audio.playSfx('merge');
       await haptics.pulse(HapticPattern.medium);
       showFloatingText('+$gained');
+      spawnBurst(MergoTileColors.colorFor(newGrid.reduce(max)));
       await checkMilestones();
     } else {
       await audio.playSfx('swipe');
@@ -146,6 +150,14 @@ class GameController extends GetxController {
     floatingText.value = text;
     Future.delayed(const Duration(milliseconds: 900), () {
       if (floatingText.value == text) floatingText.value = null;
+    });
+  }
+
+  void spawnBurst(Color color) {
+    final id = DateTime.now().microsecondsSinceEpoch;
+    bursts.add(ParticleBurst(id: id, color: color));
+    Future.delayed(const Duration(milliseconds: 500), () {
+      bursts.removeWhere((burst) => burst.id == id);
     });
   }
 

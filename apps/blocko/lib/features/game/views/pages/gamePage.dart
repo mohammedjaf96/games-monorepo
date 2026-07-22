@@ -48,6 +48,25 @@ class GamePage extends GetView<GameController> {
                   const Expanded(child: BoardWidget()),
                   const SizedBox(height: AppSizes.gapLarge),
                   const PieceTrayWidget(),
+                  const SizedBox(height: AppSizes.gapMedium),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Obx(
+                        () => StickerIconButton(
+                          iconAsset: 'assets/icons/undo.svg',
+                          fill: controller.canUndo.value ? Colors.white : Colors.white.withOpacity(0.4),
+                          onPressed: controller.canUndo.value ? () => controller.undo() : null,
+                        ),
+                      ),
+                      const SizedBox(width: AppSizes.gapMedium),
+                      StickerIconButton(
+                        iconAsset: 'assets/icons/bomb.svg',
+                        fill: Colors.white,
+                        onPressed: () => controller.refreshPieces(),
+                      ),
+                    ],
+                  ),
                 ],
               ),
               Obx(() {
@@ -62,6 +81,9 @@ class GamePage extends GetView<GameController> {
                   ),
                 );
               }),
+              Positioned.fill(
+                child: Obx(() => ParticleBurstOverlay(bursts: controller.bursts)),
+              ),
             ],
           ),
         ),

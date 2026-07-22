@@ -41,6 +41,21 @@ class HomePage extends GetView<HomeController> {
                   ),
                 ),
               ),
+              const SizedBox(height: AppSizes.gapMedium),
+              Obx(
+                () => controller.shieldPending.value
+                    ? Container(
+                        padding: const EdgeInsets.symmetric(horizontal: AppSizes.gapLarge, vertical: AppSizes.gapSmall),
+                        decoration: stickerDecoration(
+                          fill: Pal.blue,
+                          radius: AppSizes.radiusChip,
+                          border: BorderWidths.thin,
+                          drop: 2,
+                        ),
+                        child: Text('labelShieldReady'.tr, style: AppText.label(color: Colors.white)),
+                      )
+                    : RewardedButton(label: 'goShield'.tr, onPressed: controller.activateShield, fill: Pal.blue),
+              ),
               const Spacer(),
               BouncyButton(label: 'menuPlay'.tr, fill: Pal.yellow, onPressed: controller.playTapped),
               const SizedBox(height: AppSizes.gapLarge),

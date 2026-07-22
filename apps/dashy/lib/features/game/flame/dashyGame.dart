@@ -27,6 +27,7 @@ class DashyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
 
   double speed = baseSpeed;
   double distance = 0;
+  bool shieldActive = false;
 
   @override
   Future<void> onLoad() async {
@@ -58,6 +59,18 @@ class DashyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
     onDeath();
   }
 
+  /// Grants a shield that absorbs the run's first collision (GAME_IDEAS.md §5.7).
+  void activateShield() {
+    shieldActive = true;
+  }
+
+  /// Consumes the shield if one is active. Returns true if a collision was absorbed.
+  bool consumeShieldIfActive() {
+    if (!shieldActive) return false;
+    shieldActive = false;
+    return true;
+  }
+
   /// Revive in place: clear obstacles and resume the same run (distance,
   /// coins, and speed are preserved) — GAME_IDEAS.md §5.7.
   void reviveInPlace() {
@@ -71,6 +84,7 @@ class DashyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
   void reset() {
     distance = 0;
     speed = baseSpeed;
+    shieldActive = false;
     children.whereType<ObstacleComponent>().toList().forEach((c) => c.removeFromParent());
     children.whereType<CoinComponent>().toList().forEach((c) => c.removeFromParent());
     player.reset();

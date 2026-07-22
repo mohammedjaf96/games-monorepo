@@ -25,6 +25,17 @@ class GameController extends GetxController {
     sessionFlow = GameSessionFlow(gameId: 'dashy', economyConfig: dashyEconomy);
     best.value = sessionFlow.bestScore;
     game = DashyGame(onScore: handleScore, onCoin: handleCoin, onDeath: handleDeath);
+    consumePendingShield();
+  }
+
+  /// Picks up a shield earned from Home's rewarded "Shield" button
+  /// (GAME_IDEAS.md §5.7) and clears the flag so it only applies once.
+  void consumePendingShield() {
+    final shieldPending = KeyValueStore.get(HiveService.adMetaBox, 'dashyShieldPending', false);
+    if (shieldPending) {
+      KeyValueStore.set(HiveService.adMetaBox, 'dashyShieldPending', false);
+      game.activateShield();
+    }
   }
 
   void handleScore(double newDistance) {

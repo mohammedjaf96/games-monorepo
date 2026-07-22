@@ -50,6 +50,8 @@ export 'src/ui/gameOverDialog.dart';
 export 'src/ui/mascotMood.dart';
 export 'src/ui/mascotWidget.dart';
 export 'src/ui/outlinedText.dart';
+export 'src/ui/particleBurst.dart';
+export 'src/ui/particleBurstOverlay.dart';
 export 'src/ui/pauseDialog.dart';
 export 'src/ui/rewardedButton.dart';
 export 'src/ui/settings/settingsController.dart';

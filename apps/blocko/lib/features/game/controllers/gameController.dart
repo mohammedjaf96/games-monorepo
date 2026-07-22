@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/material.dart';
 import 'package:game_core/game_core.dart';
 import 'package:get/get.dart';
 
@@ -23,13 +24,22 @@ class GameController extends GetxController {
   final RxSet<int> previewCells = <int>{}.obs;
   final RxBool previewValid = false.obs;
   final Rx<String?> floatingText = Rx<String?>(null);
+  final RxList<ParticleBurst> bursts = <ParticleBurst>[].obs;
+
+  final RxBool canUndo = false.obs;
 
   bool reviveUsed = false;
   final Random random = Random();
 
+  List<int>? undoGridSnapshot;
+  List<BlockoPiece?>? undoTraySnapshot;
+  int? undoScoreSnapshot;
+  int? undoComboSnapshot;
+
   late final GameSessionFlow sessionFlow;
   final AudioService audio = Get.find<AudioService>();
   final HapticsService haptics = Get.find<HapticsService>();
+  final AdService ads = Get.find<AdService>();
 
   @override
   void onInit() {
@@ -103,6 +113,7 @@ class GameController extends GetxController {
       await haptics.pulse(HapticPattern.medium);
       return;
     }
+    saveUndoSnapshot();
     commitPlacement(piece, targetIndexes);
     tray[pieceIndex] = null;
     score.value += piece.cells.length;
@@ -150,6 +161,7 @@ class GameController extends GetxController {
     final bonus = clearedCells * comboStreak.value;
     score.value += bonus;
     showFloatingText(comboStreak.value > 1 ? 'Combo x${comboStreak.value}! +$bonus' : '+$bonus');
+    spawnBurst(BlockoColors.palette[comboStreak.value % BlockoColors.palette.length]);
 
     await audio.playSfx('clear');
     final comboSfxIndex = comboStreak.value.clamp(1, 5);
@@ -161,6 +173,14 @@ class GameController extends GetxController {
     floatingText.value = text;
     Future.delayed(const Duration(milliseconds: 900), () {
       if (floatingText.value == text) floatingText.value = null;
+    });
+  }
+
+  void spawnBurst(Color color) {
+    final id = DateTime.now().microsecondsSinceEpoch;
+    bursts.add(ParticleBurst(id: id, color: color));
+    Future.delayed(const Duration(milliseconds: 500), () {
+      bursts.removeWhere((burst) => burst.id == id);
     });
   }
 
@@ -192,6 +212,7 @@ class GameController extends GetxController {
 
   void revive() {
     reviveUsed = true;
+    clearUndoSnapshot();
     final rowFillCounts = <int, int>{
       for (var row = 0; row < gridSize; row++)
         row: List.generate(gridSize, (col) => cells[row * gridSize + col]).where((value) => value != 0).length,
@@ -211,7 +232,48 @@ class GameController extends GetxController {
     score.value = 0;
     comboStreak.value = 0;
     reviveUsed = false;
+    clearUndoSnapshot();
     best.value = sessionFlow.bestScore;
     fillTrayIfEmpty();
+  }
+
+  void saveUndoSnapshot() {
+    undoGridSnapshot = List<int>.from(cells);
+    undoTraySnapshot = List<BlockoPiece?>.from(tray);
+    undoScoreSnapshot = score.value;
+    undoComboSnapshot = comboStreak.value;
+    canUndo.value = true;
+  }
+
+  void clearUndoSnapshot() {
+    undoGridSnapshot = null;
+    undoTraySnapshot = null;
+    undoScoreSnapshot = null;
+    undoComboSnapshot = null;
+    canUndo.value = false;
+  }
+
+  /// Undo the last placement via a rewarded ad (GAME_IDEAS.md §4.7).
+  Future<void> undo() async {
+    if (undoGridSnapshot == null) return;
+    final earned = await ads.showRewarded('undo');
+    if (!earned) return;
+    cells.assignAll(undoGridSnapshot!);
+    tray.assignAll(undoTraySnapshot!);
+    score.value = undoScoreSnapshot!;
+    comboStreak.value = undoComboSnapshot!;
+    clearUndoSnapshot();
+  }
+
+  /// Replace the current tray with 3 fresh pieces via a rewarded ad — meant
+  /// for when none of them fit (GAME_IDEAS.md §4.7).
+  Future<void> refreshPieces() async {
+    final earned = await ads.showRewarded('refresh_pieces');
+    if (!earned) return;
+    final avoidLarge = filledRatio() > 0.6;
+    for (var i = 0; i < tray.length; i++) {
+      tray[i] = generatePiece(avoidLarge: avoidLarge);
+    }
+    checkGameOver();
   }
 }
