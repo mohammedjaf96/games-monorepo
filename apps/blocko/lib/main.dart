@@ -13,7 +13,7 @@ final GameConfig blockoConfig = GameConfig(
   adUnits: const AdUnits(),
   economy: blockoEconomy,
   storeCatalog: blockoCatalog,
-  privacyPolicyUrl: 'https://mohammedjaf96.github.io/games-monorepo/',
+  privacyPolicyUrl: 'https://mohammedjaf96.github.io/privacy-policy/',
 );
 
 void main() async {

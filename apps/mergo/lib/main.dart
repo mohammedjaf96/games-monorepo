@@ -13,7 +13,7 @@ final GameConfig mergoConfig = GameConfig(
   adUnits: const AdUnits(),
   economy: mergoEconomy,
   storeCatalog: mergoCatalog,
-  privacyPolicyUrl: 'https://mohammedjaf96.github.io/games-monorepo/',
+  privacyPolicyUrl: 'https://mohammedjaf96.github.io/privacy-policy/',
 );
 
 void main() async {

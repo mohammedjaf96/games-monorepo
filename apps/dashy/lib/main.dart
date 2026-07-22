@@ -13,7 +13,7 @@ final GameConfig dashyConfig = GameConfig(
   adUnits: const AdUnits(),
   economy: dashyEconomy,
   storeCatalog: dashyCatalog,
-  privacyPolicyUrl: 'https://mohammedjaf96.github.io/games-monorepo/',
+  privacyPolicyUrl: 'https://mohammedjaf96.github.io/privacy-policy/',
 );
 
 void main() async {

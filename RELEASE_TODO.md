@@ -34,16 +34,12 @@ store. Grouped by what unblocks it.
       registered in each app's assets and actually wired to play on launch
       (a real bug in the original wiring — nothing called `playBgm()` — was
       fixed at the same time).
-- [x] Privacy policy — `docs/index.html` added to this repo for GitHub
-      Pages, and the URL wired into each app's Settings screen as a real
-      tappable link. **One manual step still needed** (no API access to
-      flip repo settings from here): in the repo's GitHub Settings → Pages,
-      set Source = "Deploy from a branch", Branch = `version-1`, Folder =
-      `/docs`, then Save. The page will then be live at
-      `https://mohammedjaf96.github.io/games-monorepo/` (already hardcoded
-      in each `main.dart`) within a minute or two of saving. If you'd rather
-      it live on `main`, merge this branch there instead and pick `main`
-      as the Pages branch.
+- [x] Privacy policy — hosted via GitHub Pages on a separate, dedicated
+      public repo (`mohammedjaf96/privacy-policy`), keeping `games-monorepo`
+      private. Live at `https://mohammedjaf96.github.io/privacy-policy/`
+      and wired into each app's Settings screen as a real tappable link.
+      (`docs/index.html` in this repo is the same page, kept only as the
+      source copy — it isn't served from here.)
 - [ ] Cosmetic preview images referenced in `core/config/*Catalog.dart`
       (e.g. `assets/cosmetics/character_robot.png`) still don't exist —
       `CosmeticCard` falls back to a rarity-colored icon. Add real art and
