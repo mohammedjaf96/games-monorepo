@@ -34,7 +34,7 @@ class GameOverDialog extends StatelessWidget {
   final int score;
   final int best;
   final bool isNewRecord;
-  final Future<void> Function() onRevive;
+  final Future<void> Function()? onRevive;
   final Future<void> Function() onDoubleCoins;
   final Future<void> Function() onRetry;
   final Future<void> Function() onHome;

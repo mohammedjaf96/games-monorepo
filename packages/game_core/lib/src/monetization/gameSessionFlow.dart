@@ -31,6 +31,7 @@ class GameSessionFlow {
 
   Future<void> showGameOver({
     required GameResult result,
+    required bool reviveAvailable,
     required Future<void> Function() onRevive,
     required Future<void> Function() onRetry,
     required Future<void> Function() onHome,
@@ -66,13 +67,15 @@ class GameSessionFlow {
         score: result.score,
         best: isNewRecord ? result.score : previousBest,
         isNewRecord: isNewRecord,
-        onRevive: () async {
-          final earned = await ads.showRewarded('revive');
-          if (earned) {
-            Get.back();
-            await onRevive();
-          }
-        },
+        onRevive: reviveAvailable
+            ? () async {
+                final earned = await ads.showRewarded('revive');
+                if (earned) {
+                  Get.back();
+                  await onRevive();
+                }
+              }
+            : null,
         onDoubleCoins: () async {
           final earned = await ads.showRewarded('double_coins');
           if (earned) await wallet.earn(gemsEarned, source: 'double_coins');
