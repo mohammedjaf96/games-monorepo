@@ -5,6 +5,7 @@ library;
 
 export 'src/ads/adPolicy.dart';
 export 'src/ads/adService.dart';
+export 'src/ads/adUnitPair.dart';
 export 'src/ads/adUnits.dart';
 export 'src/ads/consentController.dart';
 export 'src/analytics/analyticsService.dart';

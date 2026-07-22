@@ -24,7 +24,7 @@ android {
         applicationId = "com.mgames.mergo"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
+        minSdk = 23 // GAME_IDEAS.md §1.7 — required for AdMob/UMP
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
