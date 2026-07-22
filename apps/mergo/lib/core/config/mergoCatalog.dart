@@ -1,0 +1,93 @@
+import 'package:game_core/game_core.dart';
+
+/// Mergo's store content (GAME_IDEAS.md §6.6): tile themes, character blobs,
+/// and backgrounds.
+final StoreCatalog mergoCatalog = StoreCatalog(
+  categories: const [
+    StoreCategory(id: 'themes', nameKey: 'tabThemes', slot: CosmeticSlot.theme),
+    StoreCategory(id: 'characters', nameKey: 'tabCharacters', slot: CosmeticSlot.character),
+    StoreCategory(id: 'backgrounds', nameKey: 'tabBackgrounds', slot: CosmeticSlot.background),
+  ],
+  cosmetics: const [
+    Cosmetic(
+      id: 'theme_numbers',
+      slot: CosmeticSlot.theme,
+      nameKey: 'themeNumbers',
+      rarity: Rarity.common,
+      previewAsset: 'assets/cosmetics/theme_numbers.png',
+      defaultOwned: true,
+    ),
+    Cosmetic(
+      id: 'theme_blobs',
+      slot: CosmeticSlot.theme,
+      nameKey: 'themeBlobs',
+      rarity: Rarity.rare,
+      previewAsset: 'assets/cosmetics/theme_blobs.png',
+      priceGems: 200,
+    ),
+    Cosmetic(
+      id: 'theme_fruits',
+      slot: CosmeticSlot.theme,
+      nameKey: 'themeFruits',
+      rarity: Rarity.rare,
+      previewAsset: 'assets/cosmetics/theme_fruits.png',
+      unlockableByAd: true,
+    ),
+    Cosmetic(
+      id: 'theme_animals',
+      slot: CosmeticSlot.theme,
+      nameKey: 'themeAnimals',
+      rarity: Rarity.epic,
+      previewAsset: 'assets/cosmetics/theme_animals.png',
+      priceGems: 300,
+    ),
+    Cosmetic(
+      id: 'theme_emojis',
+      slot: CosmeticSlot.theme,
+      nameKey: 'themeEmojis',
+      rarity: Rarity.legendary,
+      previewAsset: 'assets/cosmetics/theme_emojis.png',
+      priceGems: 400,
+    ),
+    Cosmetic(
+      id: 'character_classic',
+      slot: CosmeticSlot.character,
+      nameKey: 'cosmeticClassic',
+      rarity: Rarity.common,
+      previewAsset: 'assets/cosmetics/character_classic.png',
+      defaultOwned: true,
+    ),
+    Cosmetic(
+      id: 'background_mint',
+      slot: CosmeticSlot.background,
+      nameKey: 'backgroundMint',
+      rarity: Rarity.common,
+      previewAsset: 'assets/cosmetics/background_mint.png',
+      defaultOwned: true,
+    ),
+    Cosmetic(
+      id: 'background_ocean',
+      slot: CosmeticSlot.background,
+      nameKey: 'backgroundOcean',
+      rarity: Rarity.rare,
+      previewAsset: 'assets/cosmetics/background_ocean.png',
+      priceGems: 180,
+    ),
+    Cosmetic(
+      id: 'background_candy',
+      slot: CosmeticSlot.background,
+      nameKey: 'backgroundCandy',
+      rarity: Rarity.rare,
+      previewAsset: 'assets/cosmetics/background_candy.png',
+      unlockableByAd: true,
+    ),
+    Cosmetic(
+      id: 'background_dark',
+      slot: CosmeticSlot.background,
+      nameKey: 'backgroundDark',
+      rarity: Rarity.epic,
+      previewAsset: 'assets/cosmetics/background_dark.png',
+      priceGems: 320,
+    ),
+  ],
+);
