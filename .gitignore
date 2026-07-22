@@ -1,0 +1,48 @@
+# Arabic backup — not published
+GAME_IDEAS.ar.md
+
+# Melos
+.dart_tool/
+pubspec_overrides.yaml
+
+# Flutter/Dart/Pub
+**/.dart_tool/
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+**/.packages
+**/build/
+**/.pub-cache/
+**/.pub/
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# Android
+**/android/**/gradle-wrapper.jar
+**/android/.gradle
+**/android/captures/
+**/android/local.properties
+**/android/key.properties
+**/*.jks
+**/*.keystore
+**/android/app/google-services.json
+
+# iOS / macOS
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Flutter.podspec
+**/ios/Pods/
+**/ios/.symlinks/
+**/Podfile.lock
+**/ios/**/GoogleService-Info.plist
+**/*.mode1v3
+**/*.mode2v3
+**/*.perspectivev3
+**/xcuserdata/
+**/DerivedData/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
