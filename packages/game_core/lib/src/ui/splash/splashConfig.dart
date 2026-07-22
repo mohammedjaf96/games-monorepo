@@ -9,6 +9,7 @@ class SplashConfig {
     required this.game,
     required this.homeRoute,
     this.loaderColor = const Color(0xFFFFFFFF),
+    this.bgmAssetPath,
   });
 
   final Color bgColor;
@@ -17,4 +18,8 @@ class SplashConfig {
   final String game;
   final String homeRoute;
   final Color loaderColor;
+
+  /// Asset path (relative to the app's own bundle) for the looping BGM
+  /// track, e.g. `audio/bgm/theme.wav`. Null means no BGM is shipped yet.
+  final String? bgmAssetPath;
 }

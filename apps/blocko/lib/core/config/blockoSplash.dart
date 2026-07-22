@@ -9,4 +9,5 @@ final SplashConfig blockoSplashConfig = SplashConfig(
   logoText: 'BLOCKO',
   game: 'blocko',
   homeRoute: AppRoutes.home,
+  bgmAssetPath: 'audio/bgm/theme.wav',
 );

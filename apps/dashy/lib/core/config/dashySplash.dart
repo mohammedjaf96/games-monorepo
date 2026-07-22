@@ -9,4 +9,5 @@ final SplashConfig dashySplashConfig = SplashConfig(
   logoText: 'DASHY',
   game: 'dashy',
   homeRoute: AppRoutes.home,
+  bgmAssetPath: 'audio/bgm/theme.wav',
 );

@@ -9,6 +9,7 @@ import '../storage/keyValueStore.dart';
 /// missing audio asset never crashes the game.
 class AudioService extends GetxService {
   final AudioPlayer bgmPlayer = AudioPlayer();
+  String? lastBgmPath;
 
   Future<AudioService> init() async {
     try {
@@ -39,12 +40,24 @@ class AudioService extends GetxService {
   }
 
   Future<void> playBgm(String assetPath) async {
+    lastBgmPath = assetPath;
     if (!musicEnabled) return;
     try {
       await bgmPlayer.play(AssetSource(assetPath));
     } catch (_) {
       // BGM asset not shipped yet — tolerate silently (GAME_IDEAS.md §c).
     }
+  }
+
+  /// Resumes whichever track was last requested via [playBgm] — used when
+  /// the player switches music back on in Settings.
+  Future<void> resumeBgmIfKnown() async {
+    final path = lastBgmPath;
+    if (path == null) return;
+    if (!musicEnabled) return;
+    try {
+      await bgmPlayer.play(AssetSource(path));
+    } catch (_) {}
   }
 
   Future<void> stopBgm() async {

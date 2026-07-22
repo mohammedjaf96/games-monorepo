@@ -9,4 +9,5 @@ final SplashConfig mergoSplashConfig = SplashConfig(
   logoText: 'MERGO',
   game: 'mergo',
   homeRoute: AppRoutes.home,
+  bgmAssetPath: 'audio/bgm/theme.wav',
 );

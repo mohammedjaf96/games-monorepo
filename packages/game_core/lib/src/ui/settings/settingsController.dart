@@ -48,7 +48,7 @@ class SettingsController extends GetxController {
     music.value = !music.value;
     await save('music', music.value);
     if (music.value) {
-      await audio.playBgm('audio/bgm/theme.mp3');
+      await audio.resumeBgmIfKnown();
     } else {
       await audio.stopBgm();
     }

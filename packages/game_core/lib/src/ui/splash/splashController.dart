@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 
 import '../../ads/adService.dart';
+import '../../audio/audioService.dart';
 import '../../economy/dailyReward/dailyRewardService.dart';
 import '../dailyReward/dailyRewardDialog.dart';
 import 'splashConfig.dart';
@@ -12,11 +13,18 @@ class SplashController extends GetxController {
 
   final SplashConfig config;
   final AdService ads = Get.find<AdService>();
+  final AudioService audio = Get.find<AudioService>();
 
   @override
   void onInit() {
     super.onInit();
+    startBgm();
     navigateWhenReady();
+  }
+
+  void startBgm() {
+    final bgmAssetPath = config.bgmAssetPath;
+    if (bgmAssetPath != null) audio.playBgm(bgmAssetPath);
   }
 
   Future<void> navigateWhenReady() async {
