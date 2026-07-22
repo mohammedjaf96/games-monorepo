@@ -25,7 +25,22 @@ dart pub global activate melos
 melos bootstrap
 ```
 
-## Build one app
+## Build & run (Makefile)
+`make help` lists everything. Highlights:
+```bash
+make build-debug-blocko      # Android debug APK — also build-debug-dashy / build-debug-mergo
+make build-release-mergo     # Android release APK
+make bundle-release-dashy    # Android App Bundle (what you upload to Play)
+make build-ios-release-blocko # iOS .ipa (macOS + Xcode + signing required)
+
+make build-debug-all         # every game, Android debug APK
+make build-all-release       # every game, APK + App Bundle + ipa
+
+make run-debug-mergo         # run on a connected device/emulator, debug mode
+make run-release-dashy       # same, release mode
+```
+
+## Build one app manually
 ```bash
 cd apps/blocko
 flutter build appbundle --release   # Android
