@@ -1,0 +1,64 @@
+import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
+
+import '../../audio/audioService.dart';
+import '../../audio/hapticPattern.dart';
+import '../../audio/hapticsService.dart';
+import '../../storage/hiveService.dart';
+import '../../storage/keyValueStore.dart';
+
+/// Shared Sound/Vibration/Music/Language settings (GAME_IDEAS.md §3.16).
+/// Every toggle applies immediately and persists to Hive right away.
+class SettingsController extends GetxController {
+  final RxBool sound = true.obs;
+  final RxBool vibration = true.obs;
+  final RxBool music = true.obs;
+  final RxString locale = 'en'.obs;
+
+  final AudioService audio = Get.find<AudioService>();
+  final HapticsService haptics = Get.find<HapticsService>();
+
+  @override
+  void onInit() {
+    super.onInit();
+    sound.value = KeyValueStore.get(HiveService.settingsBox, 'sound', true);
+    vibration.value = KeyValueStore.get(HiveService.settingsBox, 'vibration', true);
+    music.value = KeyValueStore.get(HiveService.settingsBox, 'music', true);
+    locale.value = KeyValueStore.get(HiveService.settingsBox, 'lang', deviceLocaleOrEnglish());
+  }
+
+  String deviceLocaleOrEnglish() {
+    final deviceLanguage = Get.deviceLocale?.languageCode;
+    return deviceLanguage == 'ar' ? 'ar' : 'en';
+  }
+
+  Future<void> toggleSound() async {
+    sound.value = !sound.value;
+    await save('sound', sound.value);
+    if (!sound.value) await audio.stopAllSfx();
+  }
+
+  Future<void> toggleVibration() async {
+    vibration.value = !vibration.value;
+    await save('vibration', vibration.value);
+    if (vibration.value) await haptics.pulse(HapticPattern.light);
+  }
+
+  Future<void> toggleMusic() async {
+    music.value = !music.value;
+    await save('music', music.value);
+    if (music.value) {
+      await audio.playBgm('audio/bgm/theme.mp3');
+    } else {
+      await audio.stopBgm();
+    }
+  }
+
+  Future<void> setLocale(String languageCode) async {
+    locale.value = languageCode;
+    await save('lang', languageCode);
+    Get.updateLocale(Locale(languageCode));
+  }
+
+  Future<void> save(String key, dynamic value) => KeyValueStore.set(HiveService.settingsBox, key, value);
+}

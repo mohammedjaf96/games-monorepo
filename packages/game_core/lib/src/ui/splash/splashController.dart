@@ -1,0 +1,35 @@
+import 'package:get/get.dart';
+
+import '../../ads/adService.dart';
+import '../../economy/dailyReward/dailyRewardService.dart';
+import '../dailyReward/dailyRewardDialog.dart';
+import 'splashConfig.dart';
+
+/// Drives the splash screen: a short brand delay, then App-Open ad, then the
+/// daily reward dialog if this is a new day, then Home (GAME_IDEAS.md §3.13.1).
+class SplashController extends GetxController {
+  SplashController(this.config);
+
+  final SplashConfig config;
+  final AdService ads = Get.find<AdService>();
+
+  @override
+  void onInit() {
+    super.onInit();
+    navigateWhenReady();
+  }
+
+  Future<void> navigateWhenReady() async {
+    await Future.delayed(const Duration(milliseconds: 2000));
+    await ads.showAppOpenIfAvailable();
+    Get.offAllNamed(config.homeRoute);
+
+    if (Get.isRegistered<DailyRewardService>()) {
+      final dailyReward = Get.find<DailyRewardService>();
+      if (dailyReward.canClaimToday) {
+        await Future.delayed(const Duration(milliseconds: 400));
+        Get.dialog(const DailyRewardDialog(), barrierDismissible: false);
+      }
+    }
+  }
+}
