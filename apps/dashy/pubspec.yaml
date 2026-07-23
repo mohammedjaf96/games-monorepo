@@ -37,6 +37,7 @@ dependencies:
   get: ^4.6.6
   flame: ^1.18.0
   flutter_svg: ^2.0.10+1
+  flutter_animate: ^4.5.0
   game_core:
     path: ../../packages/game_core
 

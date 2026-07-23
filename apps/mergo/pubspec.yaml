@@ -36,6 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   get: ^4.6.6
   flutter_svg: ^2.0.10+1
+  flutter_animate: ^4.5.0
   game_core:
     path: ../../packages/game_core
 
