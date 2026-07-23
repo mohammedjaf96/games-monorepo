@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:game_core/game_core.dart';
 import 'package:get/get.dart';
 
@@ -11,6 +12,8 @@ class GameController extends GetxController {
   final RxDouble distance = 0.0.obs;
   final RxInt coins = 0.obs;
   final RxInt best = 0.obs;
+  final RxInt shakeTrigger = 0.obs;
+  final RxList<ParticleBurst> bursts = <ParticleBurst>[].obs;
 
   bool reviveUsed = false;
 
@@ -24,7 +27,7 @@ class GameController extends GetxController {
     super.onInit();
     sessionFlow = GameSessionFlow(gameId: 'dashy', economyConfig: dashyEconomy);
     best.value = sessionFlow.bestScore;
-    game = DashyGame(onScore: handleScore, onCoin: handleCoin, onDeath: handleDeath);
+    game = DashyGame(onScore: handleScore, onCoin: handleCoin, onDeath: handleDeath, onLand: handleLand);
     consumePendingShield();
   }
 
@@ -48,7 +51,20 @@ class GameController extends GetxController {
     haptics.pulse(HapticPattern.selection);
   }
 
+  void handleLand() {
+    spawnBurst(const Color(0xFFFFF0CE));
+  }
+
+  void spawnBurst(Color color) {
+    final id = DateTime.now().microsecondsSinceEpoch;
+    bursts.add(ParticleBurst(id: id, color: color));
+    Future.delayed(const Duration(milliseconds: 500), () {
+      bursts.removeWhere((burst) => burst.id == id);
+    });
+  }
+
   Future<void> handleDeath() async {
+    shakeTrigger.value++;
     await audio.playSfx('game_over');
     await haptics.pulse(HapticPattern.heavy);
     await gameOver();

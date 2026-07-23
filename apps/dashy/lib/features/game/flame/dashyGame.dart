@@ -12,11 +12,12 @@ import 'obstacleSpawner.dart';
 /// GetX-side state (distance/coins/best) lives in `GameController`, which
 /// owns this instance and reacts to its callbacks.
 class DashyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
-  DashyGame({required this.onScore, required this.onCoin, required this.onDeath});
+  DashyGame({required this.onScore, required this.onCoin, required this.onDeath, required this.onLand});
 
   final void Function(double distance) onScore;
   final void Function() onCoin;
   final void Function() onDeath;
+  final void Function() onLand;
 
   static const double groundHeight = 90;
   static const double baseSpeed = 220;
@@ -53,6 +54,8 @@ class DashyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
   }
 
   void registerCoinCollected() => onCoin();
+
+  void registerLand() => onLand();
 
   void registerDeath() {
     pauseEngine();

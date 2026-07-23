@@ -25,6 +25,7 @@ class GameController extends GetxController {
   final RxBool previewValid = false.obs;
   final Rx<String?> floatingText = Rx<String?>(null);
   final RxList<ParticleBurst> bursts = <ParticleBurst>[].obs;
+  final RxInt shakeTrigger = 0.obs;
 
   final RxBool canUndo = false.obs;
 
@@ -162,6 +163,7 @@ class GameController extends GetxController {
     score.value += bonus;
     showFloatingText(comboStreak.value > 1 ? 'Combo x${comboStreak.value}! +$bonus' : '+$bonus');
     spawnBurst(BlockoColors.palette[comboStreak.value % BlockoColors.palette.length]);
+    if (comboStreak.value >= 3) shakeTrigger.value++;
 
     await audio.playSfx('clear');
     final comboSfxIndex = comboStreak.value.clamp(1, 5);
@@ -201,6 +203,7 @@ class GameController extends GetxController {
   }
 
   Future<void> gameOver() async {
+    shakeTrigger.value++;
     await sessionFlow.showGameOver(
       result: GameResult(score: score.value, comboStreak: comboStreak.value),
       reviveAvailable: !reviveUsed,

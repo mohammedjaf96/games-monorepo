@@ -54,6 +54,7 @@ export 'src/ui/particleBurst.dart';
 export 'src/ui/particleBurstOverlay.dart';
 export 'src/ui/pauseDialog.dart';
 export 'src/ui/rewardedButton.dart';
+export 'src/ui/shakeWidget.dart';
 export 'src/ui/settings/settingsController.dart';
 export 'src/ui/settings/settingsPage.dart';
 export 'src/ui/settings/settingsToggleRow.dart';

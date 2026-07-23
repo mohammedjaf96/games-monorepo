@@ -52,12 +52,21 @@ class BoardWidget extends StatelessWidget {
                       : isPreview
                           ? (controller.previewValid.value ? Pal.green : Pal.red).withOpacity(0.4)
                           : Colors.white;
-                  return DecoratedBox(
+                  final cell = DecoratedBox(
                     decoration: BoxDecoration(
                       color: fillColor,
                       borderRadius: BorderRadius.circular(4),
                       border: Border.all(color: OutlineColor.color, width: BorderWidths.hairline),
                     ),
+                  );
+                  // Pop the cell in/out on fill/clear (GAME_IDEAS.md §3.8-c);
+                  // the preview ghost (isPreview, value == 0) is excluded from
+                  // the key so hovering a drag doesn't retrigger the animation.
+                  final animationKey = value != 0 ? 'filled-$index-$value' : 'empty-$index';
+                  return AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 150),
+                    transitionBuilder: (child, animation) => ScaleTransition(scale: animation, child: child),
+                    child: KeyedSubtree(key: ValueKey(animationKey), child: cell),
                   );
                 });
               },

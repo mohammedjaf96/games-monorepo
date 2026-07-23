@@ -1,5 +1,6 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
+import 'package:game_core/game_core.dart';
 import 'package:get/get.dart';
 
 import '../../controllers/gameController.dart';
@@ -13,11 +14,17 @@ class GamePage extends GetView<GameController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          Positioned.fill(child: GameWidget(game: controller.game)),
-          SafeArea(child: HudWidget(onPause: controller.openPauseMenu)),
-        ],
+      body: Obx(
+        () => ShakeWidget(
+          trigger: controller.shakeTrigger.value,
+          child: Stack(
+            children: [
+              Positioned.fill(child: GameWidget(game: controller.game)),
+              Positioned.fill(child: Obx(() => ParticleBurstOverlay(bursts: controller.bursts))),
+              SafeArea(child: HudWidget(onPause: controller.openPauseMenu)),
+            ],
+          ),
+        ),
       ),
     );
   }

@@ -17,59 +17,64 @@ class GamePage extends GetView<GameController> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(AppSizes.screenMargin),
-          child: Stack(
-            children: [
-              Column(
+          child: Obx(
+            () => ShakeWidget(
+              trigger: controller.shakeTrigger.value,
+              child: Stack(
                 children: [
-                  Row(
+                  Column(
                     children: [
-                      Obx(() => Text('${controller.score.value}', style: AppText.heroNumber())),
-                      const Spacer(),
-                      Obx(() => Text('${'labelBest'.tr}: ${controller.best.value}', style: AppText.body())),
-                      const SizedBox(width: AppSizes.gapMedium),
-                      StickerIconButton(
-                        iconAsset: 'assets/icons/gear.svg',
-                        fill: Colors.white,
-                        onPressed: () => Get.dialog(
-                          PauseDialog(
-                            onResume: Get.back,
-                            onRestart: () {
-                              Get.back();
-                              controller.restart();
-                            },
-                            onHome: () => Get.offAllNamed(AppRoutes.home),
+                      Row(
+                        children: [
+                          Obx(() => Text('${controller.score.value}', style: AppText.heroNumber())),
+                          const Spacer(),
+                          Obx(() => Text('${'labelBest'.tr}: ${controller.best.value}', style: AppText.body())),
+                          const SizedBox(width: AppSizes.gapMedium),
+                          StickerIconButton(
+                            iconAsset: 'assets/icons/gear.svg',
+                            fill: Colors.white,
+                            onPressed: () => Get.dialog(
+                              PauseDialog(
+                                onResume: Get.back,
+                                onRestart: () {
+                                  Get.back();
+                                  controller.restart();
+                                },
+                                onHome: () => Get.offAllNamed(AppRoutes.home),
+                              ),
+                            ),
                           ),
-                        ),
+                        ],
+                      ),
+                      const SizedBox(height: AppSizes.gapLarge),
+                      const Expanded(child: GridWidget()),
+                      const SizedBox(height: AppSizes.gapLarge),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          RewardedButton(label: 'goUndo'.tr, onPressed: controller.undo),
+                          const SizedBox(width: AppSizes.gapMedium),
+                          RewardedButton(label: 'goHammer'.tr, onPressed: controller.activateHammer, fill: Pal.orange),
+                        ],
                       ),
                     ],
                   ),
-                  const SizedBox(height: AppSizes.gapLarge),
-                  const Expanded(child: GridWidget()),
-                  const SizedBox(height: AppSizes.gapLarge),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      RewardedButton(label: 'goUndo'.tr, onPressed: controller.undo),
-                      const SizedBox(width: AppSizes.gapMedium),
-                      RewardedButton(label: 'goHammer'.tr, onPressed: controller.activateHammer, fill: Pal.orange),
-                    ],
+                  Obx(() {
+                    final text = controller.floatingText.value;
+                    if (text == null) return const SizedBox.shrink();
+                    return Positioned(
+                      top: 60,
+                      left: 0,
+                      right: 0,
+                      child: Center(child: Text(text, style: AppText.title(color: Pal.orange))),
+                    );
+                  }),
+                  Positioned.fill(
+                    child: Obx(() => ParticleBurstOverlay(bursts: controller.bursts)),
                   ),
                 ],
               ),
-              Obx(() {
-                final text = controller.floatingText.value;
-                if (text == null) return const SizedBox.shrink();
-                return Positioned(
-                  top: 60,
-                  left: 0,
-                  right: 0,
-                  child: Center(child: Text(text, style: AppText.title(color: Pal.orange))),
-                );
-              }),
-              Positioned.fill(
-                child: Obx(() => ParticleBurstOverlay(bursts: controller.bursts)),
-              ),
-            ],
+            ),
           ),
         ),
       ),

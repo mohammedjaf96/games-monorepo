@@ -14,10 +14,12 @@ class DashyPlayer extends PositionComponent with CollisionCallbacks, HasGameRefe
 
   static const double gravity = 1800;
   static const double jumpVelocity = -620;
+  static const double landSquashDuration = 0.15;
 
   double velocityY = 0;
   bool isOnGround = true;
   bool isDead = false;
+  double landSquashTimer = 0;
 
   @override
   Future<void> onLoad() async {
@@ -32,6 +34,7 @@ class DashyPlayer extends PositionComponent with CollisionCallbacks, HasGameRefe
   void update(double dt) {
     super.update(dt);
     if (isDead) return;
+    final wasOnGround = isOnGround;
     velocityY += gravity * dt;
     position.y += velocityY * dt;
     final floor = groundY();
@@ -39,8 +42,28 @@ class DashyPlayer extends PositionComponent with CollisionCallbacks, HasGameRefe
       position.y = floor;
       velocityY = 0;
       isOnGround = true;
+      if (!wasOnGround) {
+        landSquashTimer = landSquashDuration;
+        game.registerLand();
+      }
     } else {
       isOnGround = false;
+    }
+    updateSquashAndStretch(dt);
+  }
+
+  /// Classic game-feel squash & stretch (GAME_IDEAS.md §5.8): the ball
+  /// stretches tall while airborne and squashes wide for a beat on landing.
+  void updateSquashAndStretch(double dt) {
+    if (landSquashTimer > 0) {
+      landSquashTimer = (landSquashTimer - dt).clamp(0, landSquashDuration);
+      final t = landSquashTimer / landSquashDuration;
+      scale.setValues(1 + 0.3 * t, 1 - 0.3 * t);
+    } else if (!isOnGround) {
+      final stretch = (velocityY.abs() / jumpVelocity.abs()).clamp(0.0, 1.0) * 0.2;
+      scale.setValues(1 - stretch, 1 + stretch);
+    } else {
+      scale.setValues(1, 1);
     }
   }
 
@@ -53,6 +76,8 @@ class DashyPlayer extends PositionComponent with CollisionCallbacks, HasGameRefe
   void reset() {
     isDead = false;
     velocityY = 0;
+    landSquashTimer = 0;
+    scale.setValues(1, 1);
     position = Vector2(80, groundY());
   }
 

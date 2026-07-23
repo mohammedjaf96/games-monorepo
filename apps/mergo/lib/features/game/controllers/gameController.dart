@@ -23,6 +23,7 @@ class GameController extends GetxController {
   final RxBool hammerModeActive = false.obs;
   final Rx<String?> floatingText = Rx<String?>(null);
   final RxList<ParticleBurst> bursts = <ParticleBurst>[].obs;
+  final RxInt shakeTrigger = 0.obs;
 
   List<int>? lastGridForUndo;
   final Set<int> milestonesReachedThisRun = {};
@@ -141,6 +142,7 @@ class GameController extends GetxController {
         await audio.playSfx('milestone');
         await haptics.pulse(HapticPattern.doublePulse);
         showFloatingText('${'labelMilestone'.tr} $milestone');
+        shakeTrigger.value++;
         await wallet.earn(milestone ~/ 10, source: 'milestone_$milestone');
       }
     }
