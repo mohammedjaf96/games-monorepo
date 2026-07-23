@@ -21,6 +21,12 @@ class GamePage extends GetView<GameController> {
             children: [
               Positioned.fill(child: GameWidget(game: controller.game)),
               Positioned.fill(child: Obx(() => ParticleBurstOverlay(bursts: controller.bursts))),
+              Positioned(
+                top: 120,
+                left: 0,
+                right: 0,
+                child: Obx(() => FloatingScoreTextOverlay(entries: controller.floatingTexts)),
+              ),
               SafeArea(child: HudWidget(onPause: controller.openPauseMenu)),
             ],
           ),

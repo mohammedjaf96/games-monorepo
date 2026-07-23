@@ -19,9 +19,10 @@ class HudWidget extends StatelessWidget {
       child: Row(
         children: [
           Obx(
-            () => Text(
-              '${controller.distance.value.floor()}m',
+            () => AnimatedCounter(
+              value: controller.distance.value.floor(),
               style: AppText.heroNumber(color: Colors.white),
+              suffix: 'm',
             ),
           ),
           const SizedBox(width: AppSizes.gapMedium),
@@ -30,7 +31,7 @@ class HudWidget extends StatelessWidget {
               children: [
                 SvgPicture.asset('assets/icons/coin.svg', package: 'game_core', width: 18, height: 18),
                 const SizedBox(width: AppSizes.gapExtraSmall),
-                Text('${controller.coins.value}', style: AppText.body(color: Colors.white)),
+                AnimatedCounter(value: controller.coins.value, style: AppText.body(color: Colors.white)),
               ],
             ),
           ),

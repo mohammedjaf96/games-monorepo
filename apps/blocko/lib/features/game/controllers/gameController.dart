@@ -23,7 +23,7 @@ class GameController extends GetxController {
   final RxInt comboStreak = 0.obs;
   final RxSet<int> previewCells = <int>{}.obs;
   final RxBool previewValid = false.obs;
-  final Rx<String?> floatingText = Rx<String?>(null);
+  final RxList<FloatingScoreText> floatingTexts = <FloatingScoreText>[].obs;
   final RxList<ParticleBurst> bursts = <ParticleBurst>[].obs;
   final RxInt shakeTrigger = 0.obs;
 
@@ -172,9 +172,10 @@ class GameController extends GetxController {
   }
 
   void showFloatingText(String text) {
-    floatingText.value = text;
-    Future.delayed(const Duration(milliseconds: 900), () {
-      if (floatingText.value == text) floatingText.value = null;
+    final id = DateTime.now().microsecondsSinceEpoch;
+    floatingTexts.add(FloatingScoreText(id: id, text: text));
+    Future.delayed(const Duration(milliseconds: 1100), () {
+      floatingTexts.removeWhere((entry) => entry.id == id);
     });
   }
 

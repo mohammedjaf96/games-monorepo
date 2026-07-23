@@ -27,7 +27,7 @@ class GamePage extends GetView<GameController> {
                     children: [
                       Row(
                         children: [
-                          Obx(() => Text('${controller.score.value}', style: AppText.heroNumber())),
+                          Obx(() => AnimatedCounter(value: controller.score.value, style: AppText.heroNumber())),
                           const Spacer(),
                           Obx(() => Text('${'labelBest'.tr}: ${controller.best.value}', style: AppText.body())),
                           const SizedBox(width: AppSizes.gapMedium),
@@ -72,18 +72,12 @@ class GamePage extends GetView<GameController> {
                       ),
                     ],
                   ),
-                  Obx(() {
-                    final text = controller.floatingText.value;
-                    if (text == null) return const SizedBox.shrink();
-                    return Positioned(
-                      top: 60,
-                      left: 0,
-                      right: 0,
-                      child: Center(
-                        child: Text(text, style: AppText.title(color: Pal.orange)),
-                      ),
-                    );
-                  }),
+                  Positioned(
+                    top: 60,
+                    left: 0,
+                    right: 0,
+                    child: Obx(() => FloatingScoreTextOverlay(entries: controller.floatingTexts)),
+                  ),
                   Positioned.fill(
                     child: Obx(() => ParticleBurstOverlay(bursts: controller.bursts)),
                   ),

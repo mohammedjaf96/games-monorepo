@@ -14,6 +14,7 @@ class GameController extends GetxController {
   final RxInt best = 0.obs;
   final RxInt shakeTrigger = 0.obs;
   final RxList<ParticleBurst> bursts = <ParticleBurst>[].obs;
+  final RxList<FloatingScoreText> floatingTexts = <FloatingScoreText>[].obs;
 
   bool reviveUsed = false;
 
@@ -49,10 +50,19 @@ class GameController extends GetxController {
     coins.value += 1;
     audio.playSfx('coin');
     haptics.pulse(HapticPattern.selection);
+    showFloatingText('+1');
   }
 
   void handleLand() {
     spawnBurst(const Color(0xFFFFF0CE));
+  }
+
+  void showFloatingText(String text) {
+    final id = DateTime.now().microsecondsSinceEpoch;
+    floatingTexts.add(FloatingScoreText(id: id, text: text, color: Pal.yellow));
+    Future.delayed(const Duration(milliseconds: 1100), () {
+      floatingTexts.removeWhere((entry) => entry.id == id);
+    });
   }
 
   void spawnBurst(Color color) {
