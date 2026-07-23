@@ -3,7 +3,12 @@ import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 
 import 'coinComponent.dart';
+import 'dashyCloudLayer.dart';
+import 'dashyHillLayer.dart';
 import 'dashyPlayer.dart';
+import 'dashySkyComponent.dart';
+import 'dashySpeedLines.dart';
+import 'dashyTrail.dart';
 import 'groundComponent.dart';
 import 'obstacleComponent.dart';
 import 'obstacleSpawner.dart';
@@ -24,6 +29,7 @@ class DashyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
   static const double maxSpeed = 620;
 
   late final DashyPlayer player;
+  late final DashyTrail trail;
   late final ObstacleSpawner spawner;
 
   double speed = baseSpeed;
@@ -33,9 +39,15 @@ class DashyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
   @override
   Future<void> onLoad() async {
     await super.onLoad();
+    await add(DashySkyComponent());
+    await add(DashyCloudLayer());
+    await add(DashyHillLayer());
     await add(GroundComponent());
     player = DashyPlayer();
     await add(player);
+    trail = DashyTrail();
+    await add(trail);
+    await add(DashySpeedLines());
     spawner = ObstacleSpawner();
     await add(spawner);
   }
@@ -80,6 +92,7 @@ class DashyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
     children.whereType<ObstacleComponent>().toList().forEach((c) => c.removeFromParent());
     children.whereType<CoinComponent>().toList().forEach((c) => c.removeFromParent());
     player.reset();
+    trail.reset();
     resumeEngine();
   }
 
@@ -91,6 +104,7 @@ class DashyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
     children.whereType<ObstacleComponent>().toList().forEach((c) => c.removeFromParent());
     children.whereType<CoinComponent>().toList().forEach((c) => c.removeFromParent());
     player.reset();
+    trail.reset();
     resumeEngine();
   }
 }
