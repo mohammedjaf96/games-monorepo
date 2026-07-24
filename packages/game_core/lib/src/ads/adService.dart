@@ -30,6 +30,7 @@ class AdService extends GetxService {
   final DateTime sessionStartTime = DateTime.now();
 
   Future<AdService> init() async {
+    if (kIsWeb) return this;
     await MobileAds.instance.initialize();
     await consent.ensure();
     preloadInterstitial();
@@ -164,6 +165,7 @@ class AdService extends GetxService {
 
   /// A banner for use in menu screens only — never during gameplay.
   Widget bannerWidget({String placement = 'menu'}) {
+    if (kIsWeb) return const SizedBox.shrink();
     final cached = bannerAds[placement];
     if (cached != null) {
       return SizedBox(
