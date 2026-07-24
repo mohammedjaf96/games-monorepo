@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:game_core/game_core.dart';
 
-/// The block color palette, index-matched to grid cell values (GAME_IDEAS.md §4.8).
+import 'blockoShapeType.dart';
+
+/// Each falling shape has one fixed, distinctive color, index-matched to
+/// `BlockoShapeType`'s declaration order.
 class BlockoColors {
-  static const List<Color> palette = [Pal.red, Pal.yellow, Pal.green, Pal.blue, Pal.purple];
+  static const List<Color> palette = [Pal.blue, Pal.yellow, Pal.orange, Pal.purple, Pal.red];
+
+  static Color colorFor(BlockoShapeType type) => palette[type.index];
 }

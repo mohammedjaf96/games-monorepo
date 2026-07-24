@@ -1,12 +1,15 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:game_core/game_core.dart';
 import 'package:get/get.dart';
 
 import '../../controllers/gameController.dart';
 import '../../data/model/blockoColors.dart';
+import '../../data/model/blockoShapes.dart';
 
-/// The 8x8 board: a grid of drag targets that accept pieces from the tray
-/// (GAME_IDEAS.md §4.2/§4.4).
+/// The 10x20 falling-block well: settled cells plus the currently falling
+/// piece, both animated smoothly between positions (GAME_IDEAS.md §4.2/§4.4).
 class BoardWidget extends StatelessWidget {
   const BoardWidget({super.key});
 
@@ -15,64 +18,79 @@ class BoardWidget extends StatelessWidget {
     final controller = Get.find<GameController>();
     return Container(
       padding: const EdgeInsets.all(AppSizes.gapSmall),
-      decoration: stickerDecoration(
-        fill: const Color(0xFFF5E4BE),
-        radius: AppSizes.radiusPanel,
-        border: BorderWidths.thick,
-        drop: 6,
-      ),
-      child: AspectRatio(
-        aspectRatio: 1,
-        child: GridView.builder(
-          physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: gridSize,
-            mainAxisSpacing: 2,
-            crossAxisSpacing: 2,
-          ),
-          itemCount: cellCount,
-          itemBuilder: (context, index) {
-            final row = index ~/ gridSize;
-            final col = index % gridSize;
-            return DragTarget<int>(
-              onWillAcceptWithDetails: (details) {
-                final piece = controller.tray[details.data];
-                if (piece == null) return false;
-                controller.updatePreview(piece, row, col);
-                return true;
-              },
-              onLeave: (data) => controller.clearPreview(),
-              onAcceptWithDetails: (details) => controller.tryPlacePiece(details.data, row, col),
-              builder: (context, candidateData, rejectedData) {
-                return Obx(() {
-                  final value = controller.cells[index];
-                  final isPreview = controller.previewCells.contains(index);
-                  final fillColor = value != 0
-                      ? BlockoColors.palette[value - 1]
-                      : isPreview
-                          ? (controller.previewValid.value ? Pal.green : Pal.red).withOpacity(0.4)
-                          : Colors.white;
-                  final cell = DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: fillColor,
-                      borderRadius: BorderRadius.circular(4),
-                      border: Border.all(color: OutlineColor.color, width: BorderWidths.hairline),
-                    ),
-                  );
-                  // Pop the cell in/out on fill/clear (GAME_IDEAS.md §3.8-c);
-                  // the preview ghost (isPreview, value == 0) is excluded from
-                  // the key so hovering a drag doesn't retrigger the animation.
-                  final animationKey = value != 0 ? 'filled-$index-$value' : 'empty-$index';
-                  return AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 150),
-                    transitionBuilder: (child, animation) => ScaleTransition(scale: animation, child: child),
-                    child: KeyedSubtree(key: ValueKey(animationKey), child: cell),
-                  );
-                });
-              },
-            );
-          },
-        ),
+      decoration: stickerDecoration(fill: const Color(0xFFF5E4BE), radius: AppSizes.radiusPanel, border: BorderWidths.thick, drop: 6),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final cellSize = min(constraints.maxWidth / gridWidth, constraints.maxHeight / gridHeight);
+          return Center(
+            child: SizedBox(
+              width: cellSize * gridWidth,
+              height: cellSize * gridHeight,
+              child: Obx(() {
+                final fallingType = controller.fallingType.value;
+                final fallingCells = fallingType == null ? const <Point<int>>[] : BlockoShapes.cellsFor(fallingType, controller.fallingRotation.value);
+                return Stack(
+                  children: [
+                    for (var index = 0; index < cellCount; index++)
+                      Positioned(
+                        left: (index % gridWidth) * cellSize,
+                        top: (index ~/ gridWidth) * cellSize,
+                        width: cellSize,
+                        height: cellSize,
+                        child: Padding(
+                          padding: const EdgeInsets.all(1.5),
+                          child: AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 150),
+                            transitionBuilder: (child, animation) => ScaleTransition(scale: animation, child: child),
+                            child: KeyedSubtree(
+                              key: ValueKey(
+                                controller.clearingRows.contains(index ~/ gridWidth)
+                                    ? 'clearing-$index'
+                                    : controller.cells[index] != 0
+                                        ? 'filled-$index-${controller.cells[index]}'
+                                        : 'empty-$index',
+                              ),
+                              child: DecoratedBox(
+                                decoration: BoxDecoration(
+                                  color: controller.clearingRows.contains(index ~/ gridWidth)
+                                      ? Colors.white
+                                      : controller.cells[index] != 0
+                                          ? BlockoColors.palette[controller.cells[index] - 1]
+                                          : Colors.white.withOpacity(0.15),
+                                  borderRadius: BorderRadius.circular(4),
+                                  border: Border.all(color: OutlineColor.color, width: BorderWidths.hairline),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    for (var i = 0; i < fallingCells.length; i++)
+                      AnimatedPositioned(
+                        key: ValueKey('fallingCell${controller.fallingSpawnId.value}-$i'),
+                        duration: const Duration(milliseconds: 130),
+                        curve: Curves.easeOut,
+                        left: (controller.fallingCol.value + fallingCells[i].y) * cellSize,
+                        top: (controller.fallingRow.value + fallingCells[i].x) * cellSize,
+                        width: cellSize,
+                        height: cellSize,
+                        child: Padding(
+                          padding: const EdgeInsets.all(1.5),
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                              color: BlockoColors.colorFor(fallingType!),
+                              borderRadius: BorderRadius.circular(4),
+                              border: Border.all(color: OutlineColor.color, width: BorderWidths.hairline),
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
+                );
+              }),
+            ),
+          );
+        },
       ),
     );
   }

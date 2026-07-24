@@ -26,8 +26,8 @@ class BlockoTranslations extends Translations {
       'backgroundSky': 'Sky',
       'backgroundSunset': 'Sunset',
       'backgroundGalaxy': 'Galaxy',
-      'tutorialGoal': 'Drag pieces onto the grid.',
-      'tutorialControls': 'Fill a row or column completely to clear it!',
+      'tutorialGoal': 'Swipe left or right to guide the falling piece.',
+      'tutorialControls': 'Tap rotate to turn it — fill a full row to clear it!',
     },
     'ar': {
       'appName': 'بلوكو',
@@ -49,8 +49,8 @@ class BlockoTranslations extends Translations {
       'backgroundSky': 'سماء',
       'backgroundSunset': 'غروب',
       'backgroundGalaxy': 'مجرة',
-      'tutorialGoal': 'اسحب القطع إلى الشبكة.',
-      'tutorialControls': 'املأ صفًا أو عمودًا بالكامل لتفريغه!',
+      'tutorialGoal': 'مرر يمينًا أو يسارًا لتوجيه القطعة النازلة.',
+      'tutorialControls': 'اضغط زر التدوير لتدويرها — املأ صفًا بالكامل لحذفه!',
     },
   };
 
