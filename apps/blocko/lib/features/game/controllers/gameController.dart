@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import '../../../core/config/blockoEconomy.dart';
 import '../../../core/routing/appRoutes.dart';
 import '../data/model/blockoColors.dart';
+import '../data/model/blockoLandingFlash.dart';
 import '../data/model/blockoShapeType.dart';
 import '../data/model/blockoShapes.dart';
 
@@ -35,6 +36,7 @@ class GameController extends GetxController {
   final RxInt shakeTrigger = 0.obs;
   final RxInt glowTrigger = 0.obs;
   final RxBool glowBig = false.obs;
+  final RxList<BlockoLandingFlash> landingFlashes = <BlockoLandingFlash>[].obs;
 
   final Rx<BlockoShapeType?> fallingType = Rx<BlockoShapeType?>(null);
   final RxInt fallingRotation = 0.obs;
@@ -189,12 +191,16 @@ class GameController extends GetxController {
   Future<void> lockPiece() async {
     final type = fallingType.value;
     if (type == null) return;
+    final landedIndexes = <int>[];
     for (final cell in BlockoShapes.cellsFor(type, fallingRotation.value)) {
       final row = fallingRow.value + cell.x;
       final col = fallingCol.value + cell.y;
-      cells[row * gridWidth + col] = type.index + 1;
+      final index = row * gridWidth + col;
+      cells[index] = type.index + 1;
+      landedIndexes.add(index);
     }
     fallingType.value = null;
+    spawnLandingFlash(landedIndexes);
     await audio.playSfx('place');
     await haptics.pulse(HapticPattern.light);
 
@@ -202,6 +208,14 @@ class GameController extends GetxController {
     if (roundOver) return;
     spawnPiece();
     scheduleNextDrop();
+  }
+
+  void spawnLandingFlash(List<int> cellIndexes) {
+    final id = DateTime.now().microsecondsSinceEpoch;
+    landingFlashes.add(BlockoLandingFlash(id: id, cellIndexes: cellIndexes));
+    Future.delayed(const Duration(milliseconds: 260), () {
+      landingFlashes.removeWhere((flash) => flash.id == id);
+    });
   }
 
   Future<void> checkLineClears() async {
