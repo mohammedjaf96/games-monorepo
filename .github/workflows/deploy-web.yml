@@ -1,0 +1,63 @@
+name: Deploy Web Preview
+
+on:
+  push:
+    branches: [version-1]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: blocko — pub get + build web
+        working-directory: apps/blocko
+        run: |
+          flutter pub get
+          flutter build web --release --base-href /games-monorepo/blocko/
+
+      - name: dashy — pub get + build web
+        working-directory: apps/dashy
+        run: |
+          flutter pub get
+          flutter build web --release --base-href /games-monorepo/dashy/
+
+      - name: mergo — pub get + build web
+        working-directory: apps/mergo
+        run: |
+          flutter pub get
+          flutter build web --release --base-href /games-monorepo/mergo/
+
+      - name: Assemble site
+        run: |
+          mkdir -p site
+          cp -r apps/blocko/build/web site/blocko
+          cp -r apps/dashy/build/web site/dashy
+          cp -r apps/mergo/build/web site/mergo
+          mkdir -p site/privacy
+          cp docs/index.html site/privacy/index.html
+          cp .github/pages/index.html site/index.html
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - id: deployment
+        uses: actions/deploy-pages@v4
