@@ -36,7 +36,7 @@ class ParticleBurstOverlay extends StatelessWidget {
                     decoration: BoxDecoration(color: burst.color, shape: BoxShape.circle),
                   )
                       .animate()
-                      .moveXY(begin: Offset.zero, end: Offset(dx, dy), duration: 450.ms, curve: Curves.easeOut)
+                      .move(begin: Offset.zero, end: Offset(dx, dy), duration: 450.ms, curve: Curves.easeOut)
                       .fadeOut(duration: 450.ms)
                       .scale(begin: const Offset(1, 1), end: const Offset(0.3, 0.3), duration: 450.ms);
                 },

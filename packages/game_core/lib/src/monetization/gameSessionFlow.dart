@@ -69,7 +69,7 @@ class GameSessionFlow {
         isNewRecord: isNewRecord,
         onRevive: reviveAvailable
             ? () async {
-                final earned = await ads.showRewarded('revive');
+                final earned = await ads.showRewarded(placement: 'revive');
                 if (earned) {
                   Get.back();
                   await onRevive();
@@ -77,7 +77,7 @@ class GameSessionFlow {
               }
             : null,
         onDoubleCoins: () async {
-          final earned = await ads.showRewarded('double_coins');
+          final earned = await ads.showRewarded(placement: 'double_coins');
           if (earned) await wallet.earn(gemsEarned, source: 'double_coins');
         },
         onRetry: () async {

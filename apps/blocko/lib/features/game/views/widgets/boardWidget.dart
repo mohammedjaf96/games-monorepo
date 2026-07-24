@@ -138,7 +138,7 @@ class BoardWidget extends StatelessWidget {
                                 height: 3,
                                 child: DecoratedBox(decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(1)))
                                     .animate()
-                                    .moveXY(begin: Offset.zero, end: Offset(cos(angle) * distance, sin(angle) * distance), duration: GameController.shatterDurationMs.ms, curve: Curves.easeOut)
+                                    .move(begin: Offset.zero, end: Offset(cos(angle) * distance, sin(angle) * distance), duration: GameController.shatterDurationMs.ms, curve: Curves.easeOut)
                                     .fadeOut(duration: Duration(milliseconds: (GameController.shatterDurationMs * 0.55).round())),
                               );
                             },

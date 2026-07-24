@@ -63,7 +63,7 @@ class DashyTranslations extends Translations {
 
   @override
   Map<String, Map<String, String>> get keys => {
-        'en': {...CommonTranslations.keys['en']!, ...ownKeys['en']!},
-        'ar': {...CommonTranslations.keys['ar']!, ...ownKeys['ar']!},
+        'en': {...CommonTranslations.data['en']!, ...ownKeys['en']!},
+        'ar': {...CommonTranslations.data['ar']!, ...ownKeys['ar']!},
       };
 }

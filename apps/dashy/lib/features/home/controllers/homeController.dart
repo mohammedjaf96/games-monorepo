@@ -30,7 +30,7 @@ class HomeController extends GetxController {
   /// shield (GAME_IDEAS.md §5.7).
   Future<void> activateShield() async {
     if (shieldPending.value) return;
-    final earned = await ads.showRewarded('revive_shield');
+    final earned = await ads.showRewarded(placement: 'revive_shield');
     if (earned) {
       await KeyValueStore.set(HiveService.adMetaBox, 'dashyShieldPending', true);
       shieldPending.value = true;

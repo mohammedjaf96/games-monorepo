@@ -44,7 +44,7 @@ class StoreController extends GetxController {
       return;
     }
     if (cosmetic.unlockableByAd) {
-      final earned = await ads.showRewarded('unlock_cosmetic');
+      final earned = await ads.showRewarded(placement: 'unlock_cosmetic');
       if (earned) {
         await inventory.unlock(cosmetic.id);
         await inventory.select(cosmetic.slot, cosmetic.id);
@@ -66,7 +66,7 @@ class StoreController extends GetxController {
 
   Future<bool> claimGemPack(GemPack pack) async {
     if (!economyConfig.caps.canClaim(pack)) return false;
-    final earned = await ads.showRewarded('shop_gem_pack');
+    final earned = await ads.showRewarded(placement: 'shop_gem_pack');
     if (earned) {
       await wallet.earn(pack.amount, source: 'gem_pack:${pack.id}');
       await economyConfig.caps.markClaimed(pack);

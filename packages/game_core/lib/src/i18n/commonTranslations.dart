@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 /// Shared EN/AR keys used by every game (GAME_IDEAS.md §3.3). Each app's own
 /// Translations class should merge these with its game-specific keys.
 class CommonTranslations extends Translations {
-  static const Map<String, Map<String, String>> keys = {
+  static const Map<String, Map<String, String>> data = {
     'en': {
       'menuPlay': 'Play',
       'menuHome': 'Home',
@@ -97,5 +97,5 @@ class CommonTranslations extends Translations {
   };
 
   @override
-  Map<String, Map<String, String>> get keys => CommonTranslations.keys;
+  Map<String, Map<String, String>> get keys => CommonTranslations.data;
 }

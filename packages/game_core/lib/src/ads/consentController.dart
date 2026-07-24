@@ -40,7 +40,7 @@ class ConsentController extends GetxController {
       (form) async {
         final status = await ConsentInformation.instance.getConsentStatus();
         if (status == ConsentStatus.required) {
-          await form.show((_) {});
+          form.show((_) {});
         }
         completer.complete();
       },

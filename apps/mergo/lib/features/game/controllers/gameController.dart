@@ -178,7 +178,7 @@ class GameController extends GetxController {
 
   Future<void> undo() async {
     if (lastGridForUndo == null) return;
-    final earned = await ads.showRewarded('undo');
+    final earned = await ads.showRewarded(placement: 'undo');
     if (earned) {
       cells.assignAll(lastGridForUndo!);
       lastGridForUndo = null;
@@ -186,7 +186,7 @@ class GameController extends GetxController {
   }
 
   Future<void> activateHammer() async {
-    final earned = await ads.showRewarded('hammer');
+    final earned = await ads.showRewarded(placement: 'hammer');
     if (earned) hammerModeActive.value = true;
   }
 

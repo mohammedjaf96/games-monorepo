@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 import '../../store/cosmetic.dart';
 import '../../store/inventoryService.dart';
+import '../../store/rarity.dart';
 import '../../store/storeController.dart';
 import '../../theme/appSizes.dart';
 import '../../theme/appText.dart';
