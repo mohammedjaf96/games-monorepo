@@ -15,11 +15,11 @@ class DashySkyComponent extends PositionComponent with HasGameReference<DashyGam
     canvas.drawRect(
       rect,
       Paint()
-        ..shader = const LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [Color(0xFF37B6FF), Color(0xFFAEE7FF)],
-        ).createShader(rect),
+        ..shader = Gradient.linear(
+          rect.topCenter,
+          rect.bottomCenter,
+          const [Color(0xFF37B6FF), Color(0xFFAEE7FF)],
+        ),
     );
   }
 }
