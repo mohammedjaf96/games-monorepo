@@ -22,6 +22,7 @@ class GameController extends GetxController {
   final RxInt score = 0.obs;
   final RxInt best = 0.obs;
   final RxSet<int> clearingRows = <int>{}.obs;
+  final RxInt clearEventId = 0.obs;
   final RxList<FloatingScoreText> floatingTexts = <FloatingScoreText>[].obs;
   final RxList<ParticleBurst> bursts = <ParticleBurst>[].obs;
   final RxInt shakeTrigger = 0.obs;
@@ -36,6 +37,7 @@ class GameController extends GetxController {
   static const int baseDropIntervalMs = 800;
   static const int minDropIntervalMs = 150;
   static const int dropIntervalStepMs = 20;
+  static const int shatterDurationMs = 260;
 
   int linesClearedTotal = 0;
   double swipeAccumulator = 0;
@@ -192,9 +194,10 @@ class GameController extends GetxController {
     if (fullRows.isEmpty) return;
 
     clearingRows.assignAll(fullRows);
+    clearEventId.value++;
     await audio.playSfx('clear');
     await haptics.pulse(fullRows.length >= 2 ? HapticPattern.doublePulse : HapticPattern.medium);
-    await Future.delayed(const Duration(milliseconds: 220));
+    await Future.delayed(const Duration(milliseconds: shatterDurationMs));
 
     final newCells = List<int>.filled(cellCount, 0);
     var writeRow = gridHeight - 1;
