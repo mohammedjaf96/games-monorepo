@@ -19,7 +19,7 @@ class BlockoShapes {
     BlockoShapeType.rectangle: [Point(1, 0), Point(1, 1), Point(1, 2), Point(1, 3)],
     BlockoShapeType.square: [Point(0, 0), Point(0, 1), Point(1, 0), Point(1, 1)],
     BlockoShapeType.cornerL: [Point(0, 0), Point(1, 0), Point(2, 0), Point(2, 1)],
-    BlockoShapeType.cornerT: [Point(0, 1), Point(1, 0), Point(1, 1), Point(1, 2)],
+    BlockoShapeType.cornerT: [Point(0, 0), Point(0, 1), Point(0, 2), Point(1, 1), Point(2, 1)],
     BlockoShapeType.dot: [Point(0, 0)],
   };
 

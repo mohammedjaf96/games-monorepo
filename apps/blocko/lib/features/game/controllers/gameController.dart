@@ -11,12 +11,19 @@ import '../data/model/blockoColors.dart';
 import '../data/model/blockoShapeType.dart';
 import '../data/model/blockoShapes.dart';
 
-const int gridWidth = 10;
-const int gridHeight = 20;
-const int cellCount = gridWidth * gridHeight;
+const int gridWidth = 20;
 
-/// Owns the whole Blocko round: the 10x20 well, the falling piece, gravity,
-/// row clearing, scoring, the difficulty ramp, and Game Over.
+/// The well's row count — fixed width (20), but the height is computed once
+/// from the actual available screen space (see `BoardWidget` /
+/// `GameController.configureBoardHeight`) so the board always fills the
+/// device's screen instead of assuming a fixed shape. This fallback is only
+/// ever visible for the first, pre-layout frame.
+int gridHeight = 36;
+
+int get cellCount => gridWidth * gridHeight;
+
+/// Owns the whole Blocko round: the well, the falling piece, gravity, row
+/// clearing, scoring, the difficulty ramp, and Game Over.
 class GameController extends GetxController {
   final RxList<int> cells = List<int>.filled(cellCount, 0).obs;
   final RxInt score = 0.obs;
@@ -45,6 +52,7 @@ class GameController extends GetxController {
   double swipeAccumulator = 0;
   bool roundOver = false;
   bool reviveUsed = false;
+  bool boardConfigured = false;
   Timer? dropTimer;
   final Random random = Random();
 
@@ -57,15 +65,25 @@ class GameController extends GetxController {
     super.onInit();
     sessionFlow = GameSessionFlow(gameId: 'blocko', economyConfig: blockoEconomy);
     best.value = sessionFlow.bestScore;
-    spawnPiece();
-    scheduleNextDrop();
-    maybeShowTutorial();
   }
 
   @override
   void onClose() {
     dropTimer?.cancel();
     super.onClose();
+  }
+
+  /// Called once by `BoardWidget` after its first layout, with however many
+  /// square rows actually fit the device's screen at the fixed 20-wide cell
+  /// size — only the very first call takes effect.
+  void configureBoardHeight(int rows) {
+    if (boardConfigured) return;
+    boardConfigured = true;
+    gridHeight = rows.clamp(10, 200);
+    cells.assignAll(List<int>.filled(cellCount, 0));
+    spawnPiece();
+    scheduleNextDrop();
+    maybeShowTutorial();
   }
 
   void maybeShowTutorial() {

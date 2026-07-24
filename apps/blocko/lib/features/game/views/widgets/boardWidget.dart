@@ -9,31 +9,48 @@ import '../../controllers/gameController.dart';
 import '../../data/model/blockoColors.dart';
 import '../../data/model/blockoShapes.dart';
 
-/// The 10x20 falling-block well: settled cells plus the currently falling
-/// piece, both animated smoothly between positions (GAME_IDEAS.md §4.2/§4.4).
+/// The falling-block well: settled cells plus the currently falling piece,
+/// both animated smoothly between positions. 20 nutfa wide; the row count
+/// is computed from the actual screen space on first layout, so the board
+/// always fills the device's height instead of assuming a fixed shape.
 class BoardWidget extends StatelessWidget {
   const BoardWidget({super.key});
 
   static const int shatterParticlesPerCell = 7;
   static const double shatterTravel = 18;
+  static const double nutfaRadius = 2;
 
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<GameController>();
+    final bevelDecoration = (Color color) => BoxDecoration(
+          borderRadius: BorderRadius.circular(nutfaRadius),
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Color.lerp(color, Colors.white, 0.35)!, color, Color.lerp(color, Colors.black, 0.22)!],
+            stops: const [0, 0.5, 1],
+          ),
+        );
+
     return Container(
       padding: const EdgeInsets.all(AppSizes.gapSmall),
       decoration: stickerDecoration(fill: const Color(0xFFF5E4BE), radius: AppSizes.radiusPanel, border: BorderWidths.thick, drop: 6),
       child: LayoutBuilder(
         builder: (context, constraints) {
-          final cellSize = min(constraints.maxWidth / gridWidth, constraints.maxHeight / gridHeight);
+          final cellSizeForWidth = constraints.maxWidth / gridWidth;
+          final computedRows = (constraints.maxHeight / cellSizeForWidth).floor();
+          WidgetsBinding.instance.addPostFrameCallback((_) => controller.configureBoardHeight(computedRows));
+
           return Center(
-            child: SizedBox(
-              width: cellSize * gridWidth,
-              height: cellSize * gridHeight,
-              child: Obx(() {
-                final fallingType = controller.fallingType.value;
-                final fallingCells = fallingType == null ? const <Point<int>>[] : BlockoShapes.cellsFor(fallingType, controller.fallingRotation.value);
-                return Stack(
+            child: Obx(() {
+              final cellSize = min(cellSizeForWidth, constraints.maxHeight / gridHeight);
+              final fallingType = controller.fallingType.value;
+              final fallingCells = fallingType == null ? const <Point<int>>[] : BlockoShapes.cellsFor(fallingType, controller.fallingRotation.value);
+              return SizedBox(
+                width: cellSize * gridWidth,
+                height: cellSize * gridHeight,
+                child: Stack(
                   children: [
                     for (var index = 0; index < cellCount; index++)
                       if (controller.clearingRows.contains(index ~/ gridWidth) && controller.cells[index] != 0)
@@ -45,13 +62,7 @@ class BoardWidget extends StatelessWidget {
                           height: cellSize,
                           child: Padding(
                             padding: const EdgeInsets.all(1.5),
-                            child: DecoratedBox(
-                              decoration: BoxDecoration(
-                                color: BlockoColors.palette[controller.cells[index] - 1],
-                                borderRadius: BorderRadius.circular(4),
-                                border: Border.all(color: OutlineColor.color, width: BorderWidths.hairline),
-                              ),
-                            )
+                            child: DecoratedBox(decoration: bevelDecoration(BlockoColors.palette[controller.cells[index] - 1]))
                                 .animate()
                                 .fadeOut(duration: Duration(milliseconds: (GameController.shatterDurationMs * 0.7).round()))
                                 .scale(
@@ -74,15 +85,14 @@ class BoardWidget extends StatelessWidget {
                               transitionBuilder: (child, animation) => ScaleTransition(scale: animation, child: child),
                               child: KeyedSubtree(
                                 key: ValueKey(controller.cells[index] != 0 ? 'filled-$index-${controller.cells[index]}' : 'empty-$index'),
-                                child: DecoratedBox(
-                                  decoration: BoxDecoration(
-                                    color: controller.cells[index] != 0
-                                        ? BlockoColors.palette[controller.cells[index] - 1]
-                                        : Colors.white.withOpacity(0.15),
-                                    borderRadius: BorderRadius.circular(4),
-                                    border: Border.all(color: OutlineColor.color, width: BorderWidths.hairline),
-                                  ),
-                                ),
+                                child: controller.cells[index] != 0
+                                    ? DecoratedBox(decoration: bevelDecoration(BlockoColors.palette[controller.cells[index] - 1]))
+                                    : DecoratedBox(
+                                        decoration: BoxDecoration(
+                                          color: Colors.white.withOpacity(0.15),
+                                          borderRadius: BorderRadius.circular(nutfaRadius),
+                                        ),
+                                      ),
                               ),
                             ),
                           ),
@@ -122,19 +132,13 @@ class BoardWidget extends StatelessWidget {
                         height: cellSize,
                         child: Padding(
                           padding: const EdgeInsets.all(1.5),
-                          child: DecoratedBox(
-                            decoration: BoxDecoration(
-                              color: BlockoColors.colorFor(fallingType!),
-                              borderRadius: BorderRadius.circular(4),
-                              border: Border.all(color: OutlineColor.color, width: BorderWidths.hairline),
-                            ),
-                          ),
+                          child: DecoratedBox(decoration: bevelDecoration(BlockoColors.colorFor(fallingType!))),
                         ),
                       ),
                   ],
-                );
-              }),
-            ),
+                ),
+              );
+            }),
           );
         },
       ),
