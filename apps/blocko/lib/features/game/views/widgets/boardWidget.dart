@@ -14,8 +14,8 @@ import '../../data/model/blockoShapes.dart';
 class BoardWidget extends StatelessWidget {
   const BoardWidget({super.key});
 
-  static const int shatterParticlesPerCell = 3;
-  static const double shatterTravel = 16;
+  static const int shatterParticlesPerCell = 7;
+  static const double shatterTravel = 18;
 
   @override
   Widget build(BuildContext context) {
@@ -100,14 +100,14 @@ class BoardWidget extends StatelessWidget {
                               final centerY = (index ~/ gridWidth) * cellSize + cellSize / 2;
                               final color = BlockoColors.palette[controller.cells[index] - 1];
                               return Positioned(
-                                left: centerX - 2,
-                                top: centerY - 2,
-                                width: 4,
-                                height: 4,
+                                left: centerX - 1.5,
+                                top: centerY - 1.5,
+                                width: 3,
+                                height: 3,
                                 child: DecoratedBox(decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(1)))
                                     .animate()
                                     .moveXY(begin: Offset.zero, end: Offset(cos(angle) * distance, sin(angle) * distance), duration: GameController.shatterDurationMs.ms, curve: Curves.easeOut)
-                                    .fadeOut(duration: GameController.shatterDurationMs.ms),
+                                    .fadeOut(duration: Duration(milliseconds: (GameController.shatterDurationMs * 0.55).round())),
                               );
                             },
                           ),
