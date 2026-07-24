@@ -11,6 +11,7 @@ import '../data/model/blockoColors.dart';
 import '../data/model/blockoLandingFlash.dart';
 import '../data/model/blockoShapeType.dart';
 import '../data/model/blockoShapes.dart';
+import '../data/model/blockoShiftingCell.dart';
 
 const int gridWidth = 20;
 
@@ -37,6 +38,9 @@ class GameController extends GetxController {
   final RxInt glowTrigger = 0.obs;
   final RxBool glowBig = false.obs;
   final RxList<BlockoLandingFlash> landingFlashes = <BlockoLandingFlash>[].obs;
+  final RxList<BlockoShiftingCell> shiftingCells = <BlockoShiftingCell>[].obs;
+  final RxBool shiftSettled = false.obs;
+  final RxInt shiftEventId = 0.obs;
 
   final Rx<BlockoShapeType?> fallingType = Rx<BlockoShapeType?>(null);
   final RxInt fallingRotation = 0.obs;
@@ -49,6 +53,7 @@ class GameController extends GetxController {
   static const int minDropIntervalMs = 150;
   static const int dropIntervalStepMs = 20;
   static const int shatterDurationMs = 260;
+  static const int shiftDurationMs = 200;
 
   int linesClearedTotal = 0;
   double swipeAccumulator = 0;
@@ -234,16 +239,51 @@ class GameController extends GetxController {
     await Future.delayed(const Duration(milliseconds: shatterDurationMs));
 
     final newCells = List<int>.filled(cellCount, 0);
+    final shifted = <BlockoShiftingCell>[];
+    final settledRows = <int>{};
     var writeRow = gridHeight - 1;
     for (var row = gridHeight - 1; row >= 0; row--) {
       if (fullRows.contains(row)) continue;
+      if (row != writeRow) {
+        settledRows.add(writeRow);
+        for (var col = 0; col < gridWidth; col++) {
+          final value = cells[row * gridWidth + col];
+          if (value != 0) {
+            shifted.add(BlockoShiftingCell(fromIndex: row * gridWidth + col, toIndex: writeRow * gridWidth + col, colorValue: value));
+          }
+        }
+      }
       for (var col = 0; col < gridWidth; col++) {
         newCells[writeRow * gridWidth + col] = cells[row * gridWidth + col];
       }
       writeRow--;
     }
-    cells.assignAll(newCells);
     clearingRows.clear();
+
+    if (shifted.isNotEmpty) {
+      final gridWithGapsCleared = List<int>.from(cells);
+      for (final shift in shifted) {
+        gridWithGapsCleared[shift.fromIndex] = 0;
+      }
+      cells.assignAll(gridWithGapsCleared);
+      shiftSettled.value = false;
+      shiftingCells.assignAll(shifted);
+      shiftEventId.value++;
+      await Future.delayed(const Duration(milliseconds: 16));
+      shiftSettled.value = true;
+      await Future.delayed(const Duration(milliseconds: shiftDurationMs));
+      shiftingCells.clear();
+
+      final flashIndexes = <int>[];
+      for (final row in settledRows) {
+        for (var col = 0; col < gridWidth; col++) {
+          final index = row * gridWidth + col;
+          if (newCells[index] != 0) flashIndexes.add(index);
+        }
+      }
+      spawnLandingFlash(flashIndexes);
+    }
+    cells.assignAll(newCells);
 
     linesClearedTotal += fullRows.length;
     final bonus = fullRows.length * 100;

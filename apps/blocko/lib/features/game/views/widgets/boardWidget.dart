@@ -9,6 +9,7 @@ import '../../controllers/gameController.dart';
 import '../../data/model/blockoColors.dart';
 import '../../data/model/blockoLandingFlash.dart';
 import '../../data/model/blockoShapes.dart';
+import '../../data/model/blockoShiftingCell.dart';
 
 /// The falling-block well: settled cells plus the currently falling piece,
 /// both animated smoothly between positions. 20 nutfa wide; the row count
@@ -142,6 +143,20 @@ class BoardWidget extends StatelessWidget {
                               );
                             },
                           ),
+                    for (final shift in controller.shiftingCells)
+                      AnimatedPositioned(
+                        key: ValueKey('shift-${controller.shiftEventId.value}-${shift.fromIndex}'),
+                        duration: const Duration(milliseconds: GameController.shiftDurationMs),
+                        curve: Curves.easeIn,
+                        left: ((controller.shiftSettled.value ? shift.toIndex : shift.fromIndex) % gridWidth) * cellSize,
+                        top: ((controller.shiftSettled.value ? shift.toIndex : shift.fromIndex) ~/ gridWidth) * cellSize,
+                        width: cellSize,
+                        height: cellSize,
+                        child: Padding(
+                          padding: const EdgeInsets.all(1.5),
+                          child: DecoratedBox(decoration: bevelDecoration(BlockoColors.palette[shift.colorValue - 1])),
+                        ),
+                      ),
                     for (var i = 0; i < fallingCells.length; i++)
                       AnimatedPositioned(
                         key: ValueKey('fallingCell${controller.fallingSpawnId.value}-$i'),
