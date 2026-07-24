@@ -58,21 +58,20 @@ class BoardWidget extends StatelessWidget {
                         if (controller.cells[index] != 0)
                           Positioned(
                             key: ValueKey('landFlash-${flash.id}-$index'),
-                            left: (index % gridWidth) * cellSize + cellSize / 2 - cellSize * 0.8,
-                            top: (index ~/ gridWidth) * cellSize + cellSize / 2 - cellSize * 0.8,
-                            width: cellSize * 1.6,
-                            height: cellSize * 1.6,
+                            left: (index % gridWidth) * cellSize - 1,
+                            top: (index ~/ gridWidth) * cellSize - 1,
+                            width: cellSize + 2,
+                            height: cellSize + 2,
                             child: DecoratedBox(
                               decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                gradient: RadialGradient(
-                                  colors: [BlockoColors.palette[controller.cells[index] - 1].withOpacity(0.55), Colors.transparent],
-                                ),
+                                borderRadius: BorderRadius.circular(nutfaRadius + 1),
+                                border: Border.all(color: Color.lerp(BlockoColors.palette[controller.cells[index] - 1], Colors.white, 0.3)!, width: 1.4),
+                                boxShadow: [
+                                  BoxShadow(color: BlockoColors.palette[controller.cells[index] - 1].withOpacity(0.95), blurRadius: 5, spreadRadius: 0.5),
+                                  BoxShadow(color: BlockoColors.palette[controller.cells[index] - 1].withOpacity(0.5), blurRadius: 12, spreadRadius: 1),
+                                ],
                               ),
-                            )
-                                .animate()
-                                .scale(begin: const Offset(0.5, 0.5), end: const Offset(1.2, 1.2), duration: 260.ms, curve: Curves.easeOut)
-                                .fadeOut(duration: 260.ms),
+                            ).animate().fadeOut(duration: 260.ms),
                           ),
                     for (var index = 0; index < cellCount; index++)
                       if (controller.clearingRows.contains(index ~/ gridWidth) && controller.cells[index] != 0)
