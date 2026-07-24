@@ -42,6 +42,8 @@ class CommonTranslations extends Translations {
       'tabGems': 'Gems',
       'tabCharacters': 'Characters',
       'tabBackgrounds': 'Backgrounds',
+      'labelHowToPlay': 'How to Play',
+      'menuGotIt': 'Got it!',
     },
     'ar': {
       'menuPlay': 'العب',
@@ -81,6 +83,8 @@ class CommonTranslations extends Translations {
       'tabGems': 'الجواهر',
       'tabCharacters': 'الشخصيات',
       'tabBackgrounds': 'الخلفيات',
+      'labelHowToPlay': 'كيف تلعب',
+      'menuGotIt': 'حسنًا!',
     },
   };
 

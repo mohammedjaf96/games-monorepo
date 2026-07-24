@@ -29,6 +29,8 @@ class DashyTranslations extends Translations {
       'labelTapToPlay': 'Tap to play',
       'goShield': 'Shield',
       'labelShieldReady': 'Shield ready!',
+      'tutorialGoal': 'Tap anywhere to jump over obstacles.',
+      'tutorialControls': 'Collect coins and see how far you can run!',
     },
     'ar': {
       'appName': 'داشي',
@@ -54,6 +56,8 @@ class DashyTranslations extends Translations {
       'labelTapToPlay': 'اضغط للعب',
       'goShield': 'درع',
       'labelShieldReady': 'الدرع جاهز!',
+      'tutorialGoal': 'اضغط في أي مكان للقفز فوق العقبات.',
+      'tutorialControls': 'اجمع العملات وشوف لأي مسافة تقدر تركض!',
     },
   };
 

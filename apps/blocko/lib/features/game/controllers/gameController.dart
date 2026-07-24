@@ -48,6 +48,18 @@ class GameController extends GetxController {
     sessionFlow = GameSessionFlow(gameId: 'blocko', economyConfig: blockoEconomy);
     best.value = sessionFlow.bestScore;
     fillTrayIfEmpty();
+    maybeShowTutorial();
+  }
+
+  void maybeShowTutorial() {
+    if (KeyValueStore.get(HiveService.settingsBox, 'tutorialSeenBlocko', false)) return;
+    KeyValueStore.set(HiveService.settingsBox, 'tutorialSeenBlocko', true);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Get.dialog(
+        HowToPlayDialog(game: 'blocko', goal: 'tutorialGoal'.tr, controls: 'tutorialControls'.tr, onGotIt: Get.back),
+        barrierDismissible: false,
+      );
+    });
   }
 
   void fillTrayIfEmpty() {

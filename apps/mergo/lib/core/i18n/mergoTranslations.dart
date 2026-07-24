@@ -22,6 +22,8 @@ class MergoTranslations extends Translations {
       'goUndo': 'Undo',
       'goHammer': 'Hammer',
       'labelMilestone': 'Milestone!',
+      'tutorialGoal': 'Swipe to slide all the tiles at once.',
+      'tutorialControls': 'Two tiles with the same number merge — reach the highest number you can!',
     },
     'ar': {
       'appName': 'ميرجو',
@@ -40,6 +42,8 @@ class MergoTranslations extends Translations {
       'goUndo': 'تراجع',
       'goHammer': 'مطرقة',
       'labelMilestone': 'إنجاز!',
+      'tutorialGoal': 'مرر لتحريك كل القطع دفعة واحدة.',
+      'tutorialControls': 'القطعتان بنفس الرقم تندمجان — حاول الوصول لأعلى رقم ممكن!',
     },
   };
 

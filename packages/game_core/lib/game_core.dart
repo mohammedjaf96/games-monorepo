@@ -71,3 +71,4 @@ export 'src/ui/store/earnGemsSheet.dart';
 export 'src/ui/store/gemPackCard.dart';
 export 'src/ui/store/storePage.dart';
 export 'src/ui/store/walletBar.dart';
+export 'src/ui/tutorial/howToPlayDialog.dart';

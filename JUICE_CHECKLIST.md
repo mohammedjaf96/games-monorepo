@@ -16,6 +16,7 @@ reimplement it locally.
 | Rolling number counter | `AnimatedCounter` | Any score/distance/coins display — replace a plain `Text` with `AnimatedCounter(value: ..., style: ...)`. |
 | Floating "+N" / combo text | `FloatingScoreText` + `FloatingScoreTextOverlay` | Any scoring event — keep an `RxList<FloatingScoreText>` on the controller, add an entry with a unique id, auto-remove it after ~1.1s, render via `FloatingScoreTextOverlay(entries: ...)` positioned near the top of the screen. |
 | Particle burst | `ParticleBurst` + `ParticleBurstOverlay` | Clears, merges, landings, coin pickups — same `RxList` + auto-remove pattern as floating text. |
+| First-launch tutorial | `HowToPlayDialog` | Show once per install from `GameController.onInit()`: check a `tutorialSeen<Game>` flag via `KeyValueStore`/`HiveService.settingsBox`, set it before showing, open via `Get.dialog` inside `WidgetsBinding.instance.addPostFrameCallback`. If the game has continuous simulation (e.g. a Flame engine), pause it before showing and resume it in `onGotIt`. Add `tutorialGoal`/`tutorialControls` keys to the game's own translations (one short sentence each) — a new game is not done if a first-time player can't tell what to do. |
 
 ## Per-game (no shared widget yet — reimplement the same pattern, same style)
 
@@ -53,6 +54,9 @@ A new game is not "juice complete" until it has, at minimum:
 7. If the game has continuous motion/speed as a mechanic: a trail, parallax
    background, and speed-line-style intensity effect, following the Dashy
    pattern above.
+8. A `HowToPlayDialog` shown once on first launch, stating the goal and the
+   controls in one short sentence each — a player should never have to guess
+   what the game wants from them.
 
 If a technique doesn't fit a given game's genre, say so explicitly rather than
 skipping it silently — don't leave a new game feeling flatter than the first

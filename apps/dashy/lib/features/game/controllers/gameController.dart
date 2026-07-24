@@ -30,6 +30,27 @@ class GameController extends GetxController {
     best.value = sessionFlow.bestScore;
     game = DashyGame(onScore: handleScore, onCoin: handleCoin, onDeath: handleDeath, onLand: handleLand);
     consumePendingShield();
+    maybeShowTutorial();
+  }
+
+  void maybeShowTutorial() {
+    if (KeyValueStore.get(HiveService.settingsBox, 'tutorialSeenDashy', false)) return;
+    KeyValueStore.set(HiveService.settingsBox, 'tutorialSeenDashy', true);
+    pauseGame();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Get.dialog(
+        HowToPlayDialog(
+          game: 'dashy',
+          goal: 'tutorialGoal'.tr,
+          controls: 'tutorialControls'.tr,
+          onGotIt: () {
+            Get.back();
+            resumeGame();
+          },
+        ),
+        barrierDismissible: false,
+      );
+    });
   }
 
   /// Picks up a shield earned from Home's rewarded "Shield" button

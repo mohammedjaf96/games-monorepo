@@ -43,6 +43,18 @@ class GameController extends GetxController {
     best.value = sessionFlow.bestScore;
     spawnTile();
     spawnTile();
+    maybeShowTutorial();
+  }
+
+  void maybeShowTutorial() {
+    if (KeyValueStore.get(HiveService.settingsBox, 'tutorialSeenMergo', false)) return;
+    KeyValueStore.set(HiveService.settingsBox, 'tutorialSeenMergo', true);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Get.dialog(
+        HowToPlayDialog(game: 'mergo', goal: 'tutorialGoal'.tr, controls: 'tutorialControls'.tr, onGotIt: Get.back),
+        barrierDismissible: false,
+      );
+    });
   }
 
   void spawnTile() {
