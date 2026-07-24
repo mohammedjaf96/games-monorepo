@@ -10,6 +10,7 @@ import '../../theme/appText.dart';
 import '../../theme/borderWidths.dart';
 import '../../theme/outlineColor.dart';
 import '../../theme/pal.dart';
+import '../../theme/surfaceTone.dart';
 
 /// One item in the store grid, its frame colored by rarity (GAME_IDEAS.md §3.11.7-c).
 class CosmeticCard extends StatelessWidget {
@@ -26,7 +27,7 @@ class CosmeticCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(AppSizes.gapSmall),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: surfaceTone(Colors.white),
           borderRadius: BorderRadius.circular(AppSizes.radiusCard),
           border: Border.all(color: cosmetic.rarity.color, width: BorderWidths.thick),
           boxShadow: [BoxShadow(color: cosmetic.rarity.color, offset: const Offset(0, 5), blurRadius: 0)],
@@ -54,7 +55,7 @@ class CosmeticCard extends StatelessWidget {
                 return Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(Icons.smart_display_rounded, size: 12, color: OutlineColor.color),
+                    Icon(Icons.smart_display_rounded, size: 12, color: OutlineColor.color),
                     const SizedBox(width: 2),
                     Text('goFree'.tr, style: AppText.caption()),
                   ],

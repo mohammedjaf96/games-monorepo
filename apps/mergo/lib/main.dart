@@ -18,15 +18,17 @@ final GameConfig mergoConfig = GameConfig(
 
 void main() async {
   await bootstrapGame(config: mergoConfig);
-  final startupLocale = Get.find<SettingsController>().locale.value;
+  final settings = Get.find<SettingsController>();
   runApp(
     GetMaterialApp(
       title: 'Mergo',
       translations: MergoTranslations(),
-      locale: Locale(startupLocale),
+      locale: Locale(settings.locale.value),
       fallbackLocale: const Locale('en'),
       supportedLocales: const [Locale('en'), Locale('ar')],
-      theme: GameTheme.build(GameTheme.mergo),
+      theme: GameTheme.light(GameTheme.mergo),
+      darkTheme: GameTheme.dark(GameTheme.mergo),
+      themeMode: settings.themeMode.value,
       getPages: AppPages.pages,
       initialRoute: AppRoutes.splash,
     ),

@@ -6,6 +6,7 @@ import '../../theme/appSizes.dart';
 import '../../theme/borderWidths.dart';
 import '../../theme/outlineColor.dart';
 import '../../theme/stickerDecoration.dart';
+import '../../theme/surfaceTone.dart';
 import '../currencyPill.dart';
 
 /// The top bar shown on Home and Store: an optional back button + the
@@ -31,12 +32,12 @@ class WalletBar extends StatelessWidget {
                 height: AppSizes.avatarSize,
                 alignment: Alignment.center,
                 decoration: stickerDecoration(
-                  fill: Colors.white,
+                  fill: surfaceTone(Colors.white),
                   radius: 10,
                   border: BorderWidths.thin,
                   drop: 3,
                 ),
-                child: const Icon(Icons.arrow_back_rounded, color: OutlineColor.color),
+                child: Icon(Icons.arrow_back_rounded, color: OutlineColor.color),
               ),
             ),
           const Spacer(),

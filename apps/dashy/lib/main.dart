@@ -18,15 +18,17 @@ final GameConfig dashyConfig = GameConfig(
 
 void main() async {
   await bootstrapGame(config: dashyConfig);
-  final startupLocale = Get.find<SettingsController>().locale.value;
+  final settings = Get.find<SettingsController>();
   runApp(
     GetMaterialApp(
       title: 'Dashy',
       translations: DashyTranslations(),
-      locale: Locale(startupLocale),
+      locale: Locale(settings.locale.value),
       fallbackLocale: const Locale('en'),
       supportedLocales: const [Locale('en'), Locale('ar')],
-      theme: GameTheme.build(GameTheme.dashy),
+      theme: GameTheme.light(GameTheme.dashy),
+      darkTheme: GameTheme.dark(GameTheme.dashy),
+      themeMode: settings.themeMode.value,
       getPages: AppPages.pages,
       initialRoute: AppRoutes.splash,
     ),

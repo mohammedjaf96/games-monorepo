@@ -32,7 +32,7 @@ class GamePage extends GetView<GameController> {
                           const SizedBox(width: AppSizes.gapMedium),
                           StickerIconButton(
                             iconAsset: 'assets/icons/gear.svg',
-                            fill: Colors.white,
+                            fill: surfaceTone(Colors.white),
                             onPressed: () => Get.dialog(
                               PauseDialog(
                                 onResume: Get.back,

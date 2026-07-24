@@ -9,6 +9,7 @@ import '../../theme/appText.dart';
 import '../../theme/borderWidths.dart';
 import '../../theme/pal.dart';
 import '../../theme/stickerDecoration.dart';
+import '../../theme/surfaceTone.dart';
 import '../rewardedButton.dart';
 
 /// A gem pack in the store's Gems tab: a pile of gems + amount + a Watch
@@ -24,7 +25,7 @@ class GemPackCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(AppSizes.gapMedium),
       decoration: stickerDecoration(
-        fill: Colors.white,
+        fill: surfaceTone(Colors.white),
         radius: AppSizes.radiusCard,
         border: BorderWidths.thin,
         drop: 4,

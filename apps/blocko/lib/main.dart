@@ -18,15 +18,17 @@ final GameConfig blockoConfig = GameConfig(
 
 void main() async {
   await bootstrapGame(config: blockoConfig);
-  final startupLocale = Get.find<SettingsController>().locale.value;
+  final settings = Get.find<SettingsController>();
   runApp(
     GetMaterialApp(
       title: 'Blocko',
       translations: BlockoTranslations(),
-      locale: Locale(startupLocale),
+      locale: Locale(settings.locale.value),
       fallbackLocale: const Locale('en'),
       supportedLocales: const [Locale('en'), Locale('ar')],
-      theme: GameTheme.build(GameTheme.blocko),
+      theme: GameTheme.light(GameTheme.blocko),
+      darkTheme: GameTheme.dark(GameTheme.blocko),
+      themeMode: settings.themeMode.value,
       getPages: AppPages.pages,
       initialRoute: AppRoutes.splash,
     ),

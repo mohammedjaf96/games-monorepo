@@ -6,6 +6,7 @@ import '../../theme/appText.dart';
 import '../../theme/borderWidths.dart';
 import '../../theme/pal.dart';
 import '../../theme/stickerDecoration.dart';
+import '../../theme/surfaceTone.dart';
 import '../bouncyButton.dart';
 import '../mascotMood.dart';
 import '../mascotWidget.dart';
@@ -28,7 +29,7 @@ class HowToPlayDialog extends StatelessWidget {
       backgroundColor: Colors.transparent,
       child: Container(
         padding: const EdgeInsets.all(AppSizes.gapHuge),
-        decoration: stickerDecoration(fill: Pal.cream, radius: AppSizes.radiusPanel, border: BorderWidths.thick, drop: 6),
+        decoration: stickerDecoration(fill: surfaceTone(Pal.cream), radius: AppSizes.radiusPanel, border: BorderWidths.thick, drop: 6),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [

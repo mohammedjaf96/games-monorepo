@@ -8,6 +8,7 @@ import '../../theme/appText.dart';
 import '../../theme/borderWidths.dart';
 import '../../theme/outlineColor.dart';
 import '../../theme/pal.dart';
+import '../../theme/surfaceTone.dart';
 import '../rewardedButton.dart';
 
 /// Shown when a purchase is blocked by an insufficient gem balance
@@ -24,7 +25,7 @@ class EarnGemsSheet extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(AppSizes.gapHuge),
       decoration: BoxDecoration(
-        color: Pal.cream,
+        color: surfaceTone(Pal.cream),
         borderRadius: const BorderRadius.vertical(top: Radius.circular(AppSizes.radiusPanel)),
         border: Border.all(color: OutlineColor.color, width: BorderWidths.thick),
       ),

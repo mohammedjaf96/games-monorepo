@@ -7,6 +7,7 @@ import '../../theme/appSizes.dart';
 import '../../theme/appText.dart';
 import '../../theme/borderWidths.dart';
 import '../../theme/stickerDecoration.dart';
+import '../../theme/surfaceTone.dart';
 import 'cosmeticCard.dart';
 import 'gemPackCard.dart';
 import 'walletBar.dart';
@@ -49,7 +50,7 @@ class StorePage extends GetView<StoreController> {
                           padding: const EdgeInsets.symmetric(horizontal: AppSizes.gapMedium),
                           alignment: Alignment.center,
                           decoration: stickerDecoration(
-                            fill: active ? primaryColor : Colors.white,
+                            fill: active ? primaryColor : surfaceTone(Colors.white),
                             radius: AppSizes.radiusChip,
                             border: BorderWidths.thin,
                             drop: 2,

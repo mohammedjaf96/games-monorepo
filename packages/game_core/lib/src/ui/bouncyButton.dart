@@ -18,10 +18,10 @@ class BouncyButton extends StatelessWidget {
     required this.label,
     required this.onPressed,
     this.fill = const Color(0xFF3ED367),
-    this.textColor = OutlineColor.color,
+    Color? textColor,
     this.height = AppSizes.primaryButtonHeight,
     this.icon,
-  });
+  }) : textColor = textColor ?? OutlineColor.color;
 
   final String label;
   final VoidCallback? onPressed;

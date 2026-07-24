@@ -4,7 +4,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'gamePalette.dart';
 import 'pal.dart';
 
-/// Builds a Flutter [ThemeData] from a game's [GamePalette] (GAME_IDEAS.md §3.9/§3.14.8).
+/// Builds light/dark [ThemeData] pairs from a game's [GamePalette]
+/// (GAME_IDEAS.md §3.9/§3.14.8). Only the background adapts here — every
+/// other surface (dialogs, panels, cards) darkens itself individually via
+/// `surfaceTone()`, and ink/borders via `OutlineColor.color`.
 class GameTheme {
   static const GamePalette blocko = GamePalette(
     primary: Pal.blue,
@@ -45,13 +48,24 @@ class GameTheme {
     splashEnd: Color(0xFF0A6E62),
   );
 
-  static ThemeData build(GamePalette palette) {
+  /// Blends `color` toward a near-black ink so any light background reads
+  /// as a moody dark one, without needing a hand-picked dark variant.
+  static Color darken(Color color) => Color.lerp(color, const Color(0xFF0B0A16), 0.62)!;
+
+  static ThemeData light(GamePalette palette) => buildFor(palette, Brightness.light);
+
+  static ThemeData dark(GamePalette palette) => buildFor(palette, Brightness.dark);
+
+  static ThemeData buildFor(GamePalette palette, Brightness brightness) {
+    final isDark = brightness == Brightness.dark;
     return ThemeData(
       useMaterial3: true,
-      scaffoldBackgroundColor: palette.background,
-      textTheme: GoogleFonts.baloo2TextTheme(),
+      brightness: brightness,
+      scaffoldBackgroundColor: isDark ? darken(palette.background) : palette.background,
+      textTheme: GoogleFonts.baloo2TextTheme(isDark ? ThemeData.dark().textTheme : ThemeData.light().textTheme),
       colorScheme: ColorScheme.fromSeed(
         seedColor: palette.primary,
+        brightness: brightness,
         primary: palette.primary,
         secondary: palette.secondary,
       ),

@@ -16,7 +16,7 @@ class FramedMascotWidget extends StatelessWidget {
         color: Pal.yellow,
         shape: BoxShape.circle,
         border: Border.all(color: OutlineColor.color, width: BorderWidths.thick),
-        boxShadow: const [BoxShadow(color: OutlineColor.color, offset: Offset(0, 6), blurRadius: 0)],
+        boxShadow: [BoxShadow(color: OutlineColor.color, offset: const Offset(0, 6), blurRadius: 0)],
       ),
       child: const MascotWidget(game: 'dashy', size: 110),
     );

@@ -44,7 +44,7 @@ class GamePage extends GetView<GameController> {
                                 const SizedBox(width: AppSizes.gapMedium),
                                 StickerIconButton(
                                   iconAsset: 'assets/icons/gear.svg',
-                                  fill: Colors.white,
+                                  fill: surfaceTone(Colors.white),
                                   onPressed: () => Get.dialog(
                                     PauseDialog(
                                       onResume: Get.back,
@@ -62,7 +62,7 @@ class GamePage extends GetView<GameController> {
                             const Expanded(child: BoardWidget()),
                             const SizedBox(height: AppSizes.gapLarge),
                             Center(
-                              child: StickerIconButton(iconAsset: 'assets/icons/rotate.svg', fill: Colors.white, onPressed: controller.rotate),
+                              child: StickerIconButton(iconAsset: 'assets/icons/rotate.svg', fill: surfaceTone(Colors.white), onPressed: controller.rotate),
                             ),
                           ],
                         ),

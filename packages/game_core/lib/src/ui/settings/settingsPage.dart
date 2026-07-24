@@ -7,10 +7,12 @@ import '../../theme/appText.dart';
 import '../../theme/borderWidths.dart';
 import '../../theme/pal.dart';
 import '../../theme/stickerDecoration.dart';
+import '../../theme/surfaceTone.dart';
 import '../outlinedText.dart';
 import '../stickerIconButton.dart';
 import 'settingsController.dart';
 import 'settingsToggleRow.dart';
+import 'themeModeRow.dart';
 
 /// The shared settings screen — locked, mandatory in every game (GAME_IDEAS.md §3.16).
 class SettingsPage extends GetView<SettingsController> {
@@ -64,7 +66,7 @@ class SettingsPage extends GetView<SettingsController> {
               Container(
                 padding: const EdgeInsets.all(AppSizes.gapMedium),
                 decoration: stickerDecoration(
-                  fill: Colors.white,
+                  fill: surfaceTone(Colors.white),
                   radius: AppSizes.radiusCard,
                   border: BorderWidths.thin,
                   drop: 4,
@@ -87,7 +89,7 @@ class SettingsPage extends GetView<SettingsController> {
                           padding: const EdgeInsets.symmetric(horizontal: AppSizes.gapMedium, vertical: AppSizes.gapExtraSmall),
                           margin: const EdgeInsets.only(right: AppSizes.gapSmall),
                           decoration: stickerDecoration(
-                            fill: controller.locale.value == 'en' ? Pal.blue : Colors.white,
+                            fill: controller.locale.value == 'en' ? Pal.blue : surfaceTone(Colors.white),
                             radius: AppSizes.radiusChip,
                             border: BorderWidths.thin,
                             drop: 2,
@@ -102,7 +104,7 @@ class SettingsPage extends GetView<SettingsController> {
                         child: Container(
                           padding: const EdgeInsets.symmetric(horizontal: AppSizes.gapMedium, vertical: AppSizes.gapExtraSmall),
                           decoration: stickerDecoration(
-                            fill: controller.locale.value == 'ar' ? Pal.blue : Colors.white,
+                            fill: controller.locale.value == 'ar' ? Pal.blue : surfaceTone(Colors.white),
                             radius: AppSizes.radiusChip,
                             border: BorderWidths.thin,
                             drop: 2,
@@ -114,6 +116,8 @@ class SettingsPage extends GetView<SettingsController> {
                   ],
                 ),
               ),
+              const SizedBox(height: AppSizes.gapSmall),
+              const ThemeModeRow(),
               const Spacer(),
               GestureDetector(
                 onTap: controller.openPrivacyPolicy,

@@ -6,6 +6,7 @@ import '../../theme/appText.dart';
 import '../../theme/borderWidths.dart';
 import '../../theme/pal.dart';
 import '../../theme/stickerDecoration.dart';
+import '../../theme/surfaceTone.dart';
 import 'stickerToggle.dart';
 
 /// One settings row: icon container + label + toggle (GAME_IDEAS.md §3.16.3).
@@ -29,7 +30,7 @@ class SettingsToggleRow extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: AppSizes.gapMedium),
       padding: const EdgeInsets.all(AppSizes.gapMedium),
       decoration: stickerDecoration(
-        fill: Colors.white,
+        fill: surfaceTone(Colors.white),
         radius: AppSizes.radiusCard,
         border: BorderWidths.thin,
         drop: 4,

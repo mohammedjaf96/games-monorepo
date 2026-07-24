@@ -44,6 +44,10 @@ class CommonTranslations extends Translations {
       'tabBackgrounds': 'Backgrounds',
       'labelHowToPlay': 'How to Play',
       'menuGotIt': 'Got it!',
+      'labelTheme': 'Theme',
+      'themeSystem': 'Auto',
+      'themeLight': 'Light',
+      'themeDark': 'Dark',
     },
     'ar': {
       'menuPlay': 'العب',
@@ -85,6 +89,10 @@ class CommonTranslations extends Translations {
       'tabBackgrounds': 'الخلفيات',
       'labelHowToPlay': 'كيف تلعب',
       'menuGotIt': 'حسنًا!',
+      'labelTheme': 'المظهر',
+      'themeSystem': 'تلقائي',
+      'themeLight': 'فاتح',
+      'themeDark': 'داكن',
     },
   };
 

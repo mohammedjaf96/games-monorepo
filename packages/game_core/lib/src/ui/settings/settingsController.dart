@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -19,6 +19,7 @@ class SettingsController extends GetxController {
   final RxBool vibration = true.obs;
   final RxBool music = true.obs;
   final RxString locale = 'en'.obs;
+  final Rx<ThemeMode> themeMode = ThemeMode.system.obs;
 
   final AudioService audio = Get.find<AudioService>();
   final HapticsService haptics = Get.find<HapticsService>();
@@ -30,6 +31,35 @@ class SettingsController extends GetxController {
     vibration.value = KeyValueStore.get(HiveService.settingsBox, 'vibration', true);
     music.value = KeyValueStore.get(HiveService.settingsBox, 'music', true);
     locale.value = KeyValueStore.get(HiveService.settingsBox, 'lang', deviceLocaleOrEnglish());
+    themeMode.value = themeModeFromKey(KeyValueStore.get(HiveService.settingsBox, 'themeMode', 'system'));
+  }
+
+  ThemeMode themeModeFromKey(String key) {
+    switch (key) {
+      case 'light':
+        return ThemeMode.light;
+      case 'dark':
+        return ThemeMode.dark;
+      default:
+        return ThemeMode.system;
+    }
+  }
+
+  String keyForThemeMode(ThemeMode mode) {
+    switch (mode) {
+      case ThemeMode.light:
+        return 'light';
+      case ThemeMode.dark:
+        return 'dark';
+      case ThemeMode.system:
+        return 'system';
+    }
+  }
+
+  Future<void> setThemeMode(ThemeMode mode) async {
+    themeMode.value = mode;
+    await save('themeMode', keyForThemeMode(mode));
+    Get.changeThemeMode(mode);
   }
 
   String deviceLocaleOrEnglish() {

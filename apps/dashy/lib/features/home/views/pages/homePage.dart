@@ -37,7 +37,7 @@ class HomePage extends GetView<HomeController> {
                 () => Container(
                   padding: const EdgeInsets.symmetric(horizontal: AppSizes.gapLarge, vertical: AppSizes.gapSmall),
                   decoration: stickerDecoration(
-                    fill: const Color(0xFF2A1856),
+                    fill: surfaceTone(const Color(0xFF2A1856)),
                     radius: AppSizes.radiusChip,
                     border: BorderWidths.thin,
                     drop: 3,
@@ -74,19 +74,19 @@ class HomePage extends GetView<HomeController> {
                 children: [
                   StickerIconButton(
                     iconAsset: 'assets/icons/shop.svg',
-                    fill: Colors.white,
+                    fill: surfaceTone(Colors.white),
                     onPressed: controller.shopTapped,
                   ).animate().fadeIn(delay: 500.ms, duration: 350.ms).moveY(begin: 16, end: 0),
                   const SizedBox(width: AppSizes.gapMedium),
                   StickerIconButton(
                     iconAsset: 'assets/icons/chest.svg',
-                    fill: Colors.white,
+                    fill: surfaceTone(Colors.white),
                     onPressed: controller.dailyRewardTapped,
                   ).animate().fadeIn(delay: 560.ms, duration: 350.ms).moveY(begin: 16, end: 0),
                   const SizedBox(width: AppSizes.gapMedium),
                   StickerIconButton(
                     iconAsset: 'assets/icons/gear.svg',
-                    fill: Colors.white,
+                    fill: surfaceTone(Colors.white),
                     onPressed: controller.settingsTapped,
                   ).animate().fadeIn(delay: 620.ms, duration: 350.ms).moveY(begin: 16, end: 0),
                 ],

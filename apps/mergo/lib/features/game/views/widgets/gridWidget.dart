@@ -17,7 +17,7 @@ class GridWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(AppSizes.gapSmall),
       decoration: stickerDecoration(
-        fill: Pal.cream,
+        fill: surfaceTone(Pal.cream),
         radius: AppSizes.radiusPanel,
         border: BorderWidths.thick,
         drop: 6,

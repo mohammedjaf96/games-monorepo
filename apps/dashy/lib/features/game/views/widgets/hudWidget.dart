@@ -36,7 +36,7 @@ class HudWidget extends StatelessWidget {
             ),
           ),
           const Spacer(),
-          StickerIconButton(iconAsset: 'assets/icons/gear.svg', fill: Colors.white, onPressed: onPause),
+          StickerIconButton(iconAsset: 'assets/icons/gear.svg', fill: surfaceTone(Colors.white), onPressed: onPause),
         ],
       ),
     );

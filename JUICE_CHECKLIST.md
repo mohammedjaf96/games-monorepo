@@ -42,6 +42,33 @@ reimplement it locally.
   - Icon row (shop/chest/gear/etc.): staggered fade + slide-up, ~50-60ms delay between each.
   - All via `flutter_animate`'s `.animate()` chained directly on the widget inline in `build()` — never extract a helper method (violates the "view files contain nothing outside `build()`" rule in `CODE_STANDARDS.md`).
 
+## Mandatory: light/dark theme support
+
+Every game must support both light and dark mode, defaulting to the device's
+own system setting, with a System/Light/Dark override in Settings
+(`ThemeModeRow`, wired through `SettingsController.themeMode` +
+`Get.changeThemeMode`). This is not just a background swap:
+
+- `main.dart` must pass **both** `theme: GameTheme.light(palette)` and
+  `darkTheme: GameTheme.dark(palette)`, plus `themeMode:` read from
+  `SettingsController` at startup — see any existing `apps/*/lib/main.dart`.
+- Ink/border color (`OutlineColor.color`) and default text color
+  (`AppText.*`'s color when omitted) already flip automatically — don't hand
+  them a hardcoded color unless it's an intentional contrast pairing (e.g.
+  white text on a permanently-colored chip).
+- Any **neutral chrome** fill (dialog panels, cards, board wells, empty
+  cells, inactive chips — anything currently `Pal.cream`/`Colors.white`/a
+  pastel hex) must be wrapped in `surfaceTone(...)` so it darkens in dark
+  mode: `fill: surfaceTone(Pal.cream)`.
+- **Brand/accent colors stay constant** in both modes — button fills
+  (`Pal.green`/`Pal.yellow`/etc.), gameplay piece/tile colors, and a Flame
+  game's own world rendering (sky, ground, obstacles) are not surfaces and
+  must not be darkened; changing them would hurt gameplay recognizability
+  for no benefit.
+- `stickerDecoration(...)`'s `outline` and `AppText.*`'s `color` are both
+  optional now — only pass them explicitly when you need something other
+  than the current theme's ink color.
+
 ## Adding a new game: minimum bar
 
 A new game is not "juice complete" until it has, at minimum:
@@ -57,6 +84,9 @@ A new game is not "juice complete" until it has, at minimum:
 8. A `HowToPlayDialog` shown once on first launch, stating the goal and the
    controls in one short sentence each — a player should never have to guess
    what the game wants from them.
+9. Full light/dark theme support, following the "Mandatory: light/dark theme
+   support" section above — defaulting to system, every neutral surface
+   wrapped in `surfaceTone(...)`, not just the scaffold background.
 
 If a technique doesn't fit a given game's genre, say so explicitly rather than
 skipping it silently — don't leave a new game feeling flatter than the first

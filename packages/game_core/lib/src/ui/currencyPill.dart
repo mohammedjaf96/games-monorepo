@@ -7,6 +7,7 @@ import '../theme/borderWidths.dart';
 import '../theme/outlineColor.dart';
 import '../theme/pal.dart';
 import '../theme/stickerDecoration.dart';
+import '../theme/surfaceTone.dart';
 
 /// The top-bar gem pill: icon + rolling counter + a round "+" button
 /// (GAME_IDEAS.md §3.14.4).
@@ -28,7 +29,7 @@ class CurrencyPill extends StatelessWidget {
       height: AppSizes.currencyPillHeight,
       padding: const EdgeInsets.symmetric(horizontal: AppSizes.gapSmall),
       decoration: stickerDecoration(
-        fill: trackColor,
+        fill: surfaceTone(trackColor),
         radius: AppSizes.currencyPillHeight / 2,
         border: BorderWidths.thin,
         drop: 3,
@@ -64,7 +65,7 @@ class CurrencyPill extends StatelessWidget {
                   border: BorderWidths.thin,
                   drop: 2,
                 ),
-                child: const Icon(Icons.add, size: 14, color: OutlineColor.color),
+                child: Icon(Icons.add, size: 14, color: OutlineColor.color),
               ),
             ),
           ],

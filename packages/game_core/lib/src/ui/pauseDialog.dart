@@ -6,6 +6,7 @@ import '../theme/appText.dart';
 import '../theme/borderWidths.dart';
 import '../theme/pal.dart';
 import '../theme/stickerDecoration.dart';
+import '../theme/surfaceTone.dart';
 import 'bouncyButton.dart';
 import 'settings/settingsController.dart';
 import 'settings/stickerToggle.dart';
@@ -32,7 +33,7 @@ class PauseDialog extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(AppSizes.gapHuge),
         decoration: stickerDecoration(
-          fill: Pal.cream,
+          fill: surfaceTone(Pal.cream),
           radius: AppSizes.radiusPanel,
           border: BorderWidths.thick,
           drop: 6,

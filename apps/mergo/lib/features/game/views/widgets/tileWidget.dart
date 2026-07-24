@@ -14,7 +14,7 @@ class TileWidget extends StatelessWidget {
     if (value == 0) {
       return DecoratedBox(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: surfaceTone(Colors.white),
           borderRadius: BorderRadius.circular(8),
           border: Border.all(color: OutlineColor.color, width: BorderWidths.hairline),
         ),
