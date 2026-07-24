@@ -13,6 +13,7 @@ class GamePalette {
     required this.primaryCta,
     required this.splashStart,
     required this.splashEnd,
+    this.backgroundDark,
   });
 
   final Color primary;
@@ -25,4 +26,8 @@ class GamePalette {
   final Color primaryCta;
   final Color splashStart;
   final Color splashEnd;
+
+  /// Optional hand-tuned dark-mode scaffold color. When null, the dark
+  /// scaffold falls back to `GameTheme.darken(background)`.
+  final Color? backgroundDark;
 }

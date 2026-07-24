@@ -26,7 +26,7 @@ class BoardPreviewWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(AppSizes.gapMedium),
-      decoration: stickerDecoration(fill: surfaceTone(const Color(0xFFF5E4BE)), radius: AppSizes.radiusPanel, border: BorderWidths.thick, drop: 6),
+      decoration: stickerDecoration(fill: surfaceTone(const Color(0xFFEFF0FA)), radius: AppSizes.radiusPanel, border: BorderWidths.thick, drop: 6),
       child: AspectRatio(
         aspectRatio: 0.7,
         child: GridView.builder(

@@ -10,16 +10,17 @@ import 'pal.dart';
 /// `surfaceTone()`, and ink/borders via `OutlineColor.color`.
 class GameTheme {
   static const GamePalette blocko = GamePalette(
-    primary: Pal.blue,
-    secondary: Pal.red,
-    accents: [Pal.green, Pal.yellow, Pal.purple],
-    background: Pal.blue,
-    backgroundEnd: Color(0xFF1B4FD8),
-    panel: Pal.cream,
-    surface: Color(0xFFF5E4BE),
-    primaryCta: Pal.green,
-    splashStart: Pal.blue,
-    splashEnd: Color(0xFF1B4FD8),
+    primary: Color(0xFF3D5CFF),
+    secondary: Color(0xFFFF2E63),
+    accents: [Color(0xFF00E5A8), Color(0xFFFFDE59), Color(0xFFB026FF)],
+    background: Color(0xFF3D5CFF),
+    backgroundEnd: Color(0xFF7B2FFF),
+    backgroundDark: Color(0xFF0A0618),
+    panel: Color(0xFFF3F6FF),
+    surface: Color(0xFFF3F6FF),
+    primaryCta: Color(0xFF00E5A8),
+    splashStart: Color(0xFF3D5CFF),
+    splashEnd: Color(0xFF7B2FFF),
   );
 
   static const GamePalette dashy = GamePalette(
@@ -61,7 +62,7 @@ class GameTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: brightness,
-      scaffoldBackgroundColor: isDark ? darken(palette.background) : palette.background,
+      scaffoldBackgroundColor: isDark ? (palette.backgroundDark ?? darken(palette.background)) : palette.background,
       textTheme: GoogleFonts.baloo2TextTheme(isDark ? ThemeData.dark().textTheme : ThemeData.light().textTheme),
       colorScheme: ColorScheme.fromSeed(
         seedColor: palette.primary,

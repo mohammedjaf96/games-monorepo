@@ -37,7 +37,7 @@ class BoardWidget extends StatelessWidget {
 
     return Container(
       padding: const EdgeInsets.all(AppSizes.gapSmall),
-      decoration: stickerDecoration(fill: surfaceTone(const Color(0xFFF5E4BE)), radius: AppSizes.radiusPanel, border: BorderWidths.thick, drop: 6),
+      decoration: stickerDecoration(fill: surfaceTone(const Color(0xFFEFF0FA)), radius: AppSizes.radiusPanel, border: BorderWidths.thick, drop: 6),
       child: LayoutBuilder(
         builder: (context, constraints) {
           final cellSizeForWidth = constraints.maxWidth / gridWidth;
