@@ -47,6 +47,8 @@ export 'src/ui/animatedCounter.dart';
 export 'src/ui/bouncyButton.dart';
 export 'src/ui/currencyPill.dart';
 export 'src/ui/dailyReward/dailyRewardDialog.dart';
+export 'src/ui/edgeGlowPainter.dart';
+export 'src/ui/edgeGlowWidget.dart';
 export 'src/ui/floatingScoreText.dart';
 export 'src/ui/floatingScoreTextOverlay.dart';
 export 'src/ui/gameOverDialog.dart';

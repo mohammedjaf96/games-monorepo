@@ -26,6 +26,8 @@ class GameController extends GetxController {
   final RxList<FloatingScoreText> floatingTexts = <FloatingScoreText>[].obs;
   final RxList<ParticleBurst> bursts = <ParticleBurst>[].obs;
   final RxInt shakeTrigger = 0.obs;
+  final RxInt glowTrigger = 0.obs;
+  final RxBool glowBig = false.obs;
 
   final Rx<BlockoShapeType?> fallingType = Rx<BlockoShapeType?>(null);
   final RxInt fallingRotation = 0.obs;
@@ -216,6 +218,8 @@ class GameController extends GetxController {
     score.value += bonus;
     showFloatingText('+$bonus');
     spawnBurst(BlockoColors.palette[linesClearedTotal % BlockoColors.palette.length]);
+    glowBig.value = fullRows.length >= 2;
+    glowTrigger.value++;
     if (fullRows.length >= 2) shakeTrigger.value++;
   }
 
