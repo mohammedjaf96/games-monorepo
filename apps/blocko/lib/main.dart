@@ -33,6 +33,7 @@ void main() async {
       themeMode: settings.themeMode.value,
       getPages: AppPages.pages,
       initialRoute: AppRoutes.splash,
+      builder: (context, child) => AudioUnlockGate(child: child!),
     ),
   );
 }

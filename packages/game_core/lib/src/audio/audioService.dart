@@ -10,6 +10,7 @@ import '../storage/keyValueStore.dart';
 class AudioService extends GetxService {
   final AudioPlayer bgmPlayer = AudioPlayer();
   String? lastBgmPath;
+  bool _firstInteractionHandled = false;
 
   Future<AudioService> init() async {
     try {
@@ -50,6 +51,18 @@ class AudioService extends GetxService {
     } catch (_) {
       // BGM asset not shipped yet — tolerate silently (GAME_IDEAS.md §c).
     }
+  }
+
+  /// Browsers block audio started before any user gesture, so the very
+  /// first `playBgm` call — fired from the splash screen on app boot —
+  /// can silently produce no sound there. Call this from the first
+  /// tap/click anywhere in the app to retry it once, so music always ends
+  /// up playing from the start instead of only after some later, unrelated
+  /// interaction unlocks the browser's audio.
+  void unlockBgmOnFirstInteraction() {
+    if (_firstInteractionHandled) return;
+    _firstInteractionHandled = true;
+    resumeBgmIfKnown();
   }
 
   /// Resumes whichever track was last requested via [playBgm] — used when

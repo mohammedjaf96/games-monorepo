@@ -53,8 +53,8 @@ class GameController extends GetxController {
 
   static const double swipeThreshold = 32;
   static const double fastDropCells = 7;
-  static const int baseDropIntervalMs = 800;
-  static const int minDropIntervalMs = 150;
+  static const int baseDropIntervalMs = 450;
+  static const int minDropIntervalMs = 120;
   static const int fastDropIntervalMs = 40;
   static const int dropIntervalStepMs = 20;
   static const int shatterDurationMs = 260;

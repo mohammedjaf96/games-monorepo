@@ -1,9 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import '../storage/hiveService.dart';
 import '../storage/keyValueStore.dart';
 import 'hapticPattern.dart';
+import 'webVibration.dart';
 
 /// Fires device haptics for specific gameplay events (GAME_IDEAS.md §3.8-b).
 /// Always checks the vibration setting first; tolerates devices with no
@@ -24,6 +26,12 @@ class HapticsService extends GetxService {
   }
 
   Future<void> _fire(HapticPattern pattern) async {
+    // Flutter's own HapticFeedback has no web implementation at all, so on
+    // web this also fires the browser's Vibration API directly — the only
+    // way a plain web link (as opposed to an installed native app) can ever
+    // actually vibrate the device (Android Chrome only; iOS Safari has no
+    // such API to call).
+    if (kIsWeb) return _fireWeb(pattern);
     switch (pattern) {
       case HapticPattern.light:
         await HapticFeedback.lightImpact();
@@ -37,6 +45,21 @@ class HapticsService extends GetxService {
         await HapticFeedback.mediumImpact();
         await Future.delayed(const Duration(milliseconds: 80));
         await HapticFeedback.mediumImpact();
+    }
+  }
+
+  void _fireWeb(HapticPattern pattern) {
+    switch (pattern) {
+      case HapticPattern.light:
+        triggerWebVibration(10);
+      case HapticPattern.medium:
+        triggerWebVibration(20);
+      case HapticPattern.heavy:
+        triggerWebVibration(35);
+      case HapticPattern.selection:
+        triggerWebVibration(5);
+      case HapticPattern.doublePulse:
+        triggerWebVibration(20);
     }
   }
 }

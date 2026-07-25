@@ -12,6 +12,7 @@ export 'src/analytics/analyticsService.dart';
 export 'src/app/bootstrap.dart';
 export 'src/app/gameConfig.dart';
 export 'src/audio/audioService.dart';
+export 'src/audio/audioUnlockGate.dart';
 export 'src/audio/hapticPattern.dart';
 export 'src/audio/hapticsService.dart';
 export 'src/economy/acquireMethod.dart';
