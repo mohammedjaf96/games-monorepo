@@ -63,10 +63,10 @@ class GamePage extends GetView<GameController> {
                     top: 60,
                     left: 0,
                     right: 0,
-                    child: Obx(() => FloatingScoreTextOverlay(entries: controller.floatingTexts)),
+                    child: Obx(() => FloatingScoreTextOverlay(entries: controller.floatingTexts.toList())),
                   ),
                   Positioned.fill(
-                    child: Obx(() => ParticleBurstOverlay(bursts: controller.bursts)),
+                    child: Obx(() => ParticleBurstOverlay(bursts: controller.bursts.toList())),
                   ),
                 ],
               ),

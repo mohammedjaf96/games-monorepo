@@ -55,7 +55,6 @@ class BoardWidget extends StatelessWidget {
 
           return Center(
             child: Obx(() {
-              debugPrint('DEBUGTRACE boardObx read=${controller.fallingType.value}');
               final cellSize = min(cellSizeForWidth, constraints.maxHeight / gridHeight);
               final fallingType = controller.fallingType.value;
               final fallingCells = fallingType == null ? const <Point<int>>[] : BlockoShapes.cellsFor(fallingType, controller.fallingRotation.value);

@@ -23,9 +23,8 @@ class GamePage extends GetView<GameController> {
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(gradient: palette.backgroundGradient),
-        child: Obx(() {
-          debugPrint('DEBUGTRACE edgeGlowObx read');
-          return EdgeGlowWidget(
+        child: Obx(
+          () => EdgeGlowWidget(
             trigger: controller.glowTrigger.value,
             big: controller.glowBig.value,
             hotColor: const Color(0xFFEAF9FF),
@@ -38,9 +37,8 @@ class GamePage extends GetView<GameController> {
                 onPanEnd: (_) => controller.resetSwipeAccumulator(),
                 child: Padding(
                   padding: const EdgeInsets.all(AppSizes.screenMargin),
-                  child: Obx(() {
-                    debugPrint('DEBUGTRACE shakeObx read');
-                    return ShakeWidget(
+                  child: Obx(
+                    () => ShakeWidget(
                       trigger: controller.shakeTrigger.value,
                       child: Stack(
                         children: [
@@ -59,28 +57,22 @@ class GamePage extends GetView<GameController> {
                             top: 60,
                             left: 0,
                             right: 0,
-                            child: Obx(() => FloatingScoreTextOverlay(entries: controller.floatingTexts)),
+                            child: Obx(() => FloatingScoreTextOverlay(entries: controller.floatingTexts.toList())),
                           ),
                           Positioned.fill(
-                            child: Obx(() => ParticleBurstOverlay(bursts: controller.bursts)),
+                            child: Obx(() => ParticleBurstOverlay(bursts: controller.bursts.toList())),
                           ),
-                          Obx(() {
-                            debugPrint('DEBUGTRACE pausedObx read=${controller.paused.value}');
-                            return controller.paused.value ? const Positioned.fill(child: BlockoPausedOverlay()) : const SizedBox.shrink();
-                          }),
-                          Obx(() {
-                            debugPrint('DEBUGTRACE menuOpenObx read=${controller.menuOpen.value}');
-                            return controller.menuOpen.value ? const Positioned.fill(child: BlockoMenuPanel()) : const SizedBox.shrink();
-                          }),
+                          Obx(() => controller.paused.value ? const Positioned.fill(child: BlockoPausedOverlay()) : const SizedBox.shrink()),
+                          Obx(() => controller.menuOpen.value ? const Positioned.fill(child: BlockoMenuPanel()) : const SizedBox.shrink()),
                         ],
                       ),
-                    );
-                  }),
+                    ),
+                  ),
                 ),
               ),
             ),
-          );
-        }),
+          ),
+        ),
       ),
     );
   }

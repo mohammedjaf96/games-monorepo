@@ -33,7 +33,7 @@ class BlockoMenuRow extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(label, style: BlockoNeonText.menuItem(color: color)),
+            Flexible(child: Text(label, style: BlockoNeonText.menuItem(color: color), overflow: TextOverflow.ellipsis)),
             if (value != null) Text(value!, style: BlockoNeonText.menuItem(color: valueColor ?? color)),
           ],
         ),

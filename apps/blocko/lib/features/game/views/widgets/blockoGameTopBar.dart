@@ -68,10 +68,7 @@ class BlockoGameTopBar extends StatelessWidget {
                   children: [
                     Icon(Icons.bolt, size: 15, color: palette.scoreColor, shadows: [Shadow(color: palette.scoreGlow, blurRadius: 6)]),
                     const SizedBox(width: 4),
-                    Obx(() {
-                      debugPrint('DEBUGTRACE scoreObx read=${controller.score.value}');
-                      return AnimatedCounter(value: controller.score.value, style: BlockoNeonText.score(color: palette.scoreColor));
-                    }),
+                    Obx(() => AnimatedCounter(value: controller.score.value, style: BlockoNeonText.score(color: palette.scoreColor))),
                   ],
                 ),
               ],
