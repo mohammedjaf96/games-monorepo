@@ -116,8 +116,13 @@ class GameController extends GetxController {
 
   void scheduleNextDrop() {
     dropTimer?.cancel();
-    if (roundOver || paused.value || menuOpen.value) return;
-    dropTimer = Timer(Duration(milliseconds: dropIntervalMs()), tick);
+    if (roundOver || paused.value || menuOpen.value) {
+      debugPrint('DEBUGTRACE scheduleNextDrop SKIPPED roundOver=$roundOver paused=${paused.value} menuOpen=${menuOpen.value}');
+      return;
+    }
+    final ms = dropIntervalMs();
+    debugPrint('DEBUGTRACE scheduleNextDrop ms=$ms fastDrop=${fastDropping.value}');
+    dropTimer = Timer(Duration(milliseconds: ms), tick);
   }
 
   /// Freezes/resumes gravity — the hamburger menu's Pause row and the
@@ -156,7 +161,9 @@ class GameController extends GetxController {
     final type = BlockoShapeType.values[random.nextInt(BlockoShapeType.values.length)];
     final box = BlockoShapes.boxSize[type]!;
     final anchorCol = (gridWidth - box) ~/ 2;
+    debugPrint('DEBUGTRACE spawnPiece type=$type canPlace=${canPlace(type, 0, 0, anchorCol)} gridHeight=$gridHeight');
     if (!canPlace(type, 0, 0, anchorCol)) {
+      debugPrint('DEBUGTRACE spawnPiece -> GAME OVER');
       gameOver();
       return;
     }
@@ -249,6 +256,7 @@ class GameController extends GetxController {
 
   Future<void> tick() async {
     final type = fallingType.value;
+    debugPrint('DEBUGTRACE tick type=$type row=${fallingRow.value} gridHeight=$gridHeight fastDrop=${fastDropping.value} roundOver=$roundOver');
     if (type == null || roundOver || paused.value || menuOpen.value) return;
     final newRow = fallingRow.value + 1;
     if (canPlace(type, fallingRotation.value, newRow, fallingCol.value)) {
@@ -261,6 +269,7 @@ class GameController extends GetxController {
 
   Future<void> lockPiece() async {
     final type = fallingType.value;
+    debugPrint('DEBUGTRACE lockPiece START type=$type row=${fallingRow.value} col=${fallingCol.value}');
     if (type == null) return;
     fastDropping.value = false;
     final landedIndexes = <int>[];
@@ -271,14 +280,17 @@ class GameController extends GetxController {
       cells[index] = type.index + 1;
       landedIndexes.add(index);
     }
+    debugPrint('DEBUGTRACE lockPiece WROTE cells nonZeroCount=${cells.where((c) => c != 0).length}');
     fallingType.value = null;
     spawnLandingFlash(landedIndexes);
     await audio.playSfx('place');
     await haptics.pulse(HapticPattern.light);
 
     await checkLineClears();
+    debugPrint('DEBUGTRACE lockPiece AFTER checkLineClears roundOver=$roundOver nonZeroCount=${cells.where((c) => c != 0).length}');
     if (roundOver) return;
     spawnPiece();
+    debugPrint('DEBUGTRACE lockPiece AFTER spawnPiece fallingType=${fallingType.value}');
     scheduleNextDrop();
   }
 
