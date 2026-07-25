@@ -59,7 +59,6 @@ class BoardWidget extends StatelessWidget {
               final fallingType = controller.fallingType.value;
               final fastDropping = controller.fastDropping.value;
               final fallingCells = fallingType == null ? const <Point<int>>[] : BlockoShapes.cellsFor(fallingType, controller.fallingRotation.value);
-              debugPrint('DEBUGTRACE boardWidget rebuild nonZeroCount=${controller.cells.where((c) => c != 0).length} gridHeight=$gridHeight cellCount=$cellCount cellsLength=${controller.cells.length}');
               return SizedBox(
                 width: cellSize * gridWidth,
                 height: cellSize * gridHeight,
@@ -106,24 +105,16 @@ class BoardWidget extends StatelessWidget {
                                 ),
                           ),
                         )
-                      else
+                      else if (controller.cells[index] != 0)
                         Positioned(
+                          key: ValueKey('cell-$index'),
                           left: (index % gridWidth) * cellSize,
                           top: (index ~/ gridWidth) * cellSize,
                           width: cellSize,
                           height: cellSize,
                           child: Padding(
                             padding: const EdgeInsets.all(1.5),
-                            child: AnimatedSwitcher(
-                              duration: const Duration(milliseconds: 150),
-                              transitionBuilder: (child, animation) => ScaleTransition(scale: animation, child: child),
-                              child: KeyedSubtree(
-                                key: ValueKey(controller.cells[index] != 0 ? 'filled-$index-${controller.cells[index]}' : 'empty-$index'),
-                                child: controller.cells[index] != 0
-                                    ? DecoratedBox(decoration: bevelDecoration(BlockoColors.palette[controller.cells[index] - 1]))
-                                    : const SizedBox.shrink(),
-                              ),
-                            ),
+                            child: DecoratedBox(decoration: bevelDecoration(BlockoColors.palette[controller.cells[index] - 1])),
                           ),
                         ),
                     for (var index = 0; index < cellCount; index++)
