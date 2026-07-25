@@ -59,6 +59,7 @@ class BoardWidget extends StatelessWidget {
               final fallingType = controller.fallingType.value;
               final fastDropping = controller.fastDropping.value;
               final fallingCells = fallingType == null ? const <Point<int>>[] : BlockoShapes.cellsFor(fallingType, controller.fallingRotation.value);
+              debugPrint('DEBUGTRACE boardWidget rebuild nonZeroCount=${controller.cells.where((c) => c != 0).length} gridHeight=$gridHeight cellCount=$cellCount cellsLength=${controller.cells.length}');
               return SizedBox(
                 width: cellSize * gridWidth,
                 height: cellSize * gridHeight,
