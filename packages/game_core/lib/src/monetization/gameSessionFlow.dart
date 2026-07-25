@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 import '../ads/adService.dart';
@@ -35,6 +36,20 @@ class GameSessionFlow {
     required Future<void> Function() onRevive,
     required Future<void> Function() onRetry,
     required Future<void> Function() onHome,
+    // Lets a game swap in its own styled dialog widget (matching its own
+    // visual theme) while keeping this shared reward/analytics/ad flow
+    // untouched. Must accept the same named parameters as [GameOverDialog].
+    Widget Function({
+      Key? key,
+      required String game,
+      required int score,
+      required int best,
+      required bool isNewRecord,
+      required Future<void> Function()? onRevive,
+      required Future<void> Function() onDoubleCoins,
+      required Future<void> Function() onRetry,
+      required Future<void> Function() onHome,
+    })? dialogBuilder,
   }) async {
     final previousBest = bestScore;
     final isNewRecord = result.score > previousBest;
@@ -61,8 +76,9 @@ class GameSessionFlow {
     analytics.log('game_over', {'game': gameId, 'score': result.score});
     if (isNewRecord) analytics.log('record_broken', {'game': gameId, 'score': result.score});
 
+    final buildDialog = dialogBuilder ?? GameOverDialog.new;
     await Get.dialog(
-      GameOverDialog(
+      buildDialog(
         game: gameId,
         score: result.score,
         best: isNewRecord ? result.score : previousBest,

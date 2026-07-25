@@ -12,6 +12,7 @@ import '../data/model/blockoLandingFlash.dart';
 import '../data/model/blockoShapeType.dart';
 import '../data/model/blockoShapes.dart';
 import '../data/model/blockoShiftingCell.dart';
+import '../views/widgets/blockoGameOverDialog.dart';
 
 const int gridWidth = 20;
 
@@ -53,8 +54,8 @@ class GameController extends GetxController {
 
   static const double swipeThreshold = 32;
   static const double fastDropCells = 7;
-  static const int baseDropIntervalMs = 450;
-  static const int minDropIntervalMs = 120;
+  static const int baseDropIntervalMs = 280;
+  static const int minDropIntervalMs = 90;
   static const int fastDropIntervalMs = 40;
   static const int dropIntervalStepMs = 20;
   static const int shatterDurationMs = 260;
@@ -410,6 +411,7 @@ class GameController extends GetxController {
       onRevive: () async => revive(),
       onRetry: () async => restart(),
       onHome: () async => Get.offAllNamed(AppRoutes.home),
+      dialogBuilder: BlockoGameOverDialog.new,
     );
   }
 
