@@ -26,6 +26,8 @@ Future<void> bootstrapGame({required GameConfig config}) async {
   Get.put(HapticsService());
   Get.put(SettingsController(privacyPolicyUrl: config.privacyPolicyUrl));
 
+  await Get.putAsync(() => AdService(config.adUnits, config.adPolicy).init());
+
   await Get.putAsync(() => WalletService().init());
   await Get.putAsync(() => InventoryService(config.storeCatalog).init());
   Get.put(StoreController(config.economy));
@@ -34,6 +36,4 @@ Future<void> bootstrapGame({required GameConfig config}) async {
   if (dailyRewardConfig != null) {
     await Get.putAsync(() => DailyRewardService(dailyRewardConfig).init());
   }
-
-  await Get.putAsync(() => AdService(config.adUnits, config.adPolicy).init());
 }
