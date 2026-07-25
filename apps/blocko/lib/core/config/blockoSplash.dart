@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:game_core/game_core.dart';
 
+import '../../features/home/views/widgets/blockoDailyRewardDialog.dart';
 import '../routing/appRoutes.dart';
 
 /// Blocko's splash screen: the "Neon Drop" night gradient, matching the
@@ -13,4 +14,5 @@ final SplashConfig blockoSplashConfig = SplashConfig(
   homeRoute: AppRoutes.home,
   loaderColor: const Color(0xFFCCFF00),
   bgmAssetPath: 'audio/bgm/theme.wav',
+  dailyRewardDialogBuilder: () => const BlockoDailyRewardDialog(),
 );

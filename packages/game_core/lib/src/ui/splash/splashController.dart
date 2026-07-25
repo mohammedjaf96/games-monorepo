@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import '../../ads/adService.dart';
 import '../../audio/audioService.dart';
 import '../../economy/dailyReward/dailyRewardService.dart';
-import '../dailyReward/dailyRewardDialog.dart';
 import 'splashConfig.dart';
 
 /// Drives the splash screen: a short brand delay, then App-Open ad, then the
@@ -36,7 +35,7 @@ class SplashController extends GetxController {
       final dailyReward = Get.find<DailyRewardService>();
       if (dailyReward.canClaimToday) {
         await Future.delayed(const Duration(milliseconds: 400));
-        Get.dialog(const DailyRewardDialog(), barrierDismissible: false);
+        Get.dialog(config.dailyRewardDialogBuilder(), barrierDismissible: false);
       }
     }
   }
