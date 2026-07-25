@@ -6,17 +6,16 @@ import '../../features/game/views/pages/gamePage.dart';
 import '../../features/home/bindings/homeBinding.dart';
 import '../../features/home/views/pages/homePage.dart';
 import '../config/mergoCatalog.dart';
-import '../config/mergoSplash.dart';
 import 'appRoutes.dart';
 
 /// GetX route table for Mergo (GAME_IDEAS.md §6.3/§6.9).
 class AppPages {
   static final List<GetPage> pages = [
-    GetPage(
-      name: AppRoutes.splash,
-      page: () => const SplashPage(),
-      binding: BindingsBuilder(() => Get.put(SplashController(mergoSplashConfig), permanent: true)),
-    ),
+    // SplashController is put in main.dart before runApp, not via a page
+    // binding: its mascot/dots keep animating during the Home transition's
+    // outgoing frames, and a route-linked binding gets disposed by
+    // Get.offAllNamed before those frames finish, crashing GetView<SplashController>.
+    GetPage(name: AppRoutes.splash, page: () => const SplashPage()),
     GetPage(name: AppRoutes.home, page: () => const HomePage(), binding: HomeBinding()),
     GetPage(name: AppRoutes.game, page: () => const GamePage(), binding: GameBinding()),
     GetPage(

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 import 'core/config/dashyCatalog.dart';
 import 'core/config/dashyEconomy.dart';
+import 'core/config/dashySplash.dart';
 import 'core/i18n/dashyTranslations.dart';
 import 'core/routing/appPages.dart';
 import 'core/routing/appRoutes.dart';
@@ -18,6 +19,7 @@ final GameConfig dashyConfig = GameConfig(
 
 void main() async {
   await bootstrapGame(config: dashyConfig);
+  Get.put(SplashController(dashySplashConfig));
   final settings = Get.find<SettingsController>();
   runApp(
     GetMaterialApp(

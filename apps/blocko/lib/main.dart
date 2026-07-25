@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 import 'core/config/blockoCatalog.dart';
 import 'core/config/blockoEconomy.dart';
+import 'core/config/blockoSplash.dart';
 import 'core/i18n/blockoTranslations.dart';
 import 'core/routing/appPages.dart';
 import 'core/routing/appRoutes.dart';
@@ -18,6 +19,7 @@ final GameConfig blockoConfig = GameConfig(
 
 void main() async {
   await bootstrapGame(config: blockoConfig);
+  Get.put(SplashController(blockoSplashConfig));
   final settings = Get.find<SettingsController>();
   runApp(
     GetMaterialApp(

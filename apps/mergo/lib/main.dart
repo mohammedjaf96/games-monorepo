@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 import 'core/config/mergoCatalog.dart';
 import 'core/config/mergoEconomy.dart';
+import 'core/config/mergoSplash.dart';
 import 'core/i18n/mergoTranslations.dart';
 import 'core/routing/appPages.dart';
 import 'core/routing/appRoutes.dart';
@@ -18,6 +19,7 @@ final GameConfig mergoConfig = GameConfig(
 
 void main() async {
   await bootstrapGame(config: mergoConfig);
+  Get.put(SplashController(mergoSplashConfig));
   final settings = Get.find<SettingsController>();
   runApp(
     GetMaterialApp(
