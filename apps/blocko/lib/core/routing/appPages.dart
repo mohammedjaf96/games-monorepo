@@ -6,6 +6,7 @@ import '../../features/game/views/pages/gamePage.dart';
 import '../../features/home/bindings/homeBinding.dart';
 import '../../features/home/views/pages/homePage.dart';
 import '../../features/settings/views/pages/blockoSettingsPage.dart';
+import '../../features/store/views/pages/blockoStorePage.dart';
 import '../config/blockoCatalog.dart';
 import 'appRoutes.dart';
 
@@ -19,10 +20,7 @@ class AppPages {
     GetPage(name: AppRoutes.splash, page: () => const SplashPage()),
     GetPage(name: AppRoutes.home, page: () => const HomePage(), binding: HomeBinding()),
     GetPage(name: AppRoutes.game, page: () => const GamePage(), binding: GameBinding()),
-    GetPage(
-      name: AppRoutes.store,
-      page: () => StorePage(catalog: blockoCatalog, primaryColor: GameTheme.blocko.primary),
-    ),
+    GetPage(name: AppRoutes.store, page: () => BlockoStorePage(catalog: blockoCatalog)),
     GetPage(name: AppRoutes.settings, page: () => const BlockoSettingsPage()),
   ];
 }

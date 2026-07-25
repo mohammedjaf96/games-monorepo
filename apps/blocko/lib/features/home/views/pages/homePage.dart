@@ -7,6 +7,7 @@ import '../../../../core/theme/blockoNeonText.dart';
 import '../../../../core/theme/blockoNeonTokens.dart';
 import '../../../../core/widgets/blockoDialogButton.dart';
 import '../../../../core/widgets/blockoNeonIconButton.dart';
+import '../../../../core/widgets/blockoWalletBar.dart';
 import '../../controllers/homeController.dart';
 import '../widgets/boardPreviewWidget.dart';
 
@@ -27,7 +28,7 @@ class HomePage extends GetView<HomeController> {
             padding: const EdgeInsets.all(AppSizes.screenMargin),
             child: Column(
               children: [
-                WalletBar(onTapPlus: controller.shopTapped).animate().fadeIn(duration: 400.ms).moveY(begin: -16, end: 0),
+                BlockoWalletBar(onTapPlus: controller.shopTapped).animate().fadeIn(duration: 400.ms).moveY(begin: -16, end: 0),
                 const SizedBox(height: AppSizes.gapMedium),
                 Text(
                   'BLOCKO',
