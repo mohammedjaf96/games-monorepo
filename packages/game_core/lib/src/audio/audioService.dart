@@ -26,7 +26,10 @@ class AudioService extends GetxService {
     if (!soundEnabled) return;
     try {
       final player = AudioPlayer();
-      await player.play(AssetSource('audio/sfx/$name.wav'));
+      // A capped wait: some browsers leave `play()` unresolved for a
+      // suspended AudioContext, and a sound effect must never be able to
+      // stall the gameplay logic awaiting it.
+      await player.play(AssetSource('audio/sfx/$name.wav')).timeout(const Duration(milliseconds: 800), onTimeout: () {});
       player.onPlayerComplete.listen((_) => player.dispose());
     } catch (_) {
       // Missing/broken asset — never crash the game over a sound effect.

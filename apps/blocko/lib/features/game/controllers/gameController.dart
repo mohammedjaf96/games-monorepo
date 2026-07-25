@@ -67,6 +67,7 @@ class GameController extends GetxController {
   bool reviveUsed = false;
   bool boardConfigured = false;
   Timer? dropTimer;
+  Timer? watchdogTimer;
   final Random random = Random();
 
   late final GameSessionFlow sessionFlow;
@@ -78,11 +79,23 @@ class GameController extends GetxController {
     super.onInit();
     sessionFlow = GameSessionFlow(gameId: 'blocko', economyConfig: blockoEconomy);
     best.value = sessionFlow.bestScore;
+    // Belt-and-suspenders: if a piece is falling and play is live but gravity's
+    // timer somehow died (a stalled browser tab, a suspended audio/haptics
+    // call, or any other silent hiccup), this catches it within a second
+    // instead of leaving the piece frozen in place forever.
+    watchdogTimer = Timer.periodic(const Duration(seconds: 1), (_) => _watchdogCheck());
+  }
+
+  void _watchdogCheck() {
+    if (!roundOver && !paused.value && !menuOpen.value && fallingType.value != null && (dropTimer == null || !dropTimer!.isActive)) {
+      scheduleNextDrop();
+    }
   }
 
   @override
   void onClose() {
     dropTimer?.cancel();
+    watchdogTimer?.cancel();
     super.onClose();
   }
 

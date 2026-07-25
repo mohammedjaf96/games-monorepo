@@ -15,22 +15,28 @@ class HapticsService extends GetxService {
   Future<void> pulse(HapticPattern pattern) async {
     if (!vibrationEnabled) return;
     try {
-      switch (pattern) {
-        case HapticPattern.light:
-          await HapticFeedback.lightImpact();
-        case HapticPattern.medium:
-          await HapticFeedback.mediumImpact();
-        case HapticPattern.heavy:
-          await HapticFeedback.heavyImpact();
-        case HapticPattern.selection:
-          await HapticFeedback.selectionClick();
-        case HapticPattern.doublePulse:
-          await HapticFeedback.mediumImpact();
-          await Future.delayed(const Duration(milliseconds: 80));
-          await HapticFeedback.mediumImpact();
-      }
+      // A capped wait: a platform channel call that never responds must
+      // never be able to stall the gameplay logic awaiting it.
+      await _fire(pattern).timeout(const Duration(milliseconds: 800), onTimeout: () {});
     } catch (_) {
       // Device has no vibration motor or platform call failed — ignore.
+    }
+  }
+
+  Future<void> _fire(HapticPattern pattern) async {
+    switch (pattern) {
+      case HapticPattern.light:
+        await HapticFeedback.lightImpact();
+      case HapticPattern.medium:
+        await HapticFeedback.mediumImpact();
+      case HapticPattern.heavy:
+        await HapticFeedback.heavyImpact();
+      case HapticPattern.selection:
+        await HapticFeedback.selectionClick();
+      case HapticPattern.doublePulse:
+        await HapticFeedback.mediumImpact();
+        await Future.delayed(const Duration(milliseconds: 80));
+        await HapticFeedback.mediumImpact();
     }
   }
 }
