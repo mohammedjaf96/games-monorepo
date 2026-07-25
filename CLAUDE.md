@@ -33,3 +33,13 @@ lines, Home screen entrance choreography) that were applied to the existing
 three games. This applies to this session and every future session, without
 exception — a new game must not ship feeling less polished than the first
 three by omission.
+
+## Available: Game-dev skills + further reading
+
+`.agents/skills/` has installed Agent Skills (`game-feel`, `game-ui-ux`,
+`puzzle`, `art-direction-and-readability`, `onboarding-and-teaching`) —
+reach for these first for concrete technique on juice, HUD/menu layout,
+grid-puzzle resolution, visual readability, and tutorial design. For
+broader design inspiration (postmortems, mobile F2P practice, palette
+theory) that isn't a skill, see **[`GAME_DESIGN_RESOURCES.md`](./GAME_DESIGN_RESOURCES.md)**
+— optional reading, not a rule set like the two sections above.
