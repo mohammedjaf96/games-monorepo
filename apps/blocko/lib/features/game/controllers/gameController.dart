@@ -13,6 +13,7 @@ import '../data/model/blockoShapeType.dart';
 import '../data/model/blockoShapes.dart';
 import '../data/model/blockoShiftingCell.dart';
 import '../views/widgets/blockoGameOverDialog.dart';
+import '../views/widgets/blockoHowToPlayDialog.dart';
 
 const int gridWidth = 20;
 
@@ -126,7 +127,7 @@ class GameController extends GetxController {
     KeyValueStore.set(HiveService.settingsBox, 'tutorialSeenBlocko', true);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Get.dialog(
-        HowToPlayDialog(game: 'blocko', goal: 'tutorialGoal'.tr, controls: 'tutorialControls'.tr, onGotIt: Get.back),
+        BlockoHowToPlayDialog(game: 'blocko', goal: 'tutorialGoal'.tr, controls: 'tutorialControls'.tr, onGotIt: Get.back),
         barrierDismissible: false,
       );
     });

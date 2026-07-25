@@ -2,6 +2,7 @@ import 'package:game_core/game_core.dart';
 import 'package:get/get.dart';
 
 import '../../../core/routing/appRoutes.dart';
+import '../views/widgets/blockoDailyRewardDialog.dart';
 
 /// Drives the Home screen: best score display and navigation
 /// (GAME_IDEAS.md §4.3).
@@ -21,5 +22,5 @@ class HomeController extends GetxController {
 
   void settingsTapped() => Get.toNamed(AppRoutes.settings);
 
-  void dailyRewardTapped() => Get.dialog(const DailyRewardDialog());
+  void dailyRewardTapped() => Get.dialog(const BlockoDailyRewardDialog());
 }

@@ -19,14 +19,16 @@ class BlockoDialogButton extends StatelessWidget {
   final String label;
   final Color color;
   final bool filled;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
+    final disabled = onTap == null;
+    final effectiveColor = disabled ? color.withOpacity(0.35) : color;
     return DecoratedBox(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        boxShadow: filled ? [BoxShadow(color: color.withOpacity(0.55), blurRadius: 16, spreadRadius: 1)] : const [],
+        boxShadow: filled && !disabled ? [BoxShadow(color: color.withOpacity(0.55), blurRadius: 16, spreadRadius: 1)] : const [],
       ),
       child: SizedBox(
         width: double.infinity,
@@ -34,7 +36,7 @@ class BlockoDialogButton extends StatelessWidget {
             ? ElevatedButton(
                 onPressed: onTap,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: color,
+                  backgroundColor: effectiveColor,
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                   elevation: 0,
@@ -44,11 +46,11 @@ class BlockoDialogButton extends StatelessWidget {
             : OutlinedButton(
                 onPressed: onTap,
                 style: OutlinedButton.styleFrom(
-                  side: BorderSide(color: color),
+                  side: BorderSide(color: effectiveColor),
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
-                child: Text(label.toUpperCase(), style: BlockoNeonText.overlayButton(color: color)),
+                child: Text(label.toUpperCase(), style: BlockoNeonText.overlayButton(color: effectiveColor)),
               ),
       ),
     );
