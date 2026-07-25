@@ -52,7 +52,7 @@ class GameController extends GetxController {
   final RxInt fallingSpawnId = 0.obs;
 
   static const double swipeThreshold = 32;
-  static const double fastDropThreshold = 18;
+  static const double fastDropCells = 7;
   static const int baseDropIntervalMs = 800;
   static const int minDropIntervalMs = 150;
   static const int fastDropIntervalMs = 40;
@@ -66,6 +66,13 @@ class GameController extends GetxController {
   bool roundOver = false;
   bool reviveUsed = false;
   bool boardConfigured = false;
+  // Real on-screen cell size in logical pixels, set once from the board's
+  // actual layout — the fast-drop gesture threshold scales off this instead
+  // of a fixed pixel count, so it always means "drag down ~7 cells" no
+  // matter the device's screen density.
+  double cellSizePx = 20;
+
+  double get fastDropThreshold => cellSizePx * fastDropCells;
   Timer? dropTimer;
   Timer? watchdogTimer;
   final Random random = Random();
@@ -102,10 +109,11 @@ class GameController extends GetxController {
   /// Called once by `BoardWidget` after its first layout, with however many
   /// square rows actually fit the device's screen at the fixed 20-wide cell
   /// size — only the very first call takes effect.
-  void configureBoardHeight(int rows) {
+  void configureBoardHeight(int rows, double cellSize) {
     if (boardConfigured) return;
     boardConfigured = true;
     gridHeight = rows.clamp(10, 200);
+    cellSizePx = cellSize;
     cells.assignAll(List<int>.filled(cellCount, 0));
     spawnPiece();
     scheduleNextDrop();

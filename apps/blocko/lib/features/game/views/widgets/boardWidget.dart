@@ -51,7 +51,7 @@ class BoardWidget extends StatelessWidget {
         builder: (context, constraints) {
           final cellSizeForWidth = constraints.maxWidth / gridWidth;
           final computedRows = (constraints.maxHeight / cellSizeForWidth).floor();
-          WidgetsBinding.instance.addPostFrameCallback((_) => controller.configureBoardHeight(computedRows));
+          WidgetsBinding.instance.addPostFrameCallback((_) => controller.configureBoardHeight(computedRows, cellSizeForWidth));
 
           return Center(
             child: Obx(() {
