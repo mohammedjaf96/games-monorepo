@@ -23,8 +23,9 @@ class GamePage extends GetView<GameController> {
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(gradient: palette.backgroundGradient),
-        child: Obx(
-          () => EdgeGlowWidget(
+        child: Obx(() {
+          debugPrint('DEBUGTRACE edgeGlowObx read');
+          return EdgeGlowWidget(
             trigger: controller.glowTrigger.value,
             big: controller.glowBig.value,
             hotColor: const Color(0xFFEAF9FF),
@@ -37,8 +38,9 @@ class GamePage extends GetView<GameController> {
                 onPanEnd: (_) => controller.resetSwipeAccumulator(),
                 child: Padding(
                   padding: const EdgeInsets.all(AppSizes.screenMargin),
-                  child: Obx(
-                    () => ShakeWidget(
+                  child: Obx(() {
+                    debugPrint('DEBUGTRACE shakeObx read');
+                    return ShakeWidget(
                       trigger: controller.shakeTrigger.value,
                       child: Stack(
                         children: [
@@ -62,17 +64,23 @@ class GamePage extends GetView<GameController> {
                           Positioned.fill(
                             child: Obx(() => ParticleBurstOverlay(bursts: controller.bursts)),
                           ),
-                          Obx(() => controller.paused.value ? const Positioned.fill(child: BlockoPausedOverlay()) : const SizedBox.shrink()),
-                          Obx(() => controller.menuOpen.value ? const Positioned.fill(child: BlockoMenuPanel()) : const SizedBox.shrink()),
+                          Obx(() {
+                            debugPrint('DEBUGTRACE pausedObx read=${controller.paused.value}');
+                            return controller.paused.value ? const Positioned.fill(child: BlockoPausedOverlay()) : const SizedBox.shrink();
+                          }),
+                          Obx(() {
+                            debugPrint('DEBUGTRACE menuOpenObx read=${controller.menuOpen.value}');
+                            return controller.menuOpen.value ? const Positioned.fill(child: BlockoMenuPanel()) : const SizedBox.shrink();
+                          }),
                         ],
                       ),
-                    ),
-                  ),
+                    );
+                  }),
                 ),
               ),
             ),
-          ),
-        ),
+          );
+        }),
       ),
     );
   }
