@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 
 import '../../../../core/theme/blockoNeonText.dart';
 import '../../../../core/theme/blockoNeonTokens.dart';
+import '../../../../core/widgets/blockoDialogButton.dart';
+import '../../../../core/widgets/blockoNeonIconButton.dart';
 import '../../controllers/homeController.dart';
 import '../widgets/boardPreviewWidget.dart';
 
@@ -50,19 +52,22 @@ class HomePage extends GetView<HomeController> {
                     Obx(
                       () => Container(
                         padding: const EdgeInsets.symmetric(horizontal: AppSizes.gapLarge, vertical: AppSizes.gapSmall),
-                        decoration: stickerDecoration(
-                          fill: Pal.yellow,
-                          radius: AppSizes.radiusChip,
-                          border: BorderWidths.thin,
-                          drop: 3,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(AppSizes.radiusChip),
+                          color: palette.panelBackground,
+                          border: Border.all(color: palette.panelBorder),
+                          boxShadow: [BoxShadow(color: palette.hamburgerGlow, blurRadius: 10)],
                         ),
-                        child: Text('${'labelBest'.tr}: ${controller.best.value}', style: AppText.label()),
+                        child: Text(
+                          '${'labelBest'.tr}: ${controller.best.value}',
+                          style: BlockoNeonText.menuItem(color: palette.textPrimary),
+                        ),
                       ),
                     ).animate().fadeIn(delay: 300.ms, duration: 400.ms),
                   ],
                 ),
                 const SizedBox(height: AppSizes.gapLarge),
-                BouncyButton(label: 'menuPlay'.tr, fill: Pal.green, onPressed: controller.playTapped)
+                BlockoDialogButton(label: 'menuPlay'.tr, color: palette.scoreColor, filled: true, onTap: controller.playTapped)
                     .animate()
                     .fadeIn(delay: 400.ms, duration: 400.ms)
                     .scale(begin: const Offset(0.8, 0.8), end: const Offset(1, 1)),
@@ -70,21 +75,18 @@ class HomePage extends GetView<HomeController> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    StickerIconButton(
+                    BlockoNeonIconButton(
                       iconAsset: 'assets/icons/shop.svg',
-                      fill: surfaceTone(Colors.white),
                       onPressed: controller.shopTapped,
                     ).animate().fadeIn(delay: 500.ms, duration: 350.ms).moveY(begin: 16, end: 0),
                     const SizedBox(width: AppSizes.gapMedium),
-                    StickerIconButton(
+                    BlockoNeonIconButton(
                       iconAsset: 'assets/icons/chest.svg',
-                      fill: surfaceTone(Colors.white),
                       onPressed: controller.dailyRewardTapped,
                     ).animate().fadeIn(delay: 560.ms, duration: 350.ms).moveY(begin: 16, end: 0),
                     const SizedBox(width: AppSizes.gapMedium),
-                    StickerIconButton(
+                    BlockoNeonIconButton(
                       iconAsset: 'assets/icons/gear.svg',
-                      fill: surfaceTone(Colors.white),
                       onPressed: controller.settingsTapped,
                     ).animate().fadeIn(delay: 620.ms, duration: 350.ms).moveY(begin: 16, end: 0),
                   ],

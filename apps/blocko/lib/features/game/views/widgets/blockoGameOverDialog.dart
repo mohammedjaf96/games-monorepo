@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 
 import '../../../../core/theme/blockoNeonText.dart';
 import '../../../../core/theme/blockoNeonTokens.dart';
-import 'blockoDialogButton.dart';
+import '../../../../core/widgets/blockoDialogButton.dart';
 
 /// Blocko's own "Neon Drop"-styled Game Over popup — swapped in for the
 /// shared cutesy `GameOverDialog` via `GameSessionFlow.showGameOver`'s

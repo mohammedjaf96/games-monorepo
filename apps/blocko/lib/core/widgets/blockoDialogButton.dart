@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/theme/blockoNeonText.dart';
+import '../theme/blockoNeonText.dart';
 
-/// A neon-styled button for Blocko's popups (filled/glowing for the primary
-/// action, outlined for secondary ones) — the "Neon Drop" equivalent of the
-/// cutesy `BouncyButton`/`RewardedButton` used by the other games.
+/// A neon-styled button for Blocko's popups and Home screen (filled/glowing
+/// for the primary action, outlined for secondary ones) — the "Neon Drop"
+/// equivalent of the cutesy `BouncyButton`/`RewardedButton` used by the
+/// other games. Lives in `core/` since it is reused across features (the
+/// Game Over dialog and the Home screen's Play button).
 class BlockoDialogButton extends StatelessWidget {
   const BlockoDialogButton({
     super.key,
