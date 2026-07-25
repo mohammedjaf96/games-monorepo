@@ -148,6 +148,11 @@ class GameController extends GetxController {
   }
 
   void spawnPiece() {
+    // A fresh piece always starts at normal speed — a drag held across two
+    // piece drops must not carry its "already past the fast-drop threshold"
+    // accumulator into the next piece, or it instantly free-falls too.
+    verticalAccumulator = 0;
+    swipeAccumulator = 0;
     final type = BlockoShapeType.values[random.nextInt(BlockoShapeType.values.length)];
     final box = BlockoShapes.boxSize[type]!;
     final anchorCol = (gridWidth - box) ~/ 2;
