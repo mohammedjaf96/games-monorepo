@@ -199,13 +199,12 @@ class GameController extends GetxController {
     }
   }
 
+  /// A downward drag commits the current piece to fast-drop for the rest
+  /// of its fall — lifting the finger does not cancel it. Only locking the
+  /// piece (see `lockPiece`) turns fast-drop back off, for the next piece.
   void handlePanEnd() {
     swipeAccumulator = 0;
     verticalAccumulator = 0;
-    if (fastDropping.value) {
-      fastDropping.value = false;
-      scheduleNextDrop();
-    }
   }
 
   void moveHorizontal(int direction) {
