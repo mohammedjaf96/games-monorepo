@@ -43,6 +43,7 @@ class GameController extends GetxController {
   final RxInt shiftEventId = 0.obs;
   final RxBool paused = false.obs;
   final RxBool menuOpen = false.obs;
+  final RxBool fastDropping = false.obs;
 
   final Rx<BlockoShapeType?> fallingType = Rx<BlockoShapeType?>(null);
   final RxInt fallingRotation = 0.obs;
@@ -51,14 +52,17 @@ class GameController extends GetxController {
   final RxInt fallingSpawnId = 0.obs;
 
   static const double swipeThreshold = 32;
+  static const double fastDropThreshold = 18;
   static const int baseDropIntervalMs = 800;
   static const int minDropIntervalMs = 150;
+  static const int fastDropIntervalMs = 40;
   static const int dropIntervalStepMs = 20;
   static const int shatterDurationMs = 260;
   static const int shiftDurationMs = 200;
 
   int linesClearedTotal = 0;
   double swipeAccumulator = 0;
+  double verticalAccumulator = 0;
   bool roundOver = false;
   bool reviveUsed = false;
   bool boardConfigured = false;
@@ -106,8 +110,9 @@ class GameController extends GetxController {
     });
   }
 
-  int dropIntervalMs() =>
-      (baseDropIntervalMs - linesClearedTotal * dropIntervalStepMs).clamp(minDropIntervalMs, baseDropIntervalMs);
+  int dropIntervalMs() => fastDropping.value
+      ? fastDropIntervalMs
+      : (baseDropIntervalMs - linesClearedTotal * dropIntervalStepMs).clamp(minDropIntervalMs, baseDropIntervalMs);
 
   void scheduleNextDrop() {
     dropTimer?.cancel();
@@ -167,11 +172,12 @@ class GameController extends GetxController {
     return true;
   }
 
-  /// Accumulates raw horizontal swipe distance (from anywhere on screen)
-  /// into discrete one-column moves.
-  void handleSwipeDelta(double dx) {
-    if (roundOver) return;
-    swipeAccumulator += dx;
+  /// Accumulates a drag delta from anywhere on the board into discrete
+  /// one-column horizontal moves, and engages fast-drop once the drag goes
+  /// far enough downward.
+  void handlePanUpdate(Offset delta) {
+    if (roundOver || paused.value || menuOpen.value) return;
+    swipeAccumulator += delta.dx;
     while (swipeAccumulator > swipeThreshold) {
       swipeAccumulator -= swipeThreshold;
       moveHorizontal(1);
@@ -180,9 +186,22 @@ class GameController extends GetxController {
       swipeAccumulator += swipeThreshold;
       moveHorizontal(-1);
     }
+
+    verticalAccumulator += delta.dy;
+    if (verticalAccumulator > fastDropThreshold && !fastDropping.value) {
+      fastDropping.value = true;
+      scheduleNextDrop();
+    }
   }
 
-  void resetSwipeAccumulator() => swipeAccumulator = 0;
+  void handlePanEnd() {
+    swipeAccumulator = 0;
+    verticalAccumulator = 0;
+    if (fastDropping.value) {
+      fastDropping.value = false;
+      scheduleNextDrop();
+    }
+  }
 
   void moveHorizontal(int direction) {
     final type = fallingType.value;
@@ -190,14 +209,17 @@ class GameController extends GetxController {
     final newCol = fallingCol.value + direction;
     if (canPlace(type, fallingRotation.value, fallingRow.value, newCol)) {
       fallingCol.value = newCol;
+      haptics.pulse(HapticPattern.light);
     }
   }
 
   /// Rotates 90° clockwise; if the rotated shape doesn't fit, nudges one
-  /// column either way before giving up (a minimal wall kick).
-  void rotate() {
+  /// column either way before giving up (a minimal wall kick). Returns
+  /// whether the rotation actually happened, so callers can gate feedback
+  /// (sound/haptic) on a real rotation rather than a no-op tap.
+  bool rotate() {
     final type = fallingType.value;
-    if (type == null) return;
+    if (type == null) return false;
     final newRotation = (fallingRotation.value + 1) % 4;
     final anchorRow = fallingRow.value;
     final anchorCol = fallingCol.value;
@@ -205,8 +227,19 @@ class GameController extends GetxController {
       if (canPlace(type, newRotation, anchorRow, anchorCol + kick)) {
         fallingRotation.value = newRotation;
         fallingCol.value = anchorCol + kick;
-        return;
+        return true;
       }
+    }
+    return false;
+  }
+
+  /// Tap-anywhere-to-rotate: the board's whole play area is one big rotate
+  /// button, so it carries the same feedback a real button would have had.
+  void rotateFromTap() {
+    if (roundOver || paused.value || menuOpen.value) return;
+    if (rotate()) {
+      audio.playSfx('tap');
+      haptics.pulse(HapticPattern.light);
     }
   }
 
@@ -225,6 +258,7 @@ class GameController extends GetxController {
   Future<void> lockPiece() async {
     final type = fallingType.value;
     if (type == null) return;
+    fastDropping.value = false;
     final landedIndexes = <int>[];
     for (final cell in BlockoShapes.cellsFor(type, fallingRotation.value)) {
       final row = fallingRow.value + cell.x;
@@ -264,7 +298,7 @@ class GameController extends GetxController {
     clearingRows.assignAll(fullRows);
     clearEventId.value++;
     await audio.playSfx('clear');
-    await haptics.pulse(fullRows.length >= 2 ? HapticPattern.doublePulse : HapticPattern.medium);
+    await haptics.pulse(fullRows.length >= 2 ? HapticPattern.doublePulse : HapticPattern.light);
     await Future.delayed(const Duration(milliseconds: shatterDurationMs));
 
     final newCells = List<int>.filled(cellCount, 0);
@@ -377,6 +411,7 @@ class GameController extends GetxController {
     reviveUsed = false;
     paused.value = false;
     menuOpen.value = false;
+    fastDropping.value = false;
     best.value = sessionFlow.bestScore;
     spawnPiece();
     scheduleNextDrop();

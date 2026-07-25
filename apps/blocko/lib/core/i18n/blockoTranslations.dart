@@ -26,8 +26,8 @@ class BlockoTranslations extends Translations {
       'backgroundSky': 'Sky',
       'backgroundSunset': 'Sunset',
       'backgroundGalaxy': 'Galaxy',
-      'tutorialGoal': 'Swipe left or right to guide the falling piece.',
-      'tutorialControls': 'Tap rotate to turn it — fill a full row to clear it!',
+      'tutorialGoal': 'Drag left or right to guide the piece, tap to rotate it.',
+      'tutorialControls': 'Drag down to drop fast — fill a full row to clear it!',
     },
     'ar': {
       'appName': 'بلوكو',
@@ -49,8 +49,8 @@ class BlockoTranslations extends Translations {
       'backgroundSky': 'سماء',
       'backgroundSunset': 'غروب',
       'backgroundGalaxy': 'مجرة',
-      'tutorialGoal': 'مرر يمينًا أو يسارًا لتوجيه القطعة النازلة.',
-      'tutorialControls': 'اضغط زر التدوير لتدويرها — املأ صفًا بالكامل لحذفه!',
+      'tutorialGoal': 'اسحب يمينًا أو يسارًا لتوجيه القطعة، واضغط في أي مكان لتدويرها.',
+      'tutorialControls': 'اسحب للأسفل لإسقاطها بسرعة — املأ صفًا بالكامل لحذفه!',
     },
   };
 

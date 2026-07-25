@@ -10,10 +10,10 @@ import '../widgets/blockoPausedOverlay.dart';
 import '../widgets/boardWidget.dart';
 
 /// Blocko's gameplay screen: the "Neon Drop"-styled top bar (hamburger menu,
-/// pulsing wordmark, lightning-bolt score), the falling-block well, and a
-/// rotate button. Left/right movement is a swipe gesture anywhere on screen,
-/// not a fixed control (GAME_IDEAS.md §4.3). The day/night toggle lives on
-/// the Settings screen, not here.
+/// pulsing wordmark, lightning-bolt score) and the falling-block well, which
+/// is the sole control surface — tap anywhere on it to rotate, drag
+/// left/right to move, drag down to fast-drop (GAME_IDEAS.md §4.3). The
+/// day/night toggle lives on the Settings screen, not here.
 class GamePage extends GetView<GameController> {
   const GamePage({super.key});
 
@@ -28,44 +28,43 @@ class GamePage extends GetView<GameController> {
             trigger: controller.glowTrigger.value,
             big: controller.glowBig.value,
             hotColor: const Color(0xFFEAF9FF),
-            primaryColor: GameTheme.blocko.primary,
-            deepColor: GameTheme.blocko.backgroundEnd,
+            primaryColor: palette.scoreColor,
+            deepColor: palette.titleGlow,
             child: SafeArea(
-              child: GestureDetector(
-                behavior: HitTestBehavior.translucent,
-                onPanUpdate: (details) => controller.handleSwipeDelta(details.delta.dx),
-                onPanEnd: (_) => controller.resetSwipeAccumulator(),
-                child: Padding(
-                  padding: const EdgeInsets.all(AppSizes.screenMargin),
-                  child: Obx(
-                    () => ShakeWidget(
-                      trigger: controller.shakeTrigger.value,
-                      child: Stack(
-                        children: [
-                          Column(
-                            children: [
-                              const BlockoGameTopBar(),
-                              const SizedBox(height: AppSizes.gapLarge),
-                              const Expanded(child: BoardWidget()),
-                              const SizedBox(height: AppSizes.gapLarge),
-                              Center(
-                                child: StickerIconButton(iconAsset: 'assets/icons/rotate.svg', fill: surfaceTone(Colors.white), onPressed: controller.rotate),
+              child: Padding(
+                padding: const EdgeInsets.all(AppSizes.screenMargin),
+                child: Obx(
+                  () => ShakeWidget(
+                    trigger: controller.shakeTrigger.value,
+                    child: Stack(
+                      children: [
+                        Column(
+                          children: [
+                            const BlockoGameTopBar(),
+                            const SizedBox(height: AppSizes.gapLarge),
+                            Expanded(
+                              child: GestureDetector(
+                                behavior: HitTestBehavior.opaque,
+                                onTap: controller.rotateFromTap,
+                                onPanUpdate: (details) => controller.handlePanUpdate(details.delta),
+                                onPanEnd: (_) => controller.handlePanEnd(),
+                                child: const BoardWidget(),
                               ),
-                            ],
-                          ),
-                          Positioned(
-                            top: 60,
-                            left: 0,
-                            right: 0,
-                            child: Obx(() => FloatingScoreTextOverlay(entries: controller.floatingTexts.toList())),
-                          ),
-                          Positioned.fill(
-                            child: Obx(() => ParticleBurstOverlay(bursts: controller.bursts.toList())),
-                          ),
-                          Obx(() => controller.paused.value ? const Positioned.fill(child: BlockoPausedOverlay()) : const SizedBox.shrink()),
-                          Obx(() => controller.menuOpen.value ? const Positioned.fill(child: BlockoMenuPanel()) : const SizedBox.shrink()),
-                        ],
-                      ),
+                            ),
+                          ],
+                        ),
+                        Positioned(
+                          top: 60,
+                          left: 0,
+                          right: 0,
+                          child: Obx(() => FloatingScoreTextOverlay(entries: controller.floatingTexts.toList())),
+                        ),
+                        Positioned.fill(
+                          child: Obx(() => ParticleBurstOverlay(bursts: controller.bursts.toList())),
+                        ),
+                        Obx(() => controller.paused.value ? const Positioned.fill(child: BlockoPausedOverlay()) : const SizedBox.shrink()),
+                        Obx(() => controller.menuOpen.value ? const Positioned.fill(child: BlockoMenuPanel()) : const SizedBox.shrink()),
+                      ],
                     ),
                   ),
                 ),

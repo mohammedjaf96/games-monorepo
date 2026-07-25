@@ -57,6 +57,7 @@ class BoardWidget extends StatelessWidget {
             child: Obx(() {
               final cellSize = min(cellSizeForWidth, constraints.maxHeight / gridHeight);
               final fallingType = controller.fallingType.value;
+              final fastDropping = controller.fastDropping.value;
               final fallingCells = fallingType == null ? const <Point<int>>[] : BlockoShapes.cellsFor(fallingType, controller.fallingRotation.value);
               return SizedBox(
                 width: cellSize * gridWidth,
@@ -76,10 +77,10 @@ class BoardWidget extends StatelessWidget {
                             child: DecoratedBox(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(nutfaRadius + 1),
-                                border: Border.all(color: Color.lerp(BlockoColors.palette[controller.cells[index] - 1], Colors.white, 0.3)!, width: 1.4),
+                                border: Border.all(color: Color.lerp(BlockoColors.palette[controller.cells[index] - 1], Colors.white, 0.15)!, width: 1.6),
                                 boxShadow: [
-                                  BoxShadow(color: BlockoColors.palette[controller.cells[index] - 1].withOpacity(0.95), blurRadius: 5, spreadRadius: 0.5),
-                                  BoxShadow(color: BlockoColors.palette[controller.cells[index] - 1].withOpacity(0.5), blurRadius: 12, spreadRadius: 1),
+                                  BoxShadow(color: BlockoColors.palette[controller.cells[index] - 1], blurRadius: 6, spreadRadius: 1),
+                                  BoxShadow(color: BlockoColors.palette[controller.cells[index] - 1].withOpacity(0.6), blurRadius: 16, spreadRadius: 2),
                                 ],
                               ),
                             ).animate().fadeOut(duration: 260.ms),
@@ -162,6 +163,27 @@ class BoardWidget extends StatelessWidget {
                           child: DecoratedBox(decoration: bevelDecoration(BlockoColors.palette[shift.colorValue - 1])),
                         ),
                       ),
+                    if (fastDropping && fallingType != null)
+                      for (final col in {for (final cell in fallingCells) controller.fallingCol.value + cell.y})
+                        Positioned(
+                          key: ValueKey('trail-$col'),
+                          left: col * cellSize + cellSize * 0.2,
+                          top: max(0, controller.fallingRow.value - 6) * cellSize,
+                          width: cellSize * 0.6,
+                          height: (controller.fallingRow.value - max(0, controller.fallingRow.value - 6) + 1) * cellSize,
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  BlockoColors.colorFor(fallingType).withOpacity(0),
+                                  BlockoColors.colorFor(fallingType).withOpacity(0.55),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
                     for (var i = 0; i < fallingCells.length; i++)
                       AnimatedPositioned(
                         key: ValueKey('fallingCell${controller.fallingSpawnId.value}-$i'),
