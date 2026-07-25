@@ -31,7 +31,7 @@ jobs:
         working-directory: apps/blocko
         run: |
           flutter pub get
-          flutter build web --release --source-maps --base-href /games-monorepo/
+          flutter build web --debug --base-href /games-monorepo/
 
       - name: Assemble site
         run: |
