@@ -41,6 +41,8 @@ class GameController extends GetxController {
   final RxList<BlockoShiftingCell> shiftingCells = <BlockoShiftingCell>[].obs;
   final RxBool shiftSettled = false.obs;
   final RxInt shiftEventId = 0.obs;
+  final RxBool paused = false.obs;
+  final RxBool menuOpen = false.obs;
 
   final Rx<BlockoShapeType?> fallingType = Rx<BlockoShapeType?>(null);
   final RxInt fallingRotation = 0.obs;
@@ -109,8 +111,35 @@ class GameController extends GetxController {
 
   void scheduleNextDrop() {
     dropTimer?.cancel();
-    if (roundOver) return;
+    if (roundOver || paused.value || menuOpen.value) return;
     dropTimer = Timer(Duration(milliseconds: dropIntervalMs()), tick);
+  }
+
+  /// Freezes/resumes gravity — the hamburger menu's Pause row and the
+  /// full-screen Paused overlay's Resume button both call this.
+  void togglePause() {
+    paused.value = !paused.value;
+    menuOpen.value = false;
+    if (paused.value) {
+      dropTimer?.cancel();
+    } else {
+      scheduleNextDrop();
+    }
+  }
+
+  void toggleMenu() {
+    menuOpen.value = !menuOpen.value;
+    if (menuOpen.value) {
+      dropTimer?.cancel();
+    } else if (!paused.value) {
+      scheduleNextDrop();
+    }
+  }
+
+  void exitGame() {
+    menuOpen.value = false;
+    dropTimer?.cancel();
+    Get.offAllNamed(AppRoutes.home);
   }
 
   void spawnPiece() {
@@ -183,7 +212,7 @@ class GameController extends GetxController {
 
   Future<void> tick() async {
     final type = fallingType.value;
-    if (type == null || roundOver) return;
+    if (type == null || roundOver || paused.value || menuOpen.value) return;
     final newRow = fallingRow.value + 1;
     if (canPlace(type, fallingRotation.value, newRow, fallingCol.value)) {
       fallingRow.value = newRow;
@@ -346,6 +375,8 @@ class GameController extends GetxController {
     linesClearedTotal = 0;
     roundOver = false;
     reviveUsed = false;
+    paused.value = false;
+    menuOpen.value = false;
     best.value = sessionFlow.bestScore;
     spawnPiece();
     scheduleNextDrop();

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:game_core/game_core.dart';
 
+import '../../../../core/theme/blockoGlowPanelDecoration.dart';
+import '../../../../core/theme/blockoNeonTokens.dart';
 import '../../../game/data/model/blockoColors.dart';
 
 /// A decorative static preview of the falling-block well shown on Home:
@@ -24,9 +26,10 @@ class BoardPreviewWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final palette = BlockoNeonTokens.of(context);
     return Container(
       padding: const EdgeInsets.all(AppSizes.gapMedium),
-      decoration: stickerDecoration(fill: surfaceTone(const Color(0xFFEFF0FA)), radius: AppSizes.radiusPanel, border: BorderWidths.thick, drop: 6),
+      decoration: blockoGlowPanelDecoration(palette: palette, background: palette.boardBackground, radius: AppSizes.radiusPanel),
       child: AspectRatio(
         aspectRatio: 0.7,
         child: GridView.builder(
@@ -35,11 +38,13 @@ class BoardPreviewWidget extends StatelessWidget {
           itemCount: pattern.length,
           itemBuilder: (context, index) {
             final colorIndex = pattern[index];
+            if (colorIndex == 0) return const SizedBox.shrink();
+            final color = BlockoColors.palette[colorIndex - 1];
             return DecoratedBox(
               decoration: BoxDecoration(
-                color: colorIndex == 0 ? Colors.white.withOpacity(0.15) : BlockoColors.palette[colorIndex - 1],
+                color: color,
                 borderRadius: BorderRadius.circular(4),
-                border: Border.all(color: OutlineColor.color, width: BorderWidths.hairline),
+                boxShadow: [BoxShadow(color: color.withOpacity(0.8), blurRadius: 6)],
               ),
             );
           },

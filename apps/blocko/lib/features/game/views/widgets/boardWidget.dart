@@ -5,11 +5,14 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:game_core/game_core.dart';
 import 'package:get/get.dart';
 
+import '../../../../core/theme/blockoGlowPanelDecoration.dart';
+import '../../../../core/theme/blockoNeonTokens.dart';
 import '../../controllers/gameController.dart';
 import '../../data/model/blockoColors.dart';
 import '../../data/model/blockoLandingFlash.dart';
 import '../../data/model/blockoShapes.dart';
 import '../../data/model/blockoShiftingCell.dart';
+import 'blockoGridPainter.dart';
 
 /// The falling-block well: settled cells plus the currently falling piece,
 /// both animated smoothly between positions. 20 nutfa wide; the row count
@@ -25,7 +28,8 @@ class BoardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<GameController>();
-    final bevelDecoration = (Color color) => BoxDecoration(
+    final palette = BlockoNeonTokens.of(context);
+    final bevelDecoration = (Color color, {bool strong = false}) => BoxDecoration(
           borderRadius: BorderRadius.circular(nutfaRadius),
           gradient: LinearGradient(
             begin: Alignment.topLeft,
@@ -33,11 +37,16 @@ class BoardWidget extends StatelessWidget {
             colors: [Color.lerp(color, Colors.white, 0.35)!, color, Color.lerp(color, Colors.black, 0.22)!],
             stops: const [0, 0.5, 1],
           ),
+          boxShadow: [
+            BoxShadow(color: color.withOpacity(0.85), blurRadius: strong ? 16 : 8),
+            if (strong) BoxShadow(color: Colors.white.withOpacity(0.5), blurRadius: 4),
+          ],
         );
 
     return Container(
       padding: const EdgeInsets.all(AppSizes.gapSmall),
-      decoration: stickerDecoration(fill: surfaceTone(const Color(0xFFEFF0FA)), radius: AppSizes.radiusPanel, border: BorderWidths.thick, drop: 6),
+      decoration: blockoGlowPanelDecoration(palette: palette, background: palette.boardBackground, radius: AppSizes.radiusPanel),
+      clipBehavior: Clip.antiAlias,
       child: LayoutBuilder(
         builder: (context, constraints) {
           final cellSizeForWidth = constraints.maxWidth / gridWidth;
@@ -54,6 +63,7 @@ class BoardWidget extends StatelessWidget {
                 height: cellSize * gridHeight,
                 child: Stack(
                   children: [
+                    Positioned.fill(child: CustomPaint(painter: BlockoGridPainter(cellSize: cellSize, lineColor: palette.gridLine))),
                     for (final flash in controller.landingFlashes)
                       for (final index in flash.cellIndexes)
                         if (controller.cells[index] != 0)
@@ -109,12 +119,7 @@ class BoardWidget extends StatelessWidget {
                                 key: ValueKey(controller.cells[index] != 0 ? 'filled-$index-${controller.cells[index]}' : 'empty-$index'),
                                 child: controller.cells[index] != 0
                                     ? DecoratedBox(decoration: bevelDecoration(BlockoColors.palette[controller.cells[index] - 1]))
-                                    : DecoratedBox(
-                                        decoration: BoxDecoration(
-                                          color: Colors.white.withOpacity(0.15),
-                                          borderRadius: BorderRadius.circular(nutfaRadius),
-                                        ),
-                                      ),
+                                    : const SizedBox.shrink(),
                               ),
                             ),
                           ),
@@ -168,7 +173,7 @@ class BoardWidget extends StatelessWidget {
                         height: cellSize,
                         child: Padding(
                           padding: const EdgeInsets.all(1.5),
-                          child: DecoratedBox(decoration: bevelDecoration(BlockoColors.colorFor(fallingType!))),
+                          child: DecoratedBox(decoration: bevelDecoration(BlockoColors.colorFor(fallingType!), strong: true)),
                         ),
                       ),
                   ],
