@@ -15,7 +15,7 @@ class AppPages {
     GetPage(
       name: AppRoutes.splash,
       page: () => const SplashPage(),
-      binding: BindingsBuilder(() => Get.put(SplashController(dashySplashConfig))),
+      binding: BindingsBuilder(() => Get.put(SplashController(dashySplashConfig), permanent: true)),
     ),
     GetPage(name: AppRoutes.home, page: () => const HomePage(), binding: HomeBinding()),
     GetPage(name: AppRoutes.game, page: () => const GamePage(), binding: GameBinding()),

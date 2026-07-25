@@ -15,7 +15,11 @@ class AppPages {
     GetPage(
       name: AppRoutes.splash,
       page: () => const SplashPage(),
-      binding: BindingsBuilder(() => Get.put(SplashController(blockoSplashConfig))),
+      // permanent: SplashPage's mascot/dots keep animating during the
+      // Home transition's outgoing frames; a non-permanent binding gets
+      // disposed by Get.offAllNamed before those frames finish, crashing
+      // GetView<SplashController>.
+      binding: BindingsBuilder(() => Get.put(SplashController(blockoSplashConfig), permanent: true)),
     ),
     GetPage(name: AppRoutes.home, page: () => const HomePage(), binding: HomeBinding()),
     GetPage(name: AppRoutes.game, page: () => const GamePage(), binding: GameBinding()),
