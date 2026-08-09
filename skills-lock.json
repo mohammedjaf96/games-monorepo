@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "skills": {
+    "art-direction-and-readability": {
+      "source": "rondorkerin/gamestack",
+      "sourceType": "github",
+      "skillPath": "plugins/gamestack/skills/art-direction-and-readability/SKILL.md",
+      "computedHash": "821cbcc1e4e59e75d1810fa991f64ded218332b91f17a2ea4ad4205cebd61104"
+    },
+    "game-feel": {
+      "source": "gamedev-skills/awesome-gamedev-agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/disciplines/game-feel/SKILL.md",
+      "computedHash": "48f7e9eb81c8fb177e1c26f54fc0e8c3f1b818d2905332c7ee53b16aa7b7a975"
+    },
+    "game-ui-ux": {
+      "source": "gamedev-skills/awesome-gamedev-agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/disciplines/game-ui-ux/SKILL.md",
+      "computedHash": "63b4cbefc49de3c92020fc47cbad97cf5be1b05077514e03c4dc032756f47c29"
+    },
+    "onboarding-and-teaching": {
+      "source": "rondorkerin/gamestack",
+      "sourceType": "github",
+      "skillPath": "plugins/gamestack/skills/onboarding-and-teaching/SKILL.md",
+      "computedHash": "e494fa577f7c0614c440324218181afa77ba324318f8ddabdf459cea3af54d6c"
+    },
+    "puzzle": {
+      "source": "gamedev-skills/awesome-gamedev-agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/genres/puzzle/SKILL.md",
+      "computedHash": "373e040c38c5835c5d43c1081fd60e07f137625ce51834052a876f830587c83b"
+    }
+  }
+}

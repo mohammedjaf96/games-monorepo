@@ -35,6 +35,9 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   get: ^4.6.6
+  flame: ^1.18.0
+  flutter_svg: ^2.0.10+1
+  flutter_animate: ^4.5.0
   game_core:
     path: ../../packages/game_core
 
@@ -62,6 +65,8 @@ flutter:
 
   assets:
     - assets/mascots/
+    - assets/audio/bgm/
+    - assets/audio/sfx/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

@@ -1,0 +1,44 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:game_core/game_core.dart';
+import 'package:get/get.dart';
+
+import '../../controllers/gameController.dart';
+
+/// The in-game HUD: distance + coins + pause (GAME_IDEAS.md §5.3).
+class HudWidget extends StatelessWidget {
+  const HudWidget({super.key, required this.onPause});
+
+  final VoidCallback onPause;
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = Get.find<GameController>();
+    return Padding(
+      padding: const EdgeInsets.all(AppSizes.screenMargin),
+      child: Row(
+        children: [
+          Obx(
+            () => AnimatedCounter(
+              value: controller.distance.value.floor(),
+              style: AppText.heroNumber(color: Colors.white),
+              suffix: 'm',
+            ),
+          ),
+          const SizedBox(width: AppSizes.gapMedium),
+          Obx(
+            () => Row(
+              children: [
+                SvgPicture.asset('assets/icons/coin.svg', package: 'game_core', width: 18, height: 18),
+                const SizedBox(width: AppSizes.gapExtraSmall),
+                AnimatedCounter(value: controller.coins.value, style: AppText.body(color: Colors.white)),
+              ],
+            ),
+          ),
+          const Spacer(),
+          StickerIconButton(iconAsset: 'assets/icons/gear.svg', fill: surfaceTone(Colors.white), onPressed: onPause),
+        ],
+      ),
+    );
+  }
+}

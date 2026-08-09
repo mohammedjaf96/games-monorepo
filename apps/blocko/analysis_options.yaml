@@ -21,8 +21,18 @@ linter:
   # `// ignore_for_file: name_of_lint` syntax on the line or in the file
   # producing the lint.
   rules:
-    # avoid_print: false  # Uncomment to disable the `avoid_print` rule
-    # prefer_single_quotes: true  # Uncomment to enable the `prefer_single_quotes` rule
+    # Enforced per CODE_STANDARDS.md §14.
+    prefer_const_constructors: true
+    avoid_unnecessary_containers: true
+    use_key_in_widget_constructors: true
+    prefer_final_fields: true
+    avoid_print: true
+    unnecessary_this: true
+    camel_case_types: true
+    non_constant_identifier_names: true
+    # file_names is intentionally NOT enabled: Dart's built-in rule enforces
+    # snake_case.dart, which conflicts with CODE_STANDARDS.md's mandatory
+    # lowerCamelCase.dart file naming. See final summary for this discrepancy.
 
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options

@@ -1,11 +1,79 @@
-
 /// Shared core for the casual games (Blocko · Dashy · Mergo).
 ///
 /// Full architecture and build spec: see GAME_IDEAS.md at the repo root.
-/// This package will hold: AdService, WalletService, StoreController,
-/// DailyRewardService, SettingsController, AudioService, HapticsService,
-/// theme/AppStyle, the sticker-style UI kit, and shared assets
-/// (assets/icons, assets/audio/sfx).
-class GameCore {
-  static const String version = '0.0.1';
-}
+library;
+
+export 'src/ads/adPolicy.dart';
+export 'src/ads/adService.dart';
+export 'src/ads/adUnitPair.dart';
+export 'src/ads/adUnits.dart';
+export 'src/ads/consentController.dart';
+export 'src/analytics/analyticsService.dart';
+export 'src/app/bootstrap.dart';
+export 'src/app/gameConfig.dart';
+export 'src/audio/audioService.dart';
+export 'src/audio/audioUnlockGate.dart';
+export 'src/audio/hapticPattern.dart';
+export 'src/audio/hapticsService.dart';
+export 'src/economy/acquireMethod.dart';
+export 'src/economy/currencySkin.dart';
+export 'src/economy/dailyReward/dailyRewardConfig.dart';
+export 'src/economy/dailyReward/dailyRewardService.dart';
+export 'src/economy/dailyReward/dayReward.dart';
+export 'src/economy/earnCaps.dart';
+export 'src/economy/economyConfig.dart';
+export 'src/economy/gameResult.dart';
+export 'src/economy/gemPack.dart';
+export 'src/economy/walletService.dart';
+export 'src/i18n/commonTranslations.dart';
+export 'src/monetization/gameSessionFlow.dart';
+export 'src/storage/hiveService.dart';
+export 'src/storage/keyValueStore.dart';
+export 'src/store/cosmetic.dart';
+export 'src/store/cosmeticSlot.dart';
+export 'src/store/inventoryService.dart';
+export 'src/store/rarity.dart';
+export 'src/store/storeCatalog.dart';
+export 'src/store/storeCategory.dart';
+export 'src/store/storeController.dart';
+export 'src/theme/appSizes.dart';
+export 'src/theme/appText.dart';
+export 'src/theme/borderWidths.dart';
+export 'src/theme/gamePalette.dart';
+export 'src/theme/gameTheme.dart';
+export 'src/theme/outlineColor.dart';
+export 'src/theme/pal.dart';
+export 'src/theme/stickerDecoration.dart';
+export 'src/theme/surfaceTone.dart';
+export 'src/ui/animatedCounter.dart';
+export 'src/ui/bouncyButton.dart';
+export 'src/ui/currencyPill.dart';
+export 'src/ui/dailyReward/dailyRewardDialog.dart';
+export 'src/ui/edgeGlowPainter.dart';
+export 'src/ui/edgeGlowWidget.dart';
+export 'src/ui/floatingScoreText.dart';
+export 'src/ui/floatingScoreTextOverlay.dart';
+export 'src/ui/gameOverDialog.dart';
+export 'src/ui/mascotMood.dart';
+export 'src/ui/mascotWidget.dart';
+export 'src/ui/outlinedText.dart';
+export 'src/ui/particleBurst.dart';
+export 'src/ui/particleBurstOverlay.dart';
+export 'src/ui/pauseDialog.dart';
+export 'src/ui/rewardedButton.dart';
+export 'src/ui/shakeWidget.dart';
+export 'src/ui/settings/settingsController.dart';
+export 'src/ui/settings/settingsPage.dart';
+export 'src/ui/settings/settingsToggleRow.dart';
+export 'src/ui/settings/stickerToggle.dart';
+export 'src/ui/settings/themeModeRow.dart';
+export 'src/ui/splash/splashConfig.dart';
+export 'src/ui/splash/splashController.dart';
+export 'src/ui/splash/splashPage.dart';
+export 'src/ui/stickerIconButton.dart';
+export 'src/ui/store/cosmeticCard.dart';
+export 'src/ui/store/earnGemsSheet.dart';
+export 'src/ui/store/gemPackCard.dart';
+export 'src/ui/store/storePage.dart';
+export 'src/ui/store/walletBar.dart';
+export 'src/ui/tutorial/howToPlayDialog.dart';
